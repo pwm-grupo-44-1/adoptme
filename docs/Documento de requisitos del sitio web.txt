@@ -1,0 +1,137 @@
+﻿PROGRAMACIÓN WEB Y MÓVIL
+PROYECTO: AdoptMe!!
+
+
+**Añadir Historias de USUARIO como hemos visto en SCRUM en PS**
+
+
+Requisitos:
+
+
+* Tipos de usuarios
+   * Administrados
+   * Usuario Registrado
+   * Usuario no Registrado
+
+
+* Items:
+   * Imagen
+   * Descripción
+   * Detalle
+   * Status
+
+
+
+
+* Filtro
+        - Edad
+        - Raza
+        - Peso
+        - Comportamiento/Nivel Actividad
+        - Tipo de pelos
+
+
+* Página de reseñas/opiniones
+
+
+* Lista de mascotas a adoptar
+
+
+*Añadir foto a la imagen de una raza potencialmente peligrosa*
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Objetivos del Proyecto:
+* Crear una presencia en línea profesional para el refugio de adopción de mascotas.
+* Facilitar la comunicación con clientes.
+* Presentar a las mascotas a adoptar y servicios ofrecidos. 
+
+
+Páginas y Estructura del Sitio Web:
+
+
+1. Inicio:
+   -  Encabezado con logotipo y menú de navegación.
+   -  Pie de página con información de contacto y enlaces a redes sociales, opiniones,FAQ y contacto..
+   -  Texto reflejando el número de mascotas dados en adopción hasta el momento (No reflejando una cantidad, sino un número redondo aproximado (Ej. “Y ya vamos por más de 150 mascotas adoptadas”.
+
+
+2. Nosotros:
+   -  Historia del refugio de mascotas..
+   -  Equipo de trabajo con fotos y biografías breves.
+
+
+3. Lista de Mascotas:
+* Foto de Mascota
+* Nombre, Raza, Fecha Nacimiento/ Edad, Tamaño, Tipo de pelo, Comportamiento. Con texto, números, estrellas (5 mejor)
+* Descripción
+* Como Administrador:
+* Añadir o modificar 
+
+
+4.Pedir cita:
+* Calendario para poder ver las horas disponibles y poder seleccionarlas.
+* Formulario para reservar cita:
+* Nombre
+* Apellido
+* DNI
+* Dirección
+* Teléfono
+* Correo Electrónico para confirmar cita
+
+
+5.Login:
+* Formulario para registrarse para poder adoptar:
+* Correo Electrónico para confirmar el registro.
+* Contraseña.
+* Una vez registrado, se solicitarán datos más concretos, como nombre, apellidos, DNI, teléfono, permiso para adoptar a mascotas PPP (potencialmente peligrosas)
+
+
+6. Contacto:
+* Mapa con ubicación del refugio..
+* Dirección del sitio
+* Teléfono del sitio
+* Correo Electrónico: info@adoptme.com
+* Imagen con perros y el personal
+
+
+
+
+7. FAQ:
+* Listas de preguntas más frecuentes
+* En orden descendente a su frecuencia/importancia
+
+
+
+
+8 . Opiniones:
+* Una foto con la mascota y la familia.
+* Texto de Opinión.
+
+
+
+
+Requerimientos Especiales
+* Integración con redes sociales.
+
+
+
+
+Responsabilidades del Cliente:
+* Proporcionar todo el contenido necesario (imágenes, videos, logotipos, textos, etc.).
+* Entregar el texto de la política de cookies, privacidad, términos y condiciones.
