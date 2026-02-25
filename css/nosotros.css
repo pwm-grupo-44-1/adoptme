@@ -9,13 +9,10 @@ body {
 
 .nosotros {
     display: flex;
-    /* Distribuye el espacio sobrante de forma igualitaria entre y alrededor de las tarjetas */
     justify-content: space-evenly;
-    /* Espacio mínimo garantizado entre tarjetas */
     gap: 30px;
     flex-wrap: wrap;
     width: 100%;
-    /* Margen de seguridad para que no toquen los bordes del navegador */
     padding: 40px;
     box-sizing: border-box;
 }
@@ -24,7 +21,6 @@ body {
     background-color: #fff;
     border: 1px solid #000;
     padding: 15px;
-    /* Mantenemos tu ancho ideal */
     flex: 0 1 280px;
     display: flex;
     flex-direction: column;
