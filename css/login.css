@@ -1,0 +1,79 @@
+/* 1. Reset para que todo encaje */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+/* 2. El cuerpo de la página (El contenedor que centra la caja) */
+body {
+    background-color: #876a6a;
+    min-height: 100vh;      /* Ocupa toda la altura de la pantalla */
+    display: flex;          /* Activa el modo flexible */
+    justify-content: center;/* Centra la caja de izquierda a derecha */
+    align-items: center;    /* Centra la caja de arriba a abajo */
+}
+
+/* 3. La caja del Login con TUS MEDIDAS */
+.login-box {
+    background-color: #969e99;
+
+    /* Tus medidas originales */
+    height: 70vh;
+    width: 60vw;
+
+    /* Centrado interno para los inputs */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* 4. El formulario dentro de la caja */
+.login-inputs {
+    display: flex;
+    flex-direction: column;
+    width: 80%;       /* El formulario ocupa el 80% del ancho de la caja gris */
+    gap: 3em;        /* Espacio entre cada input */
+}
+
+/* 5. Estilo de los inputs */
+.login-inputs input {
+    width: 100%;      /* Ocupan todo el ancho del formulario */
+    padding: 15px;
+    font-size: 1.1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.3s;
+}
+
+.login-inputs input:focus {
+    border-color: #5d4a4a;
+    background-color: #f0f0f0;
+}
+
+/* 6. El botón */
+#login-submit {
+    margin-top: 2rem;
+    width: 40%;
+    align-self: flex-end;
+    padding: 15px;
+    background-color: #5d4a4a;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#login-submit:hover {
+    background-color: #4a3b3b;
+}
