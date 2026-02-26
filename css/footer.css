@@ -1,39 +1,38 @@
-body {
-    margin: 0;
-    min-height: 100vh;      /* Ocupa toda la altura de la ventana */
+/* ─── Footer ──────────────────────────────────────────────────────── */
+#footer {
     display: flex;
-    flex-direction: column; /* Coloca main arriba y footer abajo */
-}
-.footer {
-    display: flex;
-    flex-direction: column; /* Apila botones arriba y descripción abajo */
-    align-items: center;    /* Centra todo horizontalmente */
-    gap: 15px;              /* Espacio entre los botones y el texto inferior */
-
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
     width: 100%;
     background-color: #d3d3d3;
     border-top: 1px solid #000;
     padding: 20px 50px;
-    margin-top: auto;       /* Lo empuja al final de la pantalla */
     box-sizing: border-box;
+    margin-top: auto; /* lo empuja al fondo si el contenido es corto */
 }
-.boton-footer{
+
+.boton-footer {
     display: flex;
     width: 100%;
     justify-content: flex-start;
     gap: 20px;
 }
+
 .boton:nth-child(2) {
     margin-left: auto;
 }
+
 .boton {
     background-color: #fff;
     border: 1px solid #000;
     padding: 8px 15px;
     font-size: 12px;
+    cursor: pointer;
 }
+
 .footer-descripcion {
-    font-size: 10px;        /* Más pequeño, como en el boceto */
+    font-size: 10px;
     text-align: center;
-    color: #333;            /* Un gris oscuro para que se note que es pie de página */
+    color: #333;
 }

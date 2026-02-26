@@ -1,36 +1,30 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
+/* ─── Contacto ────────────────────────────────────────────────────── */
 body {
-    background-color: #888888;
-    font-family: sans-serif;
-    min-height: 100vh;
-    width: 100vw;
+    background-color: #888;
 }
 
 .container-main {
     display: flex;
-    flex-direction: row;
     justify-content: center;
     align-items: center;
     gap: 40px;
     width: 100%;
     padding: 60px 40px;
-    min-height: 100vh;
+    flex: 1;
 }
 
 .texto-wrapper {
     width: 50vw;
     height: 50vh;
-    background-color: rgba(120, 140, 120, 0.55); /* verde apagado semitransparente */
+    background-color: rgba(120, 140, 120, 0.55);
     padding: 20px 24px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    box-shadow:
+            0 4px 8px 0 rgba(0, 0, 0, 0.2),
+            0 6px 20px 0 rgba(0, 0, 0, 0.19);
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    gap: 1rem;
+    overflow-y: auto;
 }
 
 .texto {
@@ -39,8 +33,3 @@ body {
     text-align: justify;
     line-height: 1.6;
 }
-
-
-
-
-
