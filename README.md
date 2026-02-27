@@ -5,8 +5,8 @@ Este repositorio contiene un **prototipo estático** --de momento-- del sitio we
 El objetivo es validar **estructura, navegación y estilo visual**.
 
 ## Componentes del Grupo
-* **Integrante 1:** 
-* **Integrante 2:** 
+* **Integrante 1:** Néstor J. Henríquez Medina
+* **Integrante 2:** Alejandro C. Hernández Delgado
 * **Integrante 3:** Esther Viera Rivero
 
 ## Descripción del proyecto 
