@@ -4,7 +4,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 20px;
+    margin-top: 1.5rem;
     flex: 1;
 }
 
@@ -14,7 +14,7 @@
 
 .faq-group {
     margin-bottom: 20px;
-    background: antiquewhite;
+    background: #c0c5c2;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -25,6 +25,8 @@
     cursor: pointer;
     padding: 15px;
     font-weight: bold;
+    text-align: center;
+
 }
 
 input[type="checkbox"] {
@@ -35,11 +37,11 @@ input[type="checkbox"] {
     max-height: 0;
     overflow: hidden;
     transition: all 0.35s ease-in-out;
-    background-color: #fff8f0;
+    background: #c0c5c2;
     padding: 0 15px;
 }
 
-input:checked ~ .faq-answer {
+.faq-question:has(input:checked) ~ .faq-answer {
     max-height: 300px;
     padding: 15px;
 }

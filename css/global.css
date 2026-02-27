@@ -13,4 +13,5 @@ body {
     display: flex;
     flex-direction: column; /* header + main + footer apilados */
     font-family: sans-serif;
+    background-color: #7d8782;
 }
