@@ -1,21 +1,25 @@
 /* ─── Contacto ────────────────────────────────────────────────────── */
-body {
-    background-color: #888;
-}
-
-.container-main {
+#main {
+    flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 40px;
-    width: 100%;
-    padding: 60px 40px;
-    flex: 1;
+    min-height: 0;
+}
+
+#contacto {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 60px;
+    width: 90%;
+    max-width: 1100px;
 }
 
 .texto-wrapper {
-    width: 50vw;
-    height: 50vh;
+    flex: 2;              /* ← texto más ancho */
+    height: 60vh;
     background-color: rgba(120, 140, 120, 0.55);
     padding: 20px 24px;
     box-shadow:
@@ -28,8 +32,12 @@ body {
 }
 
 .texto {
-    font-size: clamp(0.5rem, 2vw, 1rem);
+    font-size: 1.15rem;
     color: #f0f0f0;
     text-align: justify;
     line-height: 1.6;
+}
+
+#contacto > section {
+    display: contents;
 }
