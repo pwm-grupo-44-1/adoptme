@@ -1,12 +1,14 @@
 /* ─── Login ───────────────────────────────────────────────────────── */
-body {
-    background-color: #876a6a;
+#main {
+    flex: 1;
+    display: flex;
     justify-content: center;
     align-items: center;
+    min-height: 0;
 }
 
 .login-box {
-    background-color: #969e99;
+    background-color: #c0c5c2;
     height: 70vh;
     width: 60vw;
     display: flex;
@@ -30,15 +32,16 @@ body {
     width: 100%;
     padding: 15px;
     font-size: 1.1rem;
-    border: 1px solid #ccc;
+    border: 1px solid #9e9b9b;
+    background-color: #9e9b9b;
     border-radius: 8px;
     outline: none;
     transition: border-color 0.3s, background-color 0.3s;
 }
 
 .login-inputs input:focus {
-    border-color: #5d4a4a;
-    background-color: #f0f0f0;
+    border-color: #000;
+    background-color: #9e9b9b;
 }
 
 #login-submit {
@@ -46,8 +49,8 @@ body {
     width: 40%;
     align-self: flex-end;
     padding: 15px;
-    background-color: #5d4a4a;
-    color: white;
+    background-color: #7d8782;
+    color: #000000;
     border: none;
     border-radius: 8px;
     font-size: 1.2rem;
@@ -57,5 +60,10 @@ body {
 }
 
 #login-submit:hover {
-    background-color: #4a3b3b;
+    background-color: #616362;
+    color: white;
+}
+
+.login-inputs input::placeholder {
+    color: #000000;
 }
