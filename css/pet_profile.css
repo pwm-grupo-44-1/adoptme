@@ -1,25 +1,26 @@
 /* ─── Pet Profile ─────────────────────────────────────────────────── */
-body {
+#main {
+    flex: 1;
+    display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: stretch;   /* ← stretch para que llegue arriba y abajo */
+    min-height: 0;
+    padding: 3rem 5rem;        /* ← solo margen lateral */
 }
 
 .dog-card {
     display: flex;
-    border: 1px solid #000;
-    padding: 20px;
-    width: 700px;
+    align-items: stretch;
+    gap: 6rem;            /* ← poco espacio entre bloques */
+    width: 100%;
+    padding: 0;
 }
 
 .image {
-    flex: 1;
-    background-color: #fff;
+    flex: 1.2;
+    background-color: #ccc;
     border: 1px solid #000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     overflow: hidden;
-    aspect-ratio: 1 / 1;
 }
 
 .dog-image {
@@ -29,15 +30,25 @@ body {
 }
 
 .datos-columna {
-    flex: 2;
+    flex: 1.5;
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    margin-left: 30px;
+    gap: 3rem;            /* ← poco espacio entre cajas */
+    justify-content: flex-start;
+    padding-top: 0;
 }
 
 .caja-texto {
     background-color: #cac5c5;
     border: 1px solid #000;
+    width: 100%;
+    min-width: 500px;
     padding: 8px;
+    text-align: justify;
+}
+
+.caja-texto:last-child {
+    flex: 1;
+    display: flex;
+    align-items: flex-start;
 }
