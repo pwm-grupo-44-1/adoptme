@@ -1,65 +1,81 @@
-/* ─── Header ──────────────────────────────────────────────────────── */
-header {
+/* =========================
+   HEADER (banda superior)
+========================= */
+.site-header {
+    background: var(--header-bg);
+    height: var(--header-h);
     display: flex;
+    align-items: center;
+    padding: 50px
+}
+
+.header-inner {
+    width: 100%;
+    padding: 0 var(--pad-x);
+    display: flex;
+    align-items: center;
     justify-content: space-between;
-    align-items: center;
-    background-color: #33c661;
-    box-shadow: 0 10px 20px -10px rgba(40, 164, 80, 0.8);
-    height: 80px;
-    padding: 0 2em;
+    gap: 40px;
 }
 
-.brand-group {
+.brand {
     display: flex;
     align-items: center;
-    gap: 10em;
+    gap: 22px;
 }
 
-.ventana_logo {
-    width: 70px;
-    height: 70px;
+.logo {
+    width: 78px;
+    height: 78px;
     border-radius: 50%;
-    overflow: hidden;
-    border: 3px solid #28a450;
-    background: white;
-    flex-shrink: 0;
+    background: #f4b8bc;
+    position: relative;
+    flex: 0 0 auto;
 }
 
-#logo {
-    width: 180%;
-    height: auto;
-    transform: translate(-22%, -20%);
+/* “X” del logo */
+.logo::before,
+.logo::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 78px;
+    height: 2px;
+    background: #333;
+    transform-origin: center;
 }
 
-#name {
-    color: white;
+.logo::before {
+    transform: translate(-50%, -50%) rotate(45deg);
 }
 
-/* ─── Navbar ──────────────────────────────────────────────────────── */
-.navbar {
-    height: 100%;
+.logo::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
 }
 
-.navbar ul {
-    display: flex;
-    list-style: none;
-    height: 100%;
-    align-items: stretch;
+.brand-title {
+    font-size: 34px;
+    letter-spacing: 1px;
+    font-weight: 500;
 }
 
-.navbar li {
+/* Menú botones */
+.top-nav {
     display: flex;
     align-items: center;
-    font-size: 1.3rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    padding: 0 2em;
-    cursor: pointer;
-    color: #fdfdfd;
-    transition: background 0.3s, color 0.3s;
+    gap: var(--btn-gap);
 }
 
-.navbar li:hover {
-    background: #e0e0e0;
-    color: #151515;
+.nav-btn {
+    width: var(--btn-w);
+    height: var(--btn-h);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #000;
+    background: var(--card);
+    font-size: 14px;
+    letter-spacing: 1px;
 }
