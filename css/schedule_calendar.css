@@ -1,11 +1,9 @@
+/* ─── Schedule / Calendar ─────────────────────────────────────────── */
 body {
-    margin: 0;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     background-color: #a3a3a3;
     font-family: 'Courier New', Courier, monospace;
+    justify-content: center;
+    align-items: center;
 }
 
 .bloque-texto {
@@ -14,9 +12,7 @@ body {
     width: 90%;
     max-width: 1300px;
     min-height: 60vh;
-    height: auto;
     box-sizing: border-box;
-
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -24,27 +20,25 @@ body {
 }
 
 .bloque-texto p {
-    margin: 0;
     font-weight: bold;
     color: #333;
     font-size: 18px;
-
     text-align: justify;
     word-break: break-all;
     letter-spacing: 1px;
     line-height: 1.2;
 }
 
+/* ─── Responsive ──────────────────────────────────────────────────── */
 @media (max-width: 800px) {
-    .bloque-texto p {
-        font-size: 14px;
-        line-height: 1.4;
-    }
-
     .bloque-texto {
         padding: 20px;
         min-height: 40vh;
-        margin-top: 60px;
-        margin-bottom: 60px;
+        margin: 60px auto;
+    }
+
+    .bloque-texto p {
+        font-size: 14px;
+        line-height: 1.4;
     }
 }

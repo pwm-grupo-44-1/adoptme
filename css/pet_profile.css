@@ -1,0 +1,54 @@
+/* ─── Pet Profile ─────────────────────────────────────────────────── */
+#main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;   /* ← stretch para que llegue arriba y abajo */
+    min-height: 0;
+    padding: 3rem 5rem;        /* ← solo margen lateral */
+}
+
+.dog-card {
+    display: flex;
+    align-items: stretch;
+    gap: 6rem;            /* ← poco espacio entre bloques */
+    width: 100%;
+    padding: 0;
+}
+
+.image {
+    flex: 1.2;
+    background-color: #ccc;
+    border: 1px solid #000;
+    overflow: hidden;
+}
+
+.dog-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.datos-columna {
+    flex: 1.5;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;            /* ← poco espacio entre cajas */
+    justify-content: flex-start;
+    padding-top: 0;
+}
+
+.caja-texto {
+    background-color: #cac5c5;
+    border: 1px solid #000;
+    width: 100%;
+    min-width: 500px;
+    padding: 8px;
+    text-align: justify;
+}
+
+.caja-texto:last-child {
+    flex: 1;
+    display: flex;
+    align-items: flex-start;
+}
