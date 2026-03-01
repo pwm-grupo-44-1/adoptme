@@ -9,10 +9,6 @@
 
 Este repositorio contiene un **prototipo estático** --de momento-- del sitio web **AdoptMe!**, un refugio de adopción donde el usuario puede **explorar mascotas** (perros y gatos) y **solicitar una cita presencial** para conocerlas y poder adoptarlas, así como entregar en adopción.
 
-## Listado de requisitos funcionales
-* req 1.
-* req 2.
-
 ## Componentes del Grupo
 * **Integrante 1:** Néstor J. Henríquez Medina
 * **Integrante 2:** Alejandro C. Hernández Delgado
@@ -51,16 +47,57 @@ El objetivo principales que cada animal obtenga un nuevo hogar donde sea amado. 
 
 
 ## Archivo del pdf de los mockups y storyboard:
+### Mockups: 
+#### Los mockups están ubicados dentro del proyecto en la carpeta mockups(~/mockups), los nombres son los siguientes:
+* abouts_us.png
+* adoption_list.png
+* contact_us.png
+* faq.png
+* home.png
+* legal.png
+* login.png
+* pet_profile.png
+* schedule.png
+* stories.png
 
+### Storyboard:
+#### El storyboard están ubicados dentro del proyecto en la carpeta storyboard(~/storyboard).
 ## Listado de páginas html del proyecto
+#### Las páginas html están ubicadas dentro de la carpeta html (~/html),y sus relaciones son las siguientes: 
+* abouts_us.html &rarr; abouts_us.png 
+* adoption_list.html &rarr; adoption_list.png
+* contact_us.html &rarr; contact_us.png
+* faq.html &rarr; faq.png
+* home.html &rarr; home.png
+* legal.html &rarr; legal.png
+* login.html &rarr; login.png
+* pet_profile.html &rarr; pet_profile.png
+* schedule.html &rarr; schedule.png
+* stories.html &rarr; stories.png
 
 ## Listado de archivos templates:
+#### Las templates están ubicadas dentro de la carpeta templates dentro de la carpeta html (~/html/templates), los nombres son los siguientes:
+* template_about_us.html
+* template_adoption_item.html
+* template_adoption_list.html
+* template_card.html
+*  template_contacto.html
+*  template_faq.html
+*  template_footer.html
+*  template_header.html
+*  template_home.html
+*  template_legal.html
+*  template_login.html
+*  template_pet.html
+*  template_schedule_calendar.html
+*  template_stories.html
+
 
 ## ¿Qué incluye?
 
 ### Ubicación carpeta mockups: /mockups
 - 
-- 
+-
 - Páginas: **Home**, **Nosotros**, **Listado de mascotas**, **Ficha de mascota**, **Agenda de citas**, **Login/Registro**, **Contacto**, **FAQ**, **Opiniones**.
 - **Componentes reutilizables**: header/footer y algunos más que iremos descubriendo.
 - Todo el texto está en **lorem ipsum** y las imágenes son **placeholders** (recuadros/círculos con cruz).
