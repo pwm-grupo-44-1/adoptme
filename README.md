@@ -9,12 +9,7 @@
 
 Este repositorio contiene un **prototipo estático** --de momento-- del sitio web **AdoptMe!**, un refugio de adopción donde el usuario puede **explorar mascotas** (perros y gatos) y **solicitar una cita presencial** para conocerlas y poder adoptarlas, así como entregar en adopción.
 
-## Componentes del Grupo
-* **Integrante 1:** Néstor J. Henríquez Medina
-* **Integrante 2:** Alejandro C. Hernández Delgado
-* **Integrante 3:** Esther Viera Rivero
-
-## Descripción del proyecto 
+## Descripción del proyecto:
 
 AdoptMe es una plataforma web diseñada para transformar el proceso de adopción de perros y gatos en una experiencia sencilla, transparente y segura.
 
@@ -22,28 +17,45 @@ Nuestra web centraliza la información de mascotas en espera de un hogar, ofreci
 
 El objetivo principal es que cada peludito obtenga un nuevo hogar donde sea amado. Para lograrlo, toda nuestra información está habilitada en nuestra página y para reservar citas de una forma más directa mediante nuestra agenda de citas.
 
+## Listado de Requisitos:
 
-## Listado de Requisitos
+### Tipos de Usuarios y Permisos:
+* **Administrador (Protectora):** Control total de la plataforma. Gestión del catálogo (alta, baja y modificación de mascotas), administración de la agenda de citas, moderación de reseñas y gestión de solicitudes de adopción.
+* **Usuario Registrado (Adoptante):** Acceso a funciones interactivas como la reserva de citas mediante calendario, guardado de mascotas en "favoritos", seguimiento de sus solicitudes de adopción y publicación de historias de éxito.
+* **Usuario No Registrado (Visitante):** Navegación libre por el catálogo de mascotas, consulta de información sobre el refugio (FAQs, Quiénes somos) y acceso al formulario de registro para iniciar trámites.
 
-### Tipos de Usuarios
-- **Administrador**: Gestión completa del catálogo: añade, modifica y elimina mascotas, gestiona citas y modera opiniones.
-- **Usuario Registrado** : Puede reservar citas, guardar favoritos y acceder a funciones de adopción, incluida la solicitud de reserva.​
-- **Usuario No Registrado**: Navega el catálogo, consulta información del refugio y puede registrarse para iniciar el proceso de adopción.​
+### Funcionalidades:
 
-### Filtros Avanzados:
-- **Edad**: cachorro, joven, adulto, senior
-- **Raza**: listado desplegable por especie
-- **Peso** : rangos en kg
-- **Comportamiento** : nivel de actividad (1–5 estrella)
-- **Tipo de pelo: corto** , largo, rizado, sin pelo
+#### 1. Catálogo y Filtros Avanzados:
+Para asegurar un emparejamiento perfecto entre el animal y la familia, el sistema permite filtrar por:
+* **Edad:** Categorización por etapas (Cachorro, Joven, Adulto, Senior).
+* **Especie y Raza:** Listados desplegables dinámicos para perros y gatos.
+* **Peso:** Filtrado por rangos de kilogramos para adaptarse al espacio del hogar.
+* **Comportamiento:** Escala de nivel de actividad y sociabilidad (1–5 estrellas).
+* **Tipo de pelo:** Clasificación técnica (corto, largo, rizado, sin pelo).
 
-### Página de Reseñas y Opiniones:
+#### 2. Ficha del "Peludito":
+Cada animal cuenta con una página detallada que incluye:
+* **Galería Visual:** Imágenes de alta calidad del animal.
+* **Estado en Tiempo Real:** Indicadores visuales de "Disponible", "Reservado" o "Adoptado".
+* **Información Técnica:** Detalles de salud, carácter y necesidades especiales.
 
-- **Transparencia** : información clara.
+#### 3. Herramientas de Ayuda y Comunidad:
+* **Reporte de Rescate (HU-15):** Formulario para reportar casos de animales abandonados o maltratados, permitiendo adjuntar ubicación y descripción del estado.
+* **Consulta de Chip (HU-17/18):** Sistema de mediación que permite verificar si un animal encontrado tiene dueño sin exponer datos privados de terceros.
+* **Módulo de Reseñas:** Sección de transparencia donde los usuarios comparten su experiencia y fotos de sus nuevas mascotas.
 
-### Ficha del peludito:
-- **Imagen**: Una buena foto del animal.
-- **Estado**: Disponible, Reservado o Adoptado.
+#### 4. Gestión de Citas:
+* **Agenda Interactiva:** Sistema de reserva de visitas presenciales para conocer a los animales, integrado con un panel de gestión para la protectora.
+
+### Requisitos No Funcionales:
+* **Rendimiento:** Optimización de carga (menos de 2 segundos) mediante el uso de imágenes comprimidas y código modular.
+* **Usabilidad:** Interfaz limpia con botones grandes y navegación intuitiva para minimizar la curva de aprendizaje del usuario.
+
+### Implementación Técnica:
+* **Arquitectura Modular:** Uso de **templates reutilizables** (Header, Footer, Card, Main) para evitar la duplicidad de código.
+* **Mapeo de Navegación:** Correspondencia exacta entre los Mockups de Figma y los templates HTML/JS desarrollados.
+* **Control de Versiones:** Uso de **Git** para la gestión del código fuente y colaboración del equipo.
 
 ## Archivo del pdf de los mockups y storyboard:
 ### Mockups: 
@@ -92,14 +104,8 @@ El objetivo principal es que cada peludito obtenga un nuevo hogar donde sea amad
 *  template_stories.html
 
 
-## ¿Qué incluye?
-
-### Ubicación carpeta mockups: /mockups
-
-- Páginas: **Home**, **Nosotros**, **Listado de mascotas**, **Ficha de mascota**, **Agenda de citas**, **Login/Registro**, **Contacto**, **FAQ**, **Opiniones** y **Términos legales**.
-- **Componentes reutilizables**: header/footer y algunos más que iremos descubriendo.
-- Todo el texto está en **lorem ipsum** y las imágenes son **placeholders** (recuadros/círculos con cruz).
-- Layout preparado para ocupar **toda la altura del navegador**.
-
-## Tecnologías
-- HTML + CSS + JavaScript
+## Otros Aspectos a Considerar
+* **Tecnologías:** HTML5, CSS3 y JavaScript.
+* **Modularidad:** Uso de componentes reutilizables para optimizar el mantenimiento del código.
+* **Diseño Desktop:** En esta fase (Sprint 1), el prototipo está **optimizado exclusivamente para visualización en escritorio** (No responsive).
+* **Control de Versiones:** Uso de Git para la coordinación del equipo y gestión de ramas.
