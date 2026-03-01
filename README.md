@@ -107,5 +107,5 @@ Cada animal cuenta con una página detallada que incluye:
 ## Otros Aspectos a Considerar
 * **Tecnologías:** HTML5, CSS3 y JavaScript.
 * **Modularidad:** Uso de componentes reutilizables para optimizar el mantenimiento del código.
-* **Diseño Desktop:** En esta fase (Sprint 1), el prototipo está **optimizado exclusivamente para visualización en escritorio** (No responsive).
+* **Diseño Estatico:** En esta fase (Sprint 1), nuestro prototipo no implementa ninguna funcionalidad dinámica, por lo que se limita a la visualización de las diversas páginas que conforman el sitio web en el navegador de internet. Así mismo, el diseño no está pensado para ser adaptable al dispositivo desde el que se quiera visualizar (no es responsive).
 * **Control de Versiones:** Uso de Git para la coordinación del equipo y gestión de ramas.
