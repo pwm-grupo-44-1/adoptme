@@ -16,18 +16,18 @@ Este repositorio contiene un **prototipo estático** --de momento-- del sitio we
 
 ## Descripción del proyecto 
 
-AdoptMe es una plataforma web diseñada para transformar el proceso de adopción de perros y gatos en una experiencia sencilla, transparente y segura
+AdoptMe es una plataforma web diseñada para transformar el proceso de adopción de perros y gatos en una experiencia sencilla, transparente y segura.
 
-Nuestra web centraliza la información de mascotas en espera de un hogar, ofreciendo fichas detalladas (edad, carácter, raza, peso y tipo de pelo)  y un sistema de gestión de visitas y tramites cómoda.​
+Nuestra web centraliza la información de mascotas en espera de un hogar, ofreciendo fichas detalladas (edad, carácter, raza, peso y tipo de pelo) y un sistema de gestión de visitas y trámites muy cómoda.​
 
-El objetivo principales que cada animal obtenga un nuevo hogar donde sea amado. Para lograrlo esta toda nuestra información habilitada en nuestra página y para reservar citas de una forma más directa mediante nuestra agenda de citas.
+El objetivo principal es que cada peludito obtenga un nuevo hogar donde sea amado. Para lograrlo, toda nuestra información está habilitada en nuestra página y para reservar citas de una forma más directa mediante nuestra agenda de citas.
 
 
 ## Listado de Requisitos
 
 ### Tipos de Usuarios
 - **Administrador**: Gestión completa del catálogo: añade, modifica y elimina mascotas, gestiona citas y modera opiniones.
-- **Usuario Registrado** : Puede reservar citas, guardar favoritos y acceder a funciones de adopción, incluida la solicitud reserva.​
+- **Usuario Registrado** : Puede reservar citas, guardar favoritos y acceder a funciones de adopción, incluida la solicitud de reserva.​
 - **Usuario No Registrado**: Navega el catálogo, consulta información del refugio y puede registrarse para iniciar el proceso de adopción.​
 
 ### Filtros Avanzados:
@@ -41,10 +41,9 @@ El objetivo principales que cada animal obtenga un nuevo hogar donde sea amado. 
 
 - **Transparencia** : información clara.
 
-### Ficha del animal:
+### Ficha del peludito:
 - **Imagen**: Una buena foto del animal.
 - **Estado**: Disponible, Reservado o Adoptado.
-
 
 ## Archivo del pdf de los mockups y storyboard:
 ### Mockups: 
@@ -61,9 +60,9 @@ El objetivo principales que cada animal obtenga un nuevo hogar donde sea amado. 
 * stories.png
 
 ### Storyboard:
-#### El storyboard están ubicados dentro del proyecto en la carpeta storyboard(~/storyboard).
-## Listado de páginas html del proyecto
-#### Las páginas html están ubicadas dentro de la carpeta html (~/html),y sus relaciones son las siguientes: 
+#### El storyboard está ubicado dentro del proyecto en la carpeta storyboard(~/storyboard).
+## Listado de páginas html del proyecto:
+#### Las páginas html están ubicadas dentro de la carpeta html (~/html), y sus relaciones son las siguientes: 
 * abouts_us.html &rarr; abouts_us.png 
 * adoption_list.html &rarr; adoption_list.png
 * contact_us.html &rarr; contact_us.png
@@ -76,12 +75,12 @@ El objetivo principales que cada animal obtenga un nuevo hogar donde sea amado. 
 * stories.html &rarr; stories.png
 
 ## Listado de archivos templates:
-#### Las templates están ubicadas dentro de la carpeta templates dentro de la carpeta html (~/html/templates), los nombres son los siguientes:
+#### Los templates están ubicados en la carpeta templates, dentro de la carpeta html (~/html/templates). Los nombres son los siguientes:
 * template_about_us.html
 * template_adoption_item.html
 * template_adoption_list.html
 * template_card.html
-*  template_contacto.html
+*  template_contact_us.html
 *  template_faq.html
 *  template_footer.html
 *  template_header.html
@@ -89,16 +88,15 @@ El objetivo principales que cada animal obtenga un nuevo hogar donde sea amado. 
 *  template_legal.html
 *  template_login.html
 *  template_pet.html
-*  template_schedule_calendar.html
+*  template_schedule.html
 *  template_stories.html
 
 
 ## ¿Qué incluye?
 
 ### Ubicación carpeta mockups: /mockups
-- 
--
-- Páginas: **Home**, **Nosotros**, **Listado de mascotas**, **Ficha de mascota**, **Agenda de citas**, **Login/Registro**, **Contacto**, **FAQ**, **Opiniones**.
+
+- Páginas: **Home**, **Nosotros**, **Listado de mascotas**, **Ficha de mascota**, **Agenda de citas**, **Login/Registro**, **Contacto**, **FAQ**, **Opiniones** y **Términos legales**.
 - **Componentes reutilizables**: header/footer y algunos más que iremos descubriendo.
 - Todo el texto está en **lorem ipsum** y las imágenes son **placeholders** (recuadros/círculos con cruz).
 - Layout preparado para ocupar **toda la altura del navegador**.
