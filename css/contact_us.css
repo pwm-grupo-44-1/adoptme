@@ -1,0 +1,22 @@
+.contact {
+    display: flex;
+    margin: 0 10rem;
+    justify-content: center;
+    align-items: center;
+    gap: 60px;
+    /* width: 90%; */
+    /* max-width: 1100px; */
+}
+
+.text-wrapper{
+    display: flex;
+    align-content: center;
+}
+
+.contact-text {
+    font-size: 2rem;
+    color: #f0f0f0;
+    text-align: justify;
+    line-height: 1.6;
+}
+

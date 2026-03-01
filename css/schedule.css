@@ -1,0 +1,25 @@
+
+main{
+      flex: 1 1 auto;
+  display: flex;
+  justify-content: center; /* centrado horizontal */
+  align-items: center;     /* centrado vertical */
+}
+
+.calendar {
+    padding: 0rem 4rem;
+}
+
+.grid-calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-auto-rows: 1fr;
+    gap: 0.5rem;
+    
+}
+
+.cell {
+    padding: 0.4rem 6rem 6rem 0.4rem;
+    border-radius: 1rem;
+    background-color: #fefefe;
+}

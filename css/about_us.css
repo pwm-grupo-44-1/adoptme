@@ -1,20 +1,18 @@
-/* ─── About Us ────────────────────────────────────────────────────── */
-#main {
-    flex: 1;
-    overflow-y: auto;
-    min-height: 0;
-}
 
-.nosotros {
+main {
+    flex: 1 1 auto;
     display: flex;
-    justify-content: space-evenly;
-    gap: 30px;
-    flex-wrap: wrap;
-    width: 100%;
-    padding: 40px;
-    box-sizing: border-box;
+    justify-content: center;
 }
 
-.nosotros > section {
+.about_us {
+    display: grid;
+    justify-content: space-evenly;
+    grid-template-columns: repeat(3, 28rem);
+    justify-content: center;
+    /* gap: 32px; */
+}
+
+.about_us > section {
     display: contents;
 }

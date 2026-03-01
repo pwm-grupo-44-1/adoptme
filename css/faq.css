@@ -1,29 +1,26 @@
-/* ─── FAQ ─────────────────────────────────────────────────────────── */
+main {
+    display: flex;
+    align-items: center;
+}
 .box-faq {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    margin-top: 1.5rem;
     flex: 1;
 }
 
-.faqs {
-    width: 70%;
-}
-
 .faq-group {
-    margin-bottom: 20px;
-    background: #c0c5c2;
+    margin: 0.8rem 0;
+    background: #bbdcbf;
     border-radius: 8px;
-    overflow: hidden;
+    /* overflow: hidden; */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .faq-question {
     display: block;
     cursor: pointer;
-    padding: 15px;
+    padding: 1rem;
     font-weight: bold;
     text-align: center;
 
@@ -37,11 +34,11 @@ input[type="checkbox"] {
     max-height: 0;
     overflow: hidden;
     transition: all 0.35s ease-in-out;
-    background: #c0c5c2;
-    padding: 0 15px;
+    background: #f7f7f7;
+    padding: 0 1rem;
 }
 
 .faq-question:has(input:checked) ~ .faq-answer {
     max-height: 300px;
-    padding: 15px;
+    padding: 1rem;
 }
