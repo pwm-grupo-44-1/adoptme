@@ -1,47 +1,43 @@
 /* ─── Login ───────────────────────────────────────────────────────── */
-#main {
-    flex: 1;
+main {
+    flex: 1 1 auto;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 0;
 }
 
 .login-box {
-    background-color: #c0c5c2;
-    height: 70vh;
-    width: 60vw;
+    background-color: #fddb72;
+    height: 38rem;
+    width: 38rem;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
     gap: 1rem;
-    padding: 1rem;
-    border-radius: 15px;
+    /* padding: 1rem; */
+    border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 .login-inputs {
     display: flex;
     flex-direction: column;
-    width: 80%;
-    gap: 3em;
+    width: 32rem;
+    gap: 2em;
 }
 
 .login-inputs input {
-    width: 100%;
-    padding: 15px;
-    font-size: 1.1rem;
-    border: 1px solid #9e9b9b;
-    background-color: #9e9b9b;
+    padding: 1rem;
+    font-size: 1rem;
+    background-color: #bbdcbf;
     border-radius: 8px;
-    outline: none;
-    transition: border-color 0.3s, background-color 0.3s;
+    border-width: 0;
+    transition: border-color 0.1s, background-color 0.1s;
 }
 
 .login-inputs input:focus {
-    border-color: #000;
-    background-color: #9e9b9b;
+    background-color: #e4e4e4;
 }
 
 #login-submit {
@@ -49,7 +45,7 @@
     width: 40%;
     align-self: flex-end;
     padding: 15px;
-    background-color: #7d8782;
+    background-color: #90c984;
     color: #000000;
     border: none;
     border-radius: 8px;
@@ -60,10 +56,10 @@
 }
 
 #login-submit:hover {
-    background-color: #616362;
+    background-color: #6bffb5;
     color: white;
 }
 
 .login-inputs input::placeholder {
-    color: #000000;
+    color: #ffffff;
 }

@@ -1,85 +1,46 @@
-#main {
-    flex: 1;
-    overflow-y: auto;
-    min-height: 0;
-}
-
-.contenedor-ficha{
+.pets-list {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    column-gap: 150px;
-    row-gap: 60px;
-    margin: 0 auto;
-    padding: 40px 20px 50px 20px;
-    width: 100%;
-    max-width: 1100px;
-    box-sizing: border-box;
+    column-gap: 4rem;
+    row-gap: 4rem;
+    padding: 2rem 8rem 0 8rem;
 }
 
-.item-opinion {
+.item-list {
     display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    gap: 20px;
-    align-items: stretch;
+    gap: 1rem;
 }
 
-.columna-izquierda {
+.photo-btn-column {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
 }
 
-.foto-mini {
-    width: 180px;
-    height: 180px;
-    border: 1px solid #777;
-    background-color: #ccc;
+.photo-card {
+    height: 16rem;
+    width: 16rem;
+    border: 1px solid #000000;
+    background: linear-gradient(to bottom right,
+    transparent 49.5%, #000 50%, transparent 50.5%),
+    linear-gradient(to top right,
+    transparent 49.5%, #000 50%, transparent 50.5%);
 }
 
-.foto-mini img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.boton-mascota {
-    width: 100%;
-    background-color: #d9d9d9;
-    border: none;
-    padding: 5px 0;
-    font-size: 11px;
-    text-transform: uppercase;
+.btn-pet-detail {
+    width: 14rem;
+    font-size: 1.5rem;
     font-weight: bold;
-}
-
-.texto-columna {
-    color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    gap: 10px;
-    width: 100%;
+    margin: 1rem 0 0 0;
+    background-color: #fddb72;
+    color: #000000;
     text-align: center;
-    font-weight: bold;
-    align-self: stretch;  /* ← ocupa la misma altura que la columna izquierda */
 }
 
-
-@media (max-width: 950px) {
-    .contenedor-ficha {
-        column-gap: 50px;
-        padding-top: 80px;
-    }
+.pet-profile-text {
+    color: white;
+    font-size: 1rem;
+    text-align: justify;
+    margin: 0 0 0 1rem;
 }
 
-@media (max-width: 700px) {
-    .contenedor-ficha {
-        grid-template-columns: 1fr;
-        justify-items: center;
-        padding-top: 60px;
-    }
-}

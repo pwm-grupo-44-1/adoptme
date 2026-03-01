@@ -1,29 +1,24 @@
-.tarjeta {
-    padding: 15px;
-    flex: 0 1 280px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    box-sizing: border-box;
-    gap: 1rem;
+.card {
+    margin-top: 4rem;
+    /* padding: 0px 0rem 0; */
+    justify-items: center;
+    /* justify-content: space-evenly; */
 }
 
-.cuadro-foto {
-    width: 100%;
-    height: 350px;
-    margin-bottom: 15px;
-    overflow: hidden;
+.photo-card {
+    height: 27rem;
+    width: 22rem;
+    border: 2px solid #000000;
+    /* margin: 0rem; */
+    background: linear-gradient(to bottom right,
+        transparent 49.5%, #000 50%, transparent 50.5%),
+        linear-gradient(to top right,
+        transparent 49.5%, #000 50%, transparent 50.5%);
 }
 
-.cuadro-foto img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.texto-card {
+.text-card {
     text-align: center;
-    font-family: sans-serif;
-    color: #c4c8c5;
-    font-size: 2rem;
+    color: #ffffff;
+    font-size: 3rem;
+    margin: 3rem 0;
 }

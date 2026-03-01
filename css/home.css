@@ -1,45 +1,59 @@
 /* =========================
    MAIN (zona central)
 ========================= */
-.site-main {
-    flex: 1 1 auto;
+main {
     display: flex;
     justify-content: center;
-    padding: var(--hero-top-gap) var(--pad-x) 0 var(--pad-x);
+    background-color: #90c984;
 }
 
 .hero {
-    width: min(100%, calc(var(--hero-w) + 0px));
+    width: 62%;
+    height: 96%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: #90c984;
 }
 
 .hero-image {
-    width: min(100%, var(--hero-w));
-    height: var(--hero-h);
-    background: var(--hero);
+    width: 58rem;
+    height: 28rem;
     position: relative;
-    outline: 1px solid rgba(0, 0, 0, 0.55);
+    outline: 1px solid;
+    border: 1px solid #000000;
+    margin: 3rem 0;
+    background: linear-gradient(to bottom right,
+    transparent 49.5%, #000 50%, transparent 50.5%),
+    linear-gradient(to top right,
+    transparent 49.5%, #000 50%, transparent 50.5%);
 }
 
 /* “X” grande en la imagen */
-.hero-image::before,
-.hero-image::after {
+/* 
+.hero-image::before, .hero-image::after {
     content: "";
     position: absolute;
-    inset: 0;
-    background:
-        linear-gradient(to bottom right, transparent 49.5%, rgba(0, 0, 0, 0.65) 50%, transparent 50.5%),
-        linear-gradient(to top right, transparent 49.5%, rgba(0, 0, 0, 0.65) 50%, transparent 50.5%);
+    top: 50%;
+    left: 50%;
+    width: 63.7em;
+    height: 0.1em;
+    background: #000000;
+    transform-origin: center;
 }
+
+.hero-image::before {
+    transform: translate(-50%, -50%) rotate(25.5deg);
+}
+
+.hero-image::after {
+    transform: translate(-50%, -50%) rotate(-25.5deg);
+} */
 
 /* Texto bajo imagen (blanco como en la maqueta) */
 .hero-text {
-    margin-top: var(--hero-text-gap);
-    width: min(100%, var(--hero-w));
-    color: var(--text-inv);
-    font-size: 20px;
-    line-height: 1.35;
-    padding: 0 8px;
+    color: #fefefe;
+    width: 58rem;
+    font-size: 1.3em;
+    line-height: 1.5;
 }

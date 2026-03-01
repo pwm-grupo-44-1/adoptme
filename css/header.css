@@ -1,17 +1,19 @@
-/* =========================
-   HEADER (banda superior)
-========================= */
-.site-header {
-    background: var(--header-bg);
-    height: var(--header-h);
+header {
+    background: #bbdcbf;
+    width: auto;
+    align-items: center;
+    padding: 2rem;
+}
+
+nav {
     display: flex;
     align-items: center;
-    padding: 50px
 }
+
+a {text-decoration: none;}
 
 .header-inner {
     width: 100%;
-    padding: 0 var(--pad-x);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -21,14 +23,14 @@
 .brand {
     display: flex;
     align-items: center;
-    gap: 22px;
+    gap: 2em;
 }
 
 .logo {
-    width: 78px;
-    height: 78px;
+    width: 6em;
+    height: 6em;
     border-radius: 50%;
-    background: #f4b8bc;
+    background: #fddb72;
     position: relative;
     flex: 0 0 auto;
 }
@@ -40,8 +42,8 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 78px;
-    height: 2px;
+    width: 6em;
+    height: 0.1em;
     background: #333;
     transform-origin: center;
 }
@@ -55,27 +57,7 @@
 }
 
 .brand-title {
-    font-size: 34px;
-    letter-spacing: 1px;
-    font-weight: 500;
-}
+    font-size: 2rem;
 
-/* Menú botones */
-.top-nav {
-    display: flex;
-    align-items: center;
-    gap: var(--btn-gap);
-}
-
-.nav-btn {
-    width: var(--btn-w);
-    height: var(--btn-h);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    color: #000;
-    background: var(--card);
-    font-size: 14px;
-    letter-spacing: 1px;
+    color: #009688;
 }

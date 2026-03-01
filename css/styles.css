@@ -1,176 +1,61 @@
-
-
-
-
-
-
-
-/* =========================================================
-   ADOPTION LIST (page modifier + layout)
-   Añadir al final de styles.css
-========================================================= */
-
-.page--adoption-list {
-    /* Ajuste de tonos para que el área central sea más oscura (como la captura)
-     sin romper la home */
-    --bg: #9d9d9d;
-    /* fondo zona central */
-    --header-bg: #cccccc;
-    /* banda superior */
-    --footer-bg: #c9c9c9;
-    /* banda inferior */
-    --card: #a5a5a5;
-    /* botones */
+/* ─── Reset ──── */
+/* ─── Reset ──── */
+/* ─── Reset ──── */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-/* Main específico de la lista */
-.main--adoption-list {
-    flex: 1 1 auto;
-    background: var(--bg);
-    display: flex;
-    justify-content: center;
-    padding: 72px var(--pad-x) 56px var(--pad-x);
-    /* separación desde header y hacia footer */
+* {
+    box-sizing: border-box;
 }
 
-/* Rejilla 2x2 centrada */
-.adoption-grid {
-    width: min(1220px, 100%);
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 150px;
-    row-gap: 84px;
-}
-
-/* Cada bloque: imagen+botón a la izquierda, texto a la derecha */
-.pet-tile {
-    display: grid;
-    grid-template-columns: 260px 1fr;
-    column-gap: 66px;
-    align-items: start;
-}
-
-.pet-media {
+/* --- Estilos usados en general ---*/
+html,
+body {
+    height: 100%;
+    width: 100%;
+    font-weight: 100;
+    font-style: normal;
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    background-color: #90c984;
 }
 
-/* Placeholder cuadrado con X */
-.pet-thumb {
-    width: 240px;
-    height: 240px;
-    background: #d7d7d7;
-    position: relative;
-    outline: 1px solid rgba(0, 0, 0, 0.55);
+body.page{
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-.pet-thumb::before,
-.pet-thumb::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background:
-        linear-gradient(to bottom right, transparent 49.5%, rgba(0, 0, 0, 0.65) 50%, transparent 50.5%),
-        linear-gradient(to top right, transparent 49.5%, rgba(0, 0, 0, 0.65) 50%, transparent 50.5%);
+/* el contenido crece y empuja el footer */
+main{
+  flex: 1 1 auto;
+  display: flex;
 }
 
-/* Botón bajo imagen */
-.pet-cta {
-    margin-top: 18px;
-    width: 180px;
-    height: 26px;
-    display: inline-flex;
+.btn {
+    display: flex;
+    width: 8rem;
     align-items: center;
     justify-content: center;
+    color: #10946d;
+    background-color: #fdfeff;
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0px 2rem 0;
+    border-radius: 0.2em;
     text-decoration: none;
-    color: #000;
-    background: #d7d7d7;
-    letter-spacing: 0.5px;
-    font-size: 20px;
 }
 
-/* Texto grande blanco (4 líneas) */
-.pet-copy {
-    color: #f2f2f2;
-    font-size: 36px;
-    line-height: 1.12;
-    letter-spacing: 1px;
-    font-weight: 600;
-    margin-top: 6px;
-    /* ajusta vertical con el borde superior de la imagen */
-}
-
-/* =========================================================
-   ABOUT US (page modifier + layout)
-   Añadir al final de styles.css
-========================================================= */
-
-.page--about-us {
-    /* tonos similares a la captura */
-    --bg: #9a9a9a;
-    /* zona central (gris medio) */
-    --header-bg: #cfcfcf;
-    /* banda superior */
-    --footer-bg: #cfcfcf;
-    /* banda inferior */
-    --card: #a7a7a7;
-    /* botones grises */
-}
-
-.main--about-us {
-    flex: 1 1 auto;
-    background: var(--bg);
-    display: flex;
-    justify-content: center;
-    padding: 86px var(--pad-x) 90px var(--pad-x);
-}
-
-/* Rejilla de 3 columnas centradas */
-.about-grid {
-    width: min(1220px, 100%);
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    column-gap: 160px;
-    /* separación entre columnas como en la captura */
-    align-items: start;
-}
-
-/* Tarjeta: imagen arriba + texto abajo */
-.about-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* Placeholder cuadrado con X (mismo estilo que el resto) */
-.about-thumb {
-    width: 260px;
-    height: 320px;
-    background: #d7d7d7;
-    position: relative;
-    outline: 1px solid rgba(0, 0, 0, 0.55);
-}
-
-.about-thumb::before,
-.about-thumb::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background:
-        linear-gradient(to bottom right, transparent 49.5%, rgba(0, 0, 0, 0.65) 50%, transparent 50.5%),
-        linear-gradient(to top right, transparent 49.5%, rgba(0, 0, 0, 0.65) 50%, transparent 50.5%);
-}
-
-/* Texto bajo la imagen (grande pero “apagado” como en la captura) */
-.about-copy {
-    margin-top: 46px;
-    text-align: center;
-    color: rgba(255, 255, 255, 0.35);
-    font-size: 34px;
-    line-height: 1.12;
-    letter-spacing: 1px;
-    font-weight: 600;
+.btn:hover {
+    background: #fddb72;
 }
 
 
@@ -181,26 +66,11 @@
 
 
 
-/* Responsive: 1 columna cuando no quepa
-@media (max-width: 980px) {
-    .adoption-grid {
-        grid-template-columns: 1fr;
-        row-gap: 70px;
-        column-gap: 0;
-    }
 
-    .pet-tile {
-        grid-template-columns: 260px 1fr;
-    }
-}
 
-@media (max-width: 720px) {
-    .pet-tile {
-        grid-template-columns: 1fr;
-        row-gap: 18px;
-    }
 
-    .pet-copy {
-        text-align: center;
-    } */
-}
+
+
+
+
+
