@@ -61,3 +61,48 @@ a {text-decoration: none;}
 
     color: #009688;
 }
+
+.socials {
+    display: flex;
+    gap: 1rem;
+}
+
+.social-ico {
+    margin: -1rem 0.5rem;
+    /* display: flow-root; */
+    height: 2rem;
+    width: 2rem;
+    border: 1px solid #000000;
+    background: linear-gradient(to bottom right,
+            transparent 49.5%, #000 50%, transparent 50.5%),
+        linear-gradient(to top right,
+            transparent 49.5%, #000 50%, transparent 50.5%);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 7rem 1fr;
+    grid-template-rows: auto auto;
+}
+
+/* Columna 1 ocupando las 2 filas */
+.left {
+  grid-column: 1;
+  grid-row: 1 / span 2; /* ocupa fila 1 y fila 2 */
+}
+
+.right-top {
+    grid-column: 2;
+    grid-row: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 0;
+}
+
+.right-bottom {
+  grid-column: 2;
+  grid-row: 2;
+  display: flex;
+  justify-content: center;
+}

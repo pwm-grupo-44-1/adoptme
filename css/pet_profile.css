@@ -1,4 +1,7 @@
 /* ─── Pet Profile ─────────────────────────────────────────────────── */
+main {
+    justify-content: center;
+}
 
 .dog-profile {
     display: flex;
@@ -9,7 +12,7 @@
     height: 32rem;
     width: 18rem;
     border: 2px solid #000000;
-    margin: 6% 5rem;
+    margin: 0 4rem 0 0rem;
     background: linear-gradient(to bottom right,
             transparent 49.5%, #000 50%, transparent 50.5%),
         linear-gradient(to top right,
@@ -28,8 +31,7 @@
     background-color: #fddb72;
     border-radius: 0.5rem;
     border: 1px solid #000;
-    width: 100%;
-    min-width: 500px;
+    width: 40rem;
     padding: 8px;
     text-align: justify;
 }
