@@ -5,12 +5,11 @@ main {
     justify-content: center;
 }
 
-.about_us {
+#about_us {
     display: grid;
-    justify-content: space-evenly;
     grid-template-columns: repeat(3, 28rem);
     justify-content: center;
-    /* gap: 32px; */
+
 }
 
 .about_us > section {
