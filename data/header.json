@@ -1,0 +1,19 @@
+{
+  "header": {
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/a/ab/Android_O_Preview_Logo.png",
+    "title": "AdoptaUnCanicheLeón",
+    "socialLinks": [
+      { "name": "Instagram", "url": "https://instagram.com" },
+      { "name": "X", "url": "https://x.com" },
+      { "name": "YouTube", "url": "https://youtube.com" },
+      { "name": "TikTok", "url": "https://tiktok.com" }
+    ],
+      "navLinks": [
+      { "name": "Inicio", "url": "../html/index.html" },
+      { "name": "Nosotros", "url": "../html/about_us.html" },
+      { "name": "Mascotas", "url": "../html/adoption_list.html" },
+      { "name": "Calendario", "url": "../html/schedule.html" },
+      { "name": "Acceder", "url": "../html/login.html" }
+    ]
+  }
+}

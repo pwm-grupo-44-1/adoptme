@@ -1,0 +1,12 @@
+{
+  "footer": {
+    "navLinks": [
+      { "name": "Historias", "url": "../html/stories.html" },
+      { "name": "Términos legales", "url": "../html/legal.html" },
+      { "name": "Calendario", "url": "../html/schedule.html" },
+      { "name": "FAQ", "url": "../html/faq.html" },
+      { "name": "Contacto", "url": "../html/contact_us.html" }
+    ],
+    "copyright": "© 2026 AdoptMe!!. Todos los derechos reservados."
+  }
+}

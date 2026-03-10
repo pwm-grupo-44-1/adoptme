@@ -1,0 +1,101 @@
+{
+  "animals": [
+    {
+      "id": 1,
+      "name": "Chispita",
+      "breed": "caniche",
+      "description": "Gran felino carnívoro de la sabana africana",
+      "age": 14,
+      "mood": "Alegre y juguetón. Da mucha compañía",
+      "weight": "5 kg",
+      "hair type": "pelo corto rizado",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/7/73/Lion_waiting_in_Namibia.jpg",
+      "clicks": 0
+    },
+    {
+      "id": 2,
+      "name": "Chispita",
+      "breed": "caniche",
+      "description": "Gran felino carnívoro de la sabana africana",
+      "age": 14,
+      "mood": "Alegre y juguetón. Da mucha compañía",
+      "weight": "5 kg",
+      "hair type": "pelo corto rizado",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/7/73/Lion_waiting_in_Namibia.jpg",
+      "clicks": 0
+    },
+    {
+      "id": 3,
+      "name": "Chispita",
+      "breed": "caniche",
+      "description": "Gran felino carnívoro de la sabana africana",
+      "age": 14,
+      "mood": "Alegre y juguetón. Da mucha compañía",
+      "weight": "5 kg",
+      "hair type": "pelo corto rizado",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/7/73/Lion_waiting_in_Namibia.jpg",
+      "clicks": 0
+    },
+    {
+      "id": 4,
+      "name": "Chispita",
+      "breed": "caniche",
+      "description": "Gran felino carnívoro de la sabana africana",
+      "age": 14,
+      "mood": "Alegre y juguetón. Da mucha compañía",
+      "weight": "5 kg",
+      "hair type": "pelo corto rizado",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/7/73/Lion_waiting_in_Namibia.jpg",
+      "clicks": 0
+    },
+    {
+      "id": 5,
+      "name": "Chispita",
+      "breed": "caniche",
+      "description": "Gran felino carnívoro de la sabana africana",
+      "age": 14,
+      "mood": "Alegre y juguetón. Da mucha compañía",
+      "weight": "5 kg",
+      "hair type": "pelo corto rizado",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/7/73/Lion_waiting_in_Namibia.jpg",
+      "clicks": 0
+    },
+    {
+      "id": 6,
+      "name": "Chispita",
+      "breed": "caniche",
+      "description": "Gran felino carnívoro de la sabana africana",
+      "age": 14,
+      "mood": "Alegre y juguetón. Da mucha compañía",
+      "weight": "5 kg",
+      "hair type": "pelo corto rizado",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/7/73/Lion_waiting_in_Namibia.jpg",
+      "clicks": 0
+    },
+    {
+      "id": 7,
+      "name": "Chispita",
+      "breed": "caniche",
+      "description": "Gran felino carnívoro de la sabana africana",
+      "age": 14,
+      "mood": "Alegre y juguetón. Da mucha compañía",
+      "weight": "5 kg",
+      "hair type": "pelo corto rizado",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/7/73/Lion_waiting_in_Namibia.jpg",
+      "clicks": 0
+    },
+    {
+      "id": 8,
+      "name": "Chispita",
+      "breed": "caniche",
+      "description": "Gran felino carnívoro de la sabana africana",
+      "age": 14,
+      "mood": "Alegre y juguetón. Da mucha compañía",
+      "weight": "5 kg",
+      "hair type": "pelo corto rizado",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/7/73/Lion_waiting_in_Namibia.jpg",
+      "clicks": 0
+    }
+  ],
+  "total_count": 8
+}
