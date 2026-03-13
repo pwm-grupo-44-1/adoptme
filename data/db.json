@@ -1,0 +1,29 @@
+{
+  "header": {
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/a/ab/Android_O_Preview_Logo.png",
+    "title": "AdoptMe!",
+    "socialLinks": [
+      { "name": "Instagram", "url": "https://instagram.com" },
+      { "name": "X", "url": "https://x.com" },
+      { "name": "YouTube", "url": "https://youtube.com" },
+      { "name": "TikTok", "url": "https://tiktok.com" }
+    ],
+    "navLinks": [
+      { "name": "Inicio",     "url": "#home"          },
+      { "name": "Nosotros",   "url": "#about_us"       },
+      { "name": "Mascotas",   "url": "#adoption_list"  },
+      { "name": "Calendario", "url": "#schedule"       },
+      { "name": "Acceder",    "url": "#login"          }
+    ]
+  },
+  "footer": {
+    "navLinks": [
+      { "name": "Historias",        "url": "#stories"       },
+      { "name": "Términos legales", "url": "#legal"         },
+      { "name": "Calendario",       "url": "#schedule"      },
+      { "name": "FAQ",              "url": "#faq"           },
+      { "name": "Contacto",         "url": "#contact_us"    }
+    ],
+    "copyright": "© 2026 AdoptMe!!. Todos los derechos reservados."
+  }
+}

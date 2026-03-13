@@ -1,3 +1,7 @@
+#main {
+    justify-content: center;
+}
+
 #review {
     display: grid;
     grid-template-columns: repeat(2, 28rem);
