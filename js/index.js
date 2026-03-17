@@ -45,19 +45,9 @@ async function fetchAnimals() {
 
 
 // ─── ROUTER ───────────────────────────────────────────────────────────────────
-// Lee el hash de la URL y decide qué template cargar.
-// El hash es la parte después del #:
-//   index.html#adoption_list  →  hash = 'adoption_list'
-//   index.html#pet_profile?id=3  →  hash = 'pet_profile'
-// ─────────────────────────────────────────────────────────────────────────────
 async function router(db) {
-
-    // window.location.hash devuelve '#adoption_list' o '' si no hay hash
-    // .slice(1) quita el # del principio → 'adoption_list'
-    // .split('?')[0] quita los parámetros → por si hay ?id=3
     const hash = window.location.hash.slice(1).split('?')[0] || 'home';
 
-    // Scrollamos arriba al cambiar de página
     window.scrollTo(0, 0);
 
     switch (hash) {
@@ -85,22 +75,27 @@ async function router(db) {
 
         case 'about_us':
             await loadTemplate(TMPL + 'template_about_us.html', 'main');
+            renderAboutUs(db.about_us);
             break;
 
         case 'stories':
             await loadTemplate(TMPL + 'template_stories.html', 'main');
+            renderStories(db.stories);
             break;
 
         case 'faq':
             await loadTemplate(TMPL + 'template_faq.html', 'main');
+            renderFaq(db.faq);
             break;
 
         case 'legal':
             await loadTemplate(TMPL + 'template_legal.html', 'main');
+            renderLegal(db.legal);
             break;
 
         case 'contact_us':
             await loadTemplate(TMPL + 'template_contact_us.html', 'main');
+            renderContactUs(db.contact_us);
             break;
 
         case 'schedule':
@@ -108,7 +103,6 @@ async function router(db) {
             break;
 
         default:
-            // Si el hash no existe mostramos el home
             await loadTemplate(TMPL + 'template_home.html', 'main');
     }
 }
@@ -125,12 +119,8 @@ async function init() {
     await loadTemplate(TMPL + 'template_footer.html', 'footer');
     renderFooter(db.footer);
 
-    // Cargamos la página inicial según el hash actual
     await router(db);
 
-    // Escuchamos el evento 'hashchange':
-    // Se dispara cada vez que el hash de la URL cambia (cuando el usuario hace click en un enlace)
-    // SIN recargar la página → simplemente llamamos al router de nuevo
     window.addEventListener('hashchange', () => router(db));
 }
 
@@ -193,6 +183,94 @@ function renderFooter(footerData) {
 
     const legal = document.querySelector('.footer-legal');
     if (legal) legal.textContent = footerData.copyright;
+}
+
+
+// ─── RENDER ABOUT US ──────────────────────────────────────────────────────────
+function renderAboutUs(data) {
+    const container = document.getElementById('about_us');
+    if (!container) return;
+
+    container.innerHTML = '';
+    data.forEach(data => {
+        container.innerHTML += `
+            <section class="card">
+                <img class="photo-card" src="${data.image}" alt="Foto de ${data.name}">
+                <h2>${data.name}</h2>
+                <h3>${data.role}</h3>
+                <p class="text-card">${data.description}</p>
+            </section>`;
+    });
+}
+
+
+// ─── RENDER FAQ ───────────────────────────────────────────────────────────────
+function renderFaq(faqData) {
+    const container = document.getElementById('faq_item');
+    if (!container) return;
+
+    container.innerHTML = '';
+    faqData.forEach(item => {
+        container.innerHTML += `
+            <div class="faq-group">
+                <label class="faq-question">
+                    <input type="checkbox" class="faq-toggle" />
+                    ${item.question}
+                </label>
+                <div class="faq-answer">
+                    <p>${item.answer}</p>
+                </div>
+            </div>`;
+    });
+}
+
+
+// ─── RENDER LEGAL ─────────────────────────────────────────────────────────────
+function renderLegal(legalData) {
+    const container = document.getElementById('faq_item');
+    if (!container) return;
+
+    container.innerHTML = '';
+    legalData.forEach(item => {
+        container.innerHTML += `
+            <div class="faq-group">
+                <label class="faq-question">
+                    <input type="checkbox" class="faq-toggle" />
+                    ${item.title}
+                </label>
+                <div class="faq-answer">
+                    <p>${item.content}</p>
+                </div>
+            </div>`;
+    });
+}
+
+
+// ─── RENDER STORIES ───────────────────────────────────────────────────────────
+function renderStories(storiesData) {
+    const container = document.getElementById('review');
+    if (!container) return;
+
+    container.innerHTML = '';
+    storiesData.forEach(story => {
+        container.innerHTML += `
+            <div class="card">
+                <img src="${story.image}" alt="Foto de ${story.name}">
+                <p class="text-card"><strong>${story.name}:</strong> ${story.text}</p>
+            </div>`;
+    });
+}
+
+
+// ─── RENDER CONTACT US ────────────────────────────────────────────────────────
+function renderContactUs(data) {
+    const list = document.getElementById('contact-list');
+    if (!list) return;
+
+    list.innerHTML = '';
+    data.info.forEach(line => {
+        list.innerHTML += `<li>${line}</li>`;
+    });
 }
 
 
@@ -260,10 +338,6 @@ function renderAnimalCards(animals) {
 
 // ─── RENDER PET PROFILE ───────────────────────────────────────────────────────
 function renderPetProfile(animals) {
-
-    // En una SPA el ?id está después del hash: #pet_profile?id=3
-    // window.location.hash = '#pet_profile?id=3'
-    // Separamos por ? y cogemos la segunda parte → 'id=3'
     const hashParams = window.location.hash.split('?')[1] || '';
     const params     = new URLSearchParams(hashParams);
     const id         = parseInt(params.get('id'));
@@ -287,124 +361,3 @@ function renderPetProfile(animals) {
         photo.setAttribute('aria-label', `Foto de ${animal.name}`);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-/*
-document.addEventListener('DOMContentLoaded', init);
-
-const supportsTemplate = function () {
-    //create a template element and make sure it has a 'content' property
-    return 'content' in document.createElement('template');
-}
-
-function loadTemplate(fileName, id, callback) {
-
-    fetch(fileName).then((res) => {
-        return res.text();
-    }).then((text) => {
-        document.getElementById(id).innerHTML = text;
-        //console.log(text)
-
-        if(callback){
-            callback();
-        }
-    })
-}
-
-
-function init() {
-
-    loadTemplate('../html/templates/template_header.html', 'header');
-    loadTemplate('../html/templates/template_footer.html', 'footer');
-
-    loadTemplate('../html/templates/template_home.html', 'main');
-
-    loadTemplate('./sidebar_categories.html', 'categories');
-
-    loadTemplate('./sidebar_links.html', 'links',addMovies);
-
-    loadTemplate('./top_navlist.html', 'top_navlist');
-    loadTemplate('./footer_right.html', 'footerRight');
-    loadTemplate('./footer_left.html', 'footerLeft');
-
-    loadTemplate('./post_content.html', 'post_template',addPostContent);
-
-
-    addSideBarContent();
-
-}
-
-function addSideBarContent() {
-
-    fetch('users.json')
-        .then((response) => {
-            return response.json();
-        })
-        .then((users) => {
-            if ('content' in document.createElement('template')) {
-                const container = document.getElementById('users');
-
-                users.forEach((user) => {
-
-                    const tmpl = document
-                        .getElementById('user-card-template')
-                        .content.cloneNode(true);
-
-                    tmpl.querySelector('h2').innerText = user.fullname;
-                    tmpl.querySelector('.title').innerText = user.title;
-
-
-                    container.appendChild(tmpl);
-                });
-            } else {
-                console.error('Your browser does not support templates');
-            }
-        })
-        .catch((err) => console.error(err));
-
-
-}
-
-function addPostContent() {
-
-
-    if (supportsTemplate()) {
-        //We can use the template element in our HTML
-        console.log('Templates are supported.');
-
-        document.getElementById('post_1').remove();
-        document.getElementById('post_2').remove();
-
-        let temp = document.getElementById('post_content_template');
-        let content = temp.content;
-        console.log(content);
-        let target = document.getElementById('post_template');
-        target.appendChild(content.cloneNode(true))
-        target.appendChild(content.cloneNode(true));
-
-    } else {
-
-        //Use another method, like manually building the elements.
-        console.log('The else is running');
-
-        fetch('./post_content_support.html').then((res) => {
-            return res.text();
-        }).then((text) => {
-            document.getElementById('post_1').innerHTML = text;
-            document.getElementById('post_2').innerHTML = text;
-
-            console.log(text)
-        })
-
-    }
-}
-*/

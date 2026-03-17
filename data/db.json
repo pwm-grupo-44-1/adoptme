@@ -25,5 +25,100 @@
       { "name": "Contacto",         "url": "#contact_us"    }
     ],
     "copyright": "© 2026 AdoptMe!!. Todos los derechos reservados."
+  },
+  "about_us": [
+      {
+        "name": "Laura García",
+        "role": "Fundadora",
+        "description": "Veterinaria con más de 10 años de experiencia. Creó AdoptMe! con el sueño de encontrar un hogar para cada animal abandonado.",
+        "image": "https://randomuser.me/api/portraits/women/44.jpg"
+      },
+      {
+        "name": "Carlos Pérez",
+        "role": "Coordinador de adopciones",
+        "description": "Se encarga de gestionar el proceso de adopción y asegurarse de que cada mascota encuentre la familia perfecta.",
+        "image": "https://randomuser.me/api/portraits/men/32.jpg"
+      },
+      {
+        "name": "Marta López",
+        "role": "Voluntaria principal",
+        "description": "Lleva 5 años dedicando su tiempo libre al cuidado y socialización de los animales en acogida.",
+        "image": "https://randomuser.me/api/portraits/women/68.jpg"
+      }
+  ],
+  "faq": [
+    {
+      "question": "¿Cómo puedo adoptar una mascota?",
+      "answer": "Rellena el formulario de adopción en nuestra web, nos pondremos en contacto contigo en menos de 48 horas para concertar una visita."
+    },
+    {
+      "question": "¿Cuánto cuesta adoptar?",
+      "answer": "La adopción es gratuita. Solo pedimos una pequeña donación voluntaria para cubrir los gastos veterinarios del animal."
+    },
+    {
+      "question": "¿Los animales están vacunados?",
+      "answer": "Sí. Todos nuestros animales están vacunados, desparasitados y esterilizados antes de ser entregados a su nueva familia."
+    },
+    {
+      "question": "¿Puedo devolver la mascota si no funciona?",
+      "answer": "Por supuesto. Siempre preferimos que el animal vuelva con nosotros antes de que sea abandonado. Estamos aquí para ayudarte."
+    },
+    {
+      "question": "¿Hacéis seguimiento post-adopción?",
+      "answer": "Sí. Durante los primeros tres meses contactamos periódicamente con la familia adoptante para asegurarnos de que todo va bien."
+    }
+  ],
+  "stories": [
+    {
+      "name": "Toby",
+      "image": "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400",
+      "text": "Toby llegó a nosotros asustado y desnutrido. Hoy vive con la familia Rodríguez y es el perro más feliz del barrio."
+    },
+    {
+      "name": "Luna",
+      "image": "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=400",
+      "text": "Luna fue encontrada en la calle con solo dos semanas de vida. Tras meses de cuidados, encontró su hogar para siempre."
+    },
+    {
+      "name": "Rocky",
+      "image": "https://images.unsplash.com/photo-1558788353-f76d92427f16?w=400",
+      "text": "Rocky estuvo tres años esperando. Nadie lo elegía por su tamaño. Hoy tiene jardín y dos niños que lo adoran."
+    },
+    {
+      "name": "Nala",
+      "image": "https://images.unsplash.com/photo-1533743983669-94fa5c4338ec?w=400",
+      "text": "Nala llegó con miedo a las personas. Con paciencia y amor, se convirtió en la gata más cariñosa que puedas imaginar."
+    }
+  ],
+  "legal": [
+    {
+      "title": "1. Responsabilidad del adoptante",
+      "content": "La persona que adopta se compromete a proporcionar al animal un hogar seguro, alimentación adecuada, atención veterinaria y el afecto necesario para su bienestar."
+    },
+    {
+      "title": "2. Proceso de adopción",
+      "content": "AdoptMe! se reserva el derecho de rechazar una solicitud de adopción si considera que el entorno no es adecuado para el animal."
+    },
+    {
+      "title": "3. Devolución del animal",
+      "content": "En caso de no poder hacerse cargo del animal, el adoptante debe notificarlo a AdoptMe! para gestionar el retorno al refugio. Queda prohibido abandonar al animal."
+    },
+    {
+      "title": "4. Protección de datos",
+      "content": "Los datos personales facilitados durante el proceso de adopción serán tratados conforme al RGPD y solo serán usados para gestionar la adopción."
+    },
+    {
+      "title": "5. Modificaciones",
+      "content": "AdoptMe! se reserva el derecho de modificar estos términos en cualquier momento. Los cambios serán publicados en esta página."
+    }
+  ],
+  "contact_us": {
+    "info": [
+      "📍 Calle Ejemplo 42, Las Palmas de Gran Canaria",
+      "📞 +34 928 000 000",
+      "✉️ hola@adoptme.es",
+      "🕐 Lunes a viernes: 9:00 – 18:00",
+      "🕐 Sábados: 10:00 – 14:00"
+    ]
   }
 }
