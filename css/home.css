@@ -22,7 +22,7 @@ main {
     position: relative;
     outline: 1px solid;
     border: 1px solid #000000;
-    margin: 3rem 0;
+    margin: 2rem 0;
     background: linear-gradient(to bottom right,
     transparent 49.5%, #000 50%, transparent 50.5%),
     linear-gradient(to top right,
@@ -30,7 +30,7 @@ main {
 }
 
 /* “X” grande en la imagen */
-/* 
+/*
 .hero-image::before, .hero-image::after {
     content: "";
     position: absolute;
@@ -56,4 +56,6 @@ main {
     width: 58rem;
     font-size: 1.3em;
     line-height: 1.5;
+    text-align: justify;
+    margin-bottom: 2rem;
 }

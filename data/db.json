@@ -3,48 +3,94 @@
     "logo": "https://upload.wikimedia.org/wikipedia/commons/a/ab/Android_O_Preview_Logo.png",
     "title": "AdoptMe!",
     "socialLinks": [
-      { "name": "Instagram", "url": "https://instagram.com" },
-      { "name": "X", "url": "https://x.com" },
-      { "name": "YouTube", "url": "https://youtube.com" },
-      { "name": "TikTok", "url": "https://tiktok.com" }
+      {
+        "name": "Instagram",
+        "url": "https://instagram.com"
+      },
+      {
+        "name": "X",
+        "url": "https://x.com"
+      },
+      {
+        "name": "YouTube",
+        "url": "https://youtube.com"
+      },
+      {
+        "name": "TikTok",
+        "url": "https://tiktok.com"
+      }
     ],
     "navLinks": [
-      { "name": "Inicio",     "url": "#home"          },
-      { "name": "Nosotros",   "url": "#about_us"       },
-      { "name": "Mascotas",   "url": "#adoption_list"  },
-      { "name": "Calendario", "url": "#schedule"       },
-      { "name": "Acceder",    "url": "#login"          }
+      {
+        "name": "Inicio",
+        "url": "#home"
+      },
+      {
+        "name": "Nosotros",
+        "url": "#about_us"
+      },
+      {
+        "name": "Mascotas",
+        "url": "#adoption_list"
+      },
+      {
+        "name": "Calendario",
+        "url": "#schedule"
+      },
+      {
+        "name": "Acceder",
+        "url": "#login"
+      }
     ]
   },
   "footer": {
     "navLinks": [
-      { "name": "Historias",        "url": "#stories"       },
-      { "name": "Términos legales", "url": "#legal"         },
-      { "name": "Calendario",       "url": "#schedule"      },
-      { "name": "FAQ",              "url": "#faq"           },
-      { "name": "Contacto",         "url": "#contact_us"    }
+      {
+        "name": "Historias",
+        "url": "#stories"
+      },
+      {
+        "name": "Términos legales",
+        "url": "#legal"
+      },
+      {
+        "name": "Calendario",
+        "url": "#schedule"
+      },
+      {
+        "name": "FAQ",
+        "url": "#faq"
+      },
+      {
+        "name": "Contacto",
+        "url": "#contact_us"
+      }
     ],
     "copyright": "© 2026 AdoptMe!!. Todos los derechos reservados."
   },
+  "home": {
+    "image": "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=800",
+    "text": "En AdoptMe creemos que cada animal merece una segunda oportunidad. Cada día, cientos de perros y gatos esperan en refugios a que alguien les abra la puerta de un hogar. No buscan mucho: un lugar cálido, comida en el plato y, sobre todo, alguien que los quiera.\n\nNosotros nos encargamos de cuidarlos, vacunarlos y prepararlos para que lleguen a ti en las mejores condiciones. Tú solo tienes que dar el primer paso.\n\n¿Estás listo para cambiar una vida? Quizás ellos ya están listos para cambiar la tuya."
+  },
   "about_us": [
-      {
-        "name": "Laura García",
-        "role": "Fundadora",
-        "description": "Veterinaria con más de 10 años de experiencia. Creó AdoptMe! con el sueño de encontrar un hogar para cada animal abandonado.",
-        "image": "https://randomuser.me/api/portraits/women/44.jpg"
-      },
-      {
-        "name": "Carlos Pérez",
-        "role": "Coordinador de adopciones",
-        "description": "Se encarga de gestionar el proceso de adopción y asegurarse de que cada mascota encuentre la familia perfecta.",
-        "image": "https://randomuser.me/api/portraits/men/32.jpg"
-      },
-      {
-        "name": "Marta López",
-        "role": "Voluntaria principal",
-        "description": "Lleva 5 años dedicando su tiempo libre al cuidado y socialización de los animales en acogida.",
-        "image": "https://randomuser.me/api/portraits/women/68.jpg"
-      }
+    {
+      "name": "Alejandro Celis",
+      "role": "Fundadora",
+      "description": "Veterinaria con más de 10 años de experiencia. Creó AdoptMe! con el sueño de encontrar un hogar para cada animal abandonado.",
+      "image": "https://randomuser.me/api/portraits/men/16.jpg"
+    },
+    {
+      "name": "Nestor Jesús",
+      "role": "Coordinador de adopciones",
+      "description": "Se encarga de gestionar el proceso de adopción y asegurarse de que cada mascota encuentre la familia perfecta.",
+      "image": "https://randomuser.me/api/portraits/men/32.jpg"
+    },
+    {
+      "name": "Esther Viera",
+      "role": "Voluntaria principal",
+      "description": "Lleva 5 años dedicando su tiempo libre al cuidado y socialización de los animales en acogida.",
+      "image": "https://randomuser.me/api/portraits/women/68.jpg"
+    }
   ],
   "faq": [
     {
@@ -119,6 +165,108 @@
       "✉️ hola@adoptme.es",
       "🕐 Lunes a viernes: 9:00 – 18:00",
       "🕐 Sábados: 10:00 – 14:00"
-    ]
-  }
+    ],
+    "image": "https://images.unsplash.com/photo-1601979031925-424e53b6caaa?w=400",
+    "caption": "Visítanos y conoce a nuestros animales en persona"
+  },
+  "animals": [
+    {
+      "id": 1,
+      "name": "Chispita",
+      "breed": "Caniche",
+      "description": "Perrita muy cariñosa y juguetona, perfecta para familias con niños.",
+      "age": 3,
+      "mood": "Alegre y juguetona",
+      "weight": "5 kg",
+      "hair type": "Pelo corto rizado",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/7/73/Lion_waiting_in_Namibia.jpg",
+      "clicks": 0
+    },
+    {
+      "id": 2,
+      "name": "Thor",
+      "breed": "Pastor Alemán",
+      "description": "Perro leal y protector. Necesita espacio y ejercicio diario.",
+      "age": 5,
+      "mood": "Tranquilo y obediente",
+      "weight": "30 kg",
+      "hair type": "Pelo largo",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/d/d9/Collage_of_Nine_Dogs.jpg",
+      "clicks": 0
+    },
+    {
+      "id": 3,
+      "name": "Michi",
+      "breed": "Gato común",
+      "description": "Gato independiente pero muy cariñoso cuando quiere. Le encanta el sol.",
+      "age": 2,
+      "mood": "Independiente",
+      "weight": "4 kg",
+      "hair type": "Pelo corto",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/4/4d/Cat_November_2010-1a.jpg",
+      "clicks": 0
+    },
+    {
+      "id": 4,
+      "name": "Luna",
+      "breed": "Labrador",
+      "description": "Perra muy sociable y activa. Ideal para familias con jardín.",
+      "age": 4,
+      "mood": "Enérgica y sociable",
+      "weight": "25 kg",
+      "hair type": "Pelo corto liso",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/3/34/Labrador_on_Quantock_%282175262184%29.jpg",
+      "clicks": 0
+    },
+    {
+      "id": 5,
+      "name": "Rocky",
+      "breed": "Bulldog Francés",
+      "description": "Pequeño pero con mucha personalidad. Le encanta el sofá.",
+      "age": 6,
+      "mood": "Perezoso y afectuoso",
+      "weight": "12 kg",
+      "hair type": "Pelo muy corto",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/7/73/Lion_waiting_in_Namibia.jpg",
+      "clicks": 0
+    },
+    {
+      "id": 6,
+      "name": "Simba",
+      "breed": "Gato persa",
+      "description": "Gato elegante y tranquilo. Necesita cepillado diario.",
+      "age": 3,
+      "mood": "Calmado y curioso",
+      "weight": "5 kg",
+      "hair type": "Pelo largo",
+      "image": "https://upload.wikimedia.org/wikipedia/commons/4/4d/Cat_November_2010-1a.jpg",
+      "clicks": 0
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "name": "Admin",
+      "type": "admin",
+      "email": "admin@adoptme.es",
+      "user": "admin",
+      "password": "Basket&22"
+    },
+    {
+      "id": 2,
+      "name": "Usuario",
+      "type": "regged",
+      "email": "usuario@adoptme.es",
+      "user": "usuario",
+      "password": "Elmáscrema&45"
+    },
+    {
+      "id": 3,
+      "name": "Alejandro",
+      "type": "admin",
+      "email": "alejandro@adoptme.es",
+      "user": "alejandro",
+      "password": "Eresunmatao:1"
+    }
+  ]
 }

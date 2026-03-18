@@ -8,22 +8,24 @@
 
 .item-list {
     display: flex;
-    gap: 1rem;
+    gap: 3rem;
 }
 
 .photo-btn-column {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-bottom: 2rem;
 }
 
-.photo-card {
+.photo-card-list {
     height: 16rem;
     width: 16rem;
+    object-fit: cover;
     border: 1px solid #000000;
     background: linear-gradient(to bottom right,
-            transparent 49.5%, #000 50%, transparent 50.5%),
-        linear-gradient(to top right,
+    transparent 49.5%, #000 50%, transparent 50.5%),
+    linear-gradient(to top right,
             transparent 49.5%, #000 50%, transparent 50.5%);
 }
 
@@ -41,14 +43,24 @@
     color: white;
     font-size: 1rem;
     text-align: justify;
-    margin: 0 0 0 1rem;
+    align-content: center;
+    margin: 0 0 3rem 0;
+}
+
+.pet-profile-text  ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 /* SIDEBAR */
 .layout {
     display: grid;
-    align-content: center;
-    background-color: #fddb72;
+    grid-template-columns: 14rem 1fr;
+    align-items: start;
+    min-height: 100%;
 }
 
 .sidebar {
@@ -78,4 +90,10 @@
     background: #fddb72;
     color: #000000;
     text-align: center;
+}
+/* Imagen cuadrada en la lista de adopción */
+.photo-btn-column .photo-card {
+    object-fit: cover;
+    object-position: center;
+    display: block;
 }

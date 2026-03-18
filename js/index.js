@@ -1,8 +1,7 @@
 document.addEventListener('DOMContentLoaded', init);
 
-const DB_PATH            = '../data/db.json';
-const ADOPTION_LIST_PATH = '../data/adoption_list.json';
-const TMPL               = '../html/templates/';
+const DB_PATH = '../data/db.json';
+const TMPL    = '../html/templates/';
 
 
 function loadTemplate(fileName, id) {
@@ -31,19 +30,6 @@ async function fetchDB() {
 }
 
 
-async function fetchAnimals() {
-    try {
-        const res  = await fetch(ADOPTION_LIST_PATH);
-        if (!res.ok) throw new Error('No se pudo cargar adoption_list.json');
-        const data = await res.json();
-        return data.animals;
-    } catch (err) {
-        console.error(err);
-        return [];
-    }
-}
-
-
 // ─── ROUTER ───────────────────────────────────────────────────────────────────
 async function router(db) {
     const hash = window.location.hash.slice(1).split('?')[0] || 'home';
@@ -55,22 +41,22 @@ async function router(db) {
         case 'home':
         case '':
             await loadTemplate(TMPL + 'template_home.html', 'main');
+            renderHome(db.home);
             break;
 
         case 'adoption_list':
             await loadTemplate(TMPL + 'template_adoption_list.html', 'main');
-            const animals = await fetchAnimals();
-            renderAdoptionList(animals);
+            renderAdoptionList(db.animals);
             break;
 
         case 'pet_profile':
             await loadTemplate(TMPL + 'template_pet_profile.html', 'main');
-            const allAnimals = await fetchAnimals();
-            renderPetProfile(allAnimals);
+            renderPetProfile(db.animals);
             break;
 
         case 'login':
             await loadTemplate(TMPL + 'template_login.html', 'main');
+            initLogin(db.users);
             break;
 
         case 'about_us':
@@ -142,8 +128,7 @@ function renderHeader(headerData) {
         headerData.socialLinks.forEach(link => {
             socials.innerHTML += `
                 <a class="social-ico" href="${link.url}" target="_blank"
-                   rel="noopener noreferrer" aria-label="${link.name}">
-                </a>`;
+                   rel="noopener noreferrer" aria-label="${link.name}"></a>`;
         });
     }
 
@@ -186,19 +171,37 @@ function renderFooter(footerData) {
 }
 
 
+// ─── RENDER HOME ──────────────────────────────────────────────────────────────
+function renderHome(data) {
+    const img = document.querySelector('.hero-image');
+    if (img && data.image) {
+        img.style.backgroundImage = `url('${data.image}')`;
+        img.style.backgroundSize  = 'cover';
+        img.style.backgroundPosition = 'center';
+    }
+
+    const text = document.querySelector('.hero-text');
+    if (text && data.text) {
+        text.innerHTML = data.text
+            .split('\n\n')
+            .map(p => `<p>${p}</p>`)
+            .join('');
+    }
+}
+
 // ─── RENDER ABOUT US ──────────────────────────────────────────────────────────
 function renderAboutUs(data) {
     const container = document.getElementById('about_us');
     if (!container) return;
 
     container.innerHTML = '';
-    data.forEach(data => {
+    data.forEach(member => {
         container.innerHTML += `
-            <section class="card">
-                <img class="photo-card" src="${data.image}" alt="Foto de ${data.name}">
-                <h2>${data.name}</h2>
-                <h3>${data.role}</h3>
-                <p class="text-card">${data.description}</p>
+            <section class="card-about_us">
+                <img class="photo-card-about_us" src="${member.image}" alt="Foto de ${member.name}">
+                <h2>${member.name}</h2>
+                <h3>${member.role}</h3>
+                <p class="text-card-about_us">${member.description}</p>
             </section>`;
     });
 }
@@ -254,9 +257,11 @@ function renderStories(storiesData) {
     container.innerHTML = '';
     storiesData.forEach(story => {
         container.innerHTML += `
-            <div class="card">
-                <img src="${story.image}" alt="Foto de ${story.name}">
-                <p class="text-card"><strong>${story.name}:</strong> ${story.text}</p>
+            <div class="card-stories">
+                <img class="photo-card-stories" src="${story.image}" alt="Foto de ${story.name}">
+                <div class="text-card-stories">
+                    <p><span class="story-name">${story.name}</span> ${story.text}</p>
+                </div>
             </div>`;
     });
 }
@@ -265,12 +270,23 @@ function renderStories(storiesData) {
 // ─── RENDER CONTACT US ────────────────────────────────────────────────────────
 function renderContactUs(data) {
     const list = document.getElementById('contact-list');
-    if (!list) return;
+    if (list) {
+        list.innerHTML = '';
+        data.info.forEach(line => {
+            list.innerHTML += `<li>${line}</li>`;
+        });
+    }
 
-    list.innerHTML = '';
-    data.info.forEach(line => {
-        list.innerHTML += `<li>${line}</li>`;
-    });
+    const img = document.getElementById('contact-image');
+    if (img && data.image) {
+        img.style.backgroundImage = `url('${data.image}')`;
+        img.style.backgroundSize  = 'cover';
+    }
+
+    const caption = document.getElementById('contact-caption');
+    if (caption && data.caption) {
+        caption.textContent = data.caption;
+    }
 }
 
 
@@ -315,11 +331,9 @@ function renderAnimalCards(animals) {
             <div class="item-list">
                 <div class="photo-btn-column">
                     <a href="#pet_profile?id=${animal.id}">
-                        <img class="photo-card" src="${animal.image}" alt="Foto de ${animal.name}">
+                        <img class="photo-card-list" src="${animal.image}" alt="Foto de ${animal.name}">
                     </a>
-                    <a class="btn-pet-detail" href="#pet_profile?id=${animal.id}">
-                        Ver perfil
-                    </a>
+                    <a class="btn-pet-detail" href="#pet_profile?id=${animal.id}">Ver perfil</a>
                 </div>
                 <div class="pet-profile-text">
                     <ul>
@@ -360,4 +374,37 @@ function renderPetProfile(animals) {
         photo.style.backgroundSize  = 'cover';
         photo.setAttribute('aria-label', `Foto de ${animal.name}`);
     }
+}
+
+
+// ─── LOGIN ────────────────────────────────────────────────────────────────────
+function initLogin(users) {
+    const form = document.querySelector('.login-inputs');
+    if (!form) return;
+
+    const errorMsg = document.createElement('p');
+    errorMsg.style.cssText = 'color:red; text-align:center; margin-top:0.5rem;';
+    form.appendChild(errorMsg);
+
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+
+        const inputUser = document.getElementById('login-name').value.trim();
+        const inputPass = document.getElementById('login-password').value;
+
+        // Busca por campo "user" o por "email"
+        const found = users.find(u =>
+            (u.user === inputUser || u.email === inputUser) && u.password === inputPass
+        );
+
+        if (found) {
+            errorMsg.style.color = 'green';
+            errorMsg.textContent = `¡Bienvenido, ${found.name}!`;
+            // Redirige al home tras 1 segundo
+            setTimeout(() => { window.location.hash = '#home'; }, 1000);
+        } else {
+            errorMsg.style.color = 'red';
+            errorMsg.textContent = 'Usuario o contraseña incorrectos.';
+        }
+    });
 }

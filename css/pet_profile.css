@@ -8,11 +8,11 @@ main {
     align-items: center;
 }
 
-.photo-card {
+.photo-card-profile {
     height: 32rem;
     width: 18rem;
     border: 2px solid #000000;
-    margin: 0 4rem 0 0rem;
+    margin: 0 4rem 0 0;
     background: linear-gradient(to bottom right,
             transparent 49.5%, #000 50%, transparent 50.5%),
         linear-gradient(to top right,
