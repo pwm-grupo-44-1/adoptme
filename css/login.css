@@ -7,7 +7,7 @@ main {
 }
 
 .login-box {
-    background-color: #fddb72;
+    background-color: #ddc781;
     height: 38rem;
     width: 38rem;
     display: flex;
@@ -62,4 +62,78 @@ main {
 
 .login-inputs input::placeholder {
     color: #ffffff;
+}
+
+
+/* Contenedor para alinear a la derecha */
+.login-actions {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    width: 100%;
+}
+
+/* Botón Principal (Iniciar Sesión) */
+.btn-small {
+    padding: 10px 22px;
+    background-color: #90c984; /* El verde de tu paleta */
+    color: #000000;
+    border: 2px solid #90c984;
+    border-radius: 8px;
+    font-family: "DynaPuff", system-ui; /* Mantenemos tu tipografía */
+    font-size: 0.95rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-small:hover {
+    background-color: #6bffb5;
+    border-color: #6bffb5;
+    color: white;
+}
+
+/* Botón Secundario (Registrarse) */
+.btn-small.secondary {
+    background-color: transparent; /* Sin fondo */
+    color: #10946d; /* Texto en verde oscuro */
+    border: 2px solid #90c984; /* Solo el borde */
+}
+
+.btn-small.secondary:hover {
+    background-color: #f0fdf4; /* Un toque de luz al pasar el mouse */
+    border-color: #10946d;
+}
+
+/* Clase para ocultar campos */
+.hidden {
+    display: none !important;
+}
+
+/* Ajuste para que el login-box no se vea vacío al quitar campos */
+.login-box {
+    min-height: 25rem; /* Altura flexible */
+    height: auto;
+    padding: 2rem 0;
+}
+
+/* Estilo para el nuevo botón de confirmación */
+.btn-confirm {
+    margin-top: 0.5rem;
+    padding: 12px;
+    background-color: #fddb72; /* Color amarillo crema como tus detalles */
+    color: #10946d;
+    border: 2px solid #10946d;
+    border-radius: 8px;
+    font-family: "DynaPuff", system-ui;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-confirm:hover {
+    background-color: #10946d;
+    color: white;
+    transform: scale(1.02); /* Pequeño efecto de pulsado */
 }

@@ -408,3 +408,80 @@ function initLogin(users) {
         }
     });
 }
+
+function initLogin(users) {
+    const form = document.getElementById('auth-form');
+    if (!form) return;
+
+    const regFields   = document.querySelectorAll('.reg-only');
+
+    const btnVerify   = document.getElementById('btn-verify');
+    const btnLogin    = document.getElementById('btn-login');
+    const btnRegister = document.getElementById('btn-register');
+
+    // Lógica del botón de Confirmación
+    btnVerify.addEventListener('click', () => {
+        const email = document.getElementById('register-email').value;
+        const pass  = document.getElementById('register-password').value;
+
+        if (email === "" || pass === "") {
+            alert("Por favor, rellena los campos principales antes de confirmar.");
+        } else {
+            alert("Datos confirmados. Ya puedes proceder.");
+            // Opcional: podrías iluminar el botón de Iniciar Sesión aquí
+            btnLogin.style.boxShadow = "0 0 15px #6bffb5";
+        }
+    });
+    // MODO INICIAR SESIÓN (Solo correo y contraseña)
+    btnLogin.addEventListener('click', () => {
+        regFields.forEach(field => {
+            field.classList.add('hidden'); // Usa la clase de tu CSS
+            field.removeAttribute('required'); // Importante para que el navegador deje enviar
+        });
+
+        // Cambiamos el estilo de los botones
+        btnLogin.classList.remove('secondary');
+        btnRegister.classList.add('secondary');
+
+        // El botón de login ahora se convierte en el disparador del envío
+        btnLogin.type = "submit";
+    });
+
+    // MODO REGISTRARSE (Muestra el formulario completo)
+    btnRegister.addEventListener('click', () => {
+        regFields.forEach(field => {
+            field.classList.remove('hidden');
+            field.setAttribute('required', ''); // Volvemos a hacerlos obligatorios
+        });
+
+        // El botón de registro vuelve a ser el principal
+        btnRegister.classList.remove('secondary');
+        btnLogin.classList.add('secondary');
+
+        // Evitamos que este botón envíe el formulario, solo cambia la vista
+        btnLogin.type = "button";
+    });
+
+    // Lógica de validación al enviar
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        const email = document.getElementById('register-email').value;
+        const pass  = document.getElementById('register-password').value;
+
+        // Comprobamos si estamos en modo Login (campos ocultos)
+        const isLoginMode = regFields[0].classList.contains('hidden');
+
+        if (isLoginMode) {
+            const found = users.find(u => u.email === email && u.password === pass);
+            if (found) {
+                alert(`¡Bienvenido, ${found.name}!`);
+                window.location.hash = '#home';
+            } else {
+                alert('Correo o contraseña incorrectos.');
+            }
+        } else {
+            // Lógica para el registro
+            alert('¡Usuario registrado con éxito!');
+        }
+    });
+}

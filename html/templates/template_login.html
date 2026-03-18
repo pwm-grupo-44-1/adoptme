@@ -1,10 +1,17 @@
 <div class="login-box">
-    <form class="login-inputs">
-        <input type="text"     name="user"       id="login-name"       placeholder="Usuario"              required>
-        <input type="email"    name="email"       id="login-email"      placeholder="Correo electrónico"   required>
-        <input type="tel"      name="phone"       id="login-phone"      placeholder="Teléfono"             required>
-        <input type="password" name="password"    id="login-password"   placeholder="Contraseña"           required>
-        <input type="password" name="repassword"  id="login-repassword" placeholder="Repetir contraseña"   required>
-        <button type="submit"  id="login-submit">Acceder</button>
+
+    <form class="login-inputs" id="auth-form">
+        <input type="text"     name="user"       id="register-name"       placeholder="Usuario"   class="reg-only"       required>
+        <input type="email"    name="email"       id="register-email"      placeholder="Correo electrónico"   required>
+        <input type="tel"      name="phone"       id="register-phone"      placeholder="Teléfono"  class="reg-only"   required>
+        <input type="password" name="password"    id="register-password"   placeholder="Contraseña"           required>
+        <input type="password" name="repassword"  id="register-repassword" placeholder="Repetir contraseña" class="reg-only" required>
+
+        <button type="button" id="btn-verify" class="btn-confirm">Confirmar datos</button>
+
+        <div class="login-actions">
+            <button type="button" id="btn-register" class="btn-small secondary">Registrarse</button>
+            <button type="button" id="btn-login" class="btn-small">Iniciar Sesión</button>
+        </div>
     </form>
 </div>
