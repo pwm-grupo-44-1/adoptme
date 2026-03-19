@@ -137,3 +137,25 @@ main {
     color: white;
     transform: scale(1.02); /* Pequeño efecto de pulsado */
 }
+
+/* Para que el ojo se quede a la derecha dentro del cuadro */
+.password-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.password-wrapper input {
+    width: 100% !important;
+    padding-right: 45px !important;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: #10946d;
+    user-select: none;
+}

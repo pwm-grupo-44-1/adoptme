@@ -3,10 +3,18 @@
     <form class="login-inputs" id="auth-form">
         <input type="text"     name="user"       id="register-name"       placeholder="Usuario"   class="reg-only"       required>
         <input type="email"    name="email"       id="register-email"      placeholder="Correo electrónico"   required>
-        <input type="tel"      name="phone"       id="register-phone"      placeholder="Teléfono"  class="reg-only"   required>
-        <input type="password" name="password"    id="register-password"   placeholder="Contraseña"           required>
-        <input type="password" name="repassword"  id="register-repassword" placeholder="Repetir contraseña" class="reg-only" required>
+        <input type="tel"      name="phone"       id="register-phone"      placeholder="Teléfono"  class="reg-only"  pattern="[6789][0-9]{8}"  required>
+        <div class="password-wrapper">
+            <input type="password" id="register-password" placeholder="Contraseña"
+                   minlength="8"
+                   title="Mínimo 8 caracteres, debe incluir mayúscula, número y símbolo."required>
+            <span class="toggle-password">&#128065;</span>
+        </div>
 
+        <div class="password-wrapper reg-only">
+            <input type="password" id="register-repassword" placeholder="Repetir contraseña">
+            <span class="toggle-password">&#128065;</span>
+        </div>
         <button type="button" id="btn-verify" class="btn-confirm">Confirmar datos</button>
 
         <div class="login-actions">
