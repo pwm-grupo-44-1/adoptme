@@ -112,6 +112,7 @@ async function init() {
 
 
 // ─── RENDER HEADER ────────────────────────────────────────────────────────────
+// ─── RENDER HEADER (BOTÓN INTELIGENTE) ────────────────────────────────────────
 function renderHeader(headerData) {
     const logo = document.querySelector('.logo');
     if (logo) {
@@ -132,27 +133,40 @@ function renderHeader(headerData) {
         });
     }
 
+    // Miramos si hay un usuario en el almacenamiento local
     const user = JSON.parse(localStorage.getItem('userActive'));
     const nav = document.querySelector('nav');
+
     if (nav) {
         nav.innerHTML = '';
         headerData.navLinks.forEach(link => {
-            nav.innerHTML += `<a class="btn" href="${link.url}">${link.name}</a>`;
+            const a = document.createElement('a');
+            a.className = 'btn';
+
+            // LÓGICA: Si el botón es "Acceder" y hay alguien logueado
+            if (link.name === "Acceder" && user) {
+                // 1. Cambiamos el texto al nombre del usuario
+                a.textContent = `Cerrar Sesión (${user.name})`;
+                a.href = "#home";
+
+                // 2. Le damos la funcionalidad de cerrar sesión
+                a.addEventListener('click', (e) => {
+                    e.preventDefault(); // Evitamos que salte el enlace de golpe
+                    localStorage.removeItem('userActive'); // Borramos la sesión
+                    alert("Has cerrado sesión. ¡Vuelve pronto!");
+                    location.reload(); // Recargamos para que el botón vuelva a ser "Acceder"
+                });
+            } else {
+                // Comportamiento normal para el resto de botones o si no hay sesión
+                a.textContent = link.name;
+                a.href = link.url;
+            }
+
+            nav.appendChild(a);
         });
 
-        // SI HAY USUARIO: Mostrar su nombre y botón de Logout
-        if (user) {
-            nav.innerHTML += `<span class="user-badge">👤 ${user.name} (${user.type})</span>`;
-            nav.innerHTML += `<a class="btn" id="logout-btn" href="#home">Cerrar Sesión</a>`;
-
-            // Lógica para cerrar sesión
-            setTimeout(() => {
-                document.getElementById('logout-btn')?.addEventListener('click', () => {
-                    localStorage.removeItem('userActive');
-                    window.location.reload(); // Recarga para limpiar todo
-                });
-            }, 100);
-        }
+        // NOTA: He borrado el bloque que añadía el 'user-badge' y el 'logout-btn'
+        // extra al final para que no se vea doble ni subrayado.
     }
 }
 

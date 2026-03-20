@@ -42,7 +42,8 @@ main{
 
 .btn {
     display: flex;
-    width: 8rem;
+    min-width: 8rem;
+    padding: 0 1rem;
     align-items: center;
     justify-content: center;
     color: #10946d;
