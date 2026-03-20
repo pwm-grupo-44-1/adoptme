@@ -338,19 +338,10 @@ function renderAdoptionList(animals) {
 
 // ─── RENDER ANIMAL CARDS ─────────────────────────────────────────────────────
 function renderAnimalCards(animals) {
-    const user = JSON.parse(localStorage.getItem('userActive'));
     const container = document.getElementById('pets-list');
     if (!container) return;
     container.innerHTML = '';
-
     animals.forEach(animal => {
-        // boton admin
-        const adminButtons = (user && user.type === 'admin')
-            ? `<div class="admin-actions">
-                <button class="btn-edit"> Editar</button>
-                <button class="btn-delete"> Eliminar</button>
-               </div>`
-            : '';
 
         container.innerHTML += `
             <div class="item-list">
@@ -359,8 +350,6 @@ function renderAnimalCards(animals) {
                         <img class="photo-card-list" src="${animal.image}" alt="Foto de ${animal.name}">
                     </a>
                     <a class="btn-pet-detail" href="#pet_profile?id=${animal.id}">Ver perfil</a>
-                    
-                    ${adminButtons}
                 </div>
                 <div class="pet-profile-text">
                     <ul>
