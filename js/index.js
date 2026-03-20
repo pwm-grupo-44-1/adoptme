@@ -112,7 +112,6 @@ async function init() {
 
 
 // ─── RENDER HEADER ────────────────────────────────────────────────────────────
-// ─── RENDER HEADER (BOTÓN INTELIGENTE) ────────────────────────────────────────
 function renderHeader(headerData) {
     const logo = document.querySelector('.logo');
     if (logo) {
@@ -133,43 +132,47 @@ function renderHeader(headerData) {
         });
     }
 
-    // Miramos si hay un usuario en el almacenamiento local
     const user = JSON.parse(localStorage.getItem('userActive'));
     const nav = document.querySelector('nav');
 
     if (nav) {
         nav.innerHTML = '';
         headerData.navLinks.forEach(link => {
-            const a = document.createElement('a');
-            a.className = 'btn';
 
-            // LÓGICA: Si el botón es "Acceder" y hay alguien logueado
             if (link.name === "Acceder" && user) {
-                // 1. Cambiamos el texto al nombre del usuario
-                a.textContent = `Cerrar Sesión (${user.name})`;
-                a.href = "#home";
+                const container = document.createElement('div');
+                container.className = 'btn user-nav-stack';
 
-                // 2. Le damos la funcionalidad de cerrar sesión
-                a.addEventListener('click', (e) => {
-                    e.preventDefault(); // Evitamos que salte el enlace de golpe
-                    localStorage.removeItem('userActive'); // Borramos la sesión
+                const nameLabel = document.createElement('span');
+                nameLabel.className = 'user-nav-name';
+                nameLabel.textContent = ` ${user.name}`;
+
+                const logoutBtn = document.createElement('a');
+                logoutBtn.className = 'btn-logout-nav'; // Clase nueva para estilo pequeño
+                logoutBtn.textContent = 'Cerrar Sesión';
+                logoutBtn.href = "#home";
+
+                logoutBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    localStorage.removeItem('userActive');
                     alert("Has cerrado sesión. ¡Vuelve pronto!");
-                    location.reload(); // Recargamos para que el botón vuelva a ser "Acceder"
+                    location.reload();
                 });
+
+                container.appendChild(nameLabel);
+                container.appendChild(logoutBtn);
+                nav.appendChild(container);
+
             } else {
-                // Comportamiento normal para el resto de botones o si no hay sesión
+                const a = document.createElement('a');
+                a.className = 'btn';
                 a.textContent = link.name;
                 a.href = link.url;
+                nav.appendChild(a);
             }
-
-            nav.appendChild(a);
         });
-
-        // NOTA: He borrado el bloque que añadía el 'user-badge' y el 'logout-btn'
-        // extra al final para que no se vea doble ni subrayado.
     }
 }
-
 
 // ─── RENDER FOOTER ────────────────────────────────────────────────────────────
 function renderFooter(footerData) {

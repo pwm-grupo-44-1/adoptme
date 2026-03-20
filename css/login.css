@@ -159,3 +159,20 @@ main {
     color: #10946d;
     user-select: none;
 }
+
+.btn.user-nav-stack {
+    flex-direction: column;
+    height: auto;
+    padding: 5px 10px;
+    gap: 2px;
+}
+
+.user-nav-name {
+    font-size: 0.75rem;
+    line-height: 1;
+}
+
+.btn-logout-nav {
+    font-size: 0.65rem;
+    color: #ff6b6b;
+}
