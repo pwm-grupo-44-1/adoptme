@@ -1,3 +1,9 @@
+footer {
+    position: sticky;
+    bottom: 0;
+    z-index: 100;
+}
+
 .footer {
     width: 100%;
     display: grid;
@@ -21,13 +27,17 @@
     font-size: 1rem;
 }
 
-#book-appointment {
-    width: 100%;
-    height: 4rem;
+.footer-legal {
+    grid-column: 1 / -1;       /* ocupa las 3 columnas */
+    justify-content: center;   /* centrado */
+    padding: 0.5rem 0;
+    font-size: 0.6em;
 }
 
-.footer-legal {
-    justify-content: right;
-    padding: 0 5rem 0.5rem 0;
-    font-size: 0.6em;
+/* Botones del footer se adaptan al texto */
+.footer-left .btn,
+.footer-right .btn {
+    width: auto;
+    padding: 0.3rem 1rem;
+    white-space: nowrap;
 }
