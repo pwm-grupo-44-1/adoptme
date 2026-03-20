@@ -456,7 +456,7 @@ function initLogin(users) {
             const tel = document.getElementById('register-phone').value;
             const repass = document.getElementById('register-repassword').value;
 
-            if (!esTelefonoValido(tel)) return alert("El teléfono debe tener 9 números.");
+            if (!esTelefonoValido(tel)) return alert("El teléfono debe tener 9 números y empezar por 6,7,8,9.");
             if (pass !== repass) return alert("¡Las contraseñas no son iguales!");
         }
 
