@@ -1,44 +1,37 @@
 <section class="calendar">
-        <div class="grid-calendar">
-                <div class="cell">lorem</div>
-                <div class="cell">ipsum</div>
-                <div class="cell">dolor</div>
-                <div class="cell">sit</div>
-                <div class="cell">amet</div>
-                <div class="cell">dolor</div>
-                <div class="cell">sit</div>
 
-                <div class="cell">lorem</div>
-                <div class="cell">ipsum</div>
-                <div class="cell">dolor</div>
-                <div class="cell">sit</div>
-                <div class="cell">amet</div>
-                <div class="cell">dolor</div>
-                <div class="cell">sit</div>
-
-                <div class="cell">lorem</div>
-                <div class="cell">ipsum</div>
-                <div class="cell">dolor</div>
-                <div class="cell">sit</div>
-                <div class="cell">amet</div>
-                <div class="cell">dolor</div>
-                <div class="cell">sit</div>
-
-                <div class="cell">lorem</div>
-                <div class="cell">ipsum</div>
-                <div class="cell">dolor</div>
-                <div class="cell">sit</div>
-                <div class="cell">amet</div>
-                <div class="cell">dolor</div>
-                <div class="cell">sit</div>
-
-                <div class="cell">lorem</div>
-                <div class="cell">ipsum</div>
-                <div class="cell">dolor</div>
-                <div class="cell">sit</div>
-                <div class="cell">amet</div>
-                <div class="cell">dolor</div>
-                <div class="cell">sit</div>
-
+        <!-- Vista: no logueado -->
+        <div id="schedule-login-msg" class="schedule-login-msg" style="display:none;">
+                <p>Debes <a href="#login" class="schedule-login-link">iniciar sesión</a> para reservar una cita.</p>
         </div>
+
+        <!-- Vista: logueado -->
+        <div id="schedule-app" style="display:none;">
+
+                <div class="schedule-header">
+                        <button class="cal-nav" id="cal-prev">&#8592;</button>
+                        <h2 class="cal-month-title" id="cal-month-title"></h2>
+                        <button class="cal-nav" id="cal-next">&#8594;</button>
+                </div>
+
+                <div class="cal-weekdays">
+                        <span>Lun</span><span>Mar</span><span>Mié</span>
+                        <span>Jue</span><span>Vie</span><span>Sáb</span><span>Dom</span>
+                </div>
+
+                <div class="cal-grid" id="cal-grid"></div>
+
+                <!-- Panel de horas -->
+                <div class="cal-slots" id="cal-slots" style="display:none;">
+                        <h3 id="cal-slots-title"></h3>
+                        <div class="cal-slots-grid" id="cal-slots-grid"></div>
+                </div>
+
+                <!-- Mis reservas -->
+                <div class="cal-bookings" id="cal-bookings" style="display:none;">
+                        <h3>Mis reservas</h3>
+                        <ul id="bookings-list"></ul>
+                </div>
+        </div>
+
 </section>

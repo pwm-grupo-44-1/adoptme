@@ -1,9 +1,26 @@
 <div class="contact">
-    <div class="text-wrapper">
+
+    <!-- Columna izquierda: texto -->
+    <div class="contact-left">
+        <h2 class="contact-title" id="contact-title"></h2>
+        <div class="contact-reasons" id="contact-reasons"></div>
+    </div>
+
+    <!-- Columna derecha: mapa + info -->
+    <div class="contact-right">
+        <div class="contact-map">
+            <iframe
+                    id="contact-map-iframe"
+                    src=""
+                    width="100%"
+                    height="100%"
+                    style="border:0;"
+                    allowfullscreen=""
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </div>
         <ul class="contact-text" id="contact-list"></ul>
     </div>
-    <div class="card" id="contact-card">
-        <div class="photo-card" id="contact-image" role="img" aria-label="Imagen de contacto"></div>
-        <p class="text-card" id="contact-caption"></p>
-    </div>
+
 </div>

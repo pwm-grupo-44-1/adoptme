@@ -6,6 +6,7 @@ main {
 .dog-profile {
     display: flex;
     align-items: center;
+    margin-top: 2rem;
 }
 
 .photo-card-profile {
@@ -13,10 +14,10 @@ main {
     width: 18rem;
     border: 2px solid #000000;
     margin: 0 4rem 0 0;
-    background: linear-gradient(to bottom right,
-            transparent 49.5%, #000 50%, transparent 50.5%),
-        linear-gradient(to top right,
-            transparent 49.5%, #000 50%, transparent 50.5%);
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    flex-shrink: 0;
 }
 
 .column-data {
@@ -34,4 +35,23 @@ main {
     width: 40rem;
     padding: 8px;
     text-align: justify;
+}
+
+.btn-back {
+    align-self: flex-start;
+    background: #fddb72;
+    border: none;
+    border-radius: 0.4rem;
+    padding: 0.5rem 1.2rem;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-bottom: 1rem;
+}
+
+.btn-back:hover {
+    background: #10946d;
+    color: #fff;
 }
