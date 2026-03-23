@@ -2,6 +2,8 @@ footer {
     position: sticky;
     bottom: 0;
     z-index: 100;
+    background-image: url("../img/footer-background.png");
+
 }
 
 .footer {
@@ -9,8 +11,11 @@ footer {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     align-items: center;
-    background-color: #bbdcbf;
+    background-color: var(--footer-bg);
+    border-top: 1px solid var(--border-light);
+    box-shadow: var(--shadow-soft);
     padding-top: 1rem;
+    backdrop-filter: blur(8px);
 }
 
 .footer-left,
@@ -25,13 +30,15 @@ footer {
 .footer-center {
     text-align: center;
     font-size: 1rem;
+    color: var(--text-body);
 }
 
 .footer-legal {
-    grid-column: 1 / -1;       /* ocupa las 3 columnas */
-    justify-content: center;   /* centrado */
+    grid-column: 1 / -1;
+    justify-content: center;
     padding: 0.5rem 0;
     font-size: 0.6em;
+    color: var(--text-muted);
 }
 
 /* Botones del footer se adaptan al texto */
