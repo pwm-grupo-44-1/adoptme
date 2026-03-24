@@ -7,9 +7,13 @@
         "name": "Instagram",
         "url": "https://instagram.com",
         "icon": "bi-instagram"
+        "url": "https://instagram.com",
+        "icon": "bi-instagram"
       },
       {
         "name": "X",
+        "url": "https://x.com",
+        "icon": "bi-twitter-x"
         "url": "https://x.com",
         "icon": "bi-twitter-x"
       },
@@ -17,9 +21,13 @@
         "name": "YouTube",
         "url": "https://youtube.com",
         "icon": "bi-youtube"
+        "url": "https://youtube.com",
+        "icon": "bi-youtube"
       },
       {
         "name": "TikTok",
+        "url": "https://tiktok.com",
+        "icon": "bi-tiktok"
         "url": "https://tiktok.com",
         "icon": "bi-tiktok"
       }
@@ -73,6 +81,13 @@
     "copyright": "© 2026 AdoptMe!!. Todos los derechos reservados."
   },
   "home": {
+    "text": "En AdoptMe creemos que cada animal merece una segunda oportunidad. Cada día, cientos de perros y gatos esperan en refugios a que alguien les abra la puerta de un hogar. No buscan mucho: un lugar cálido, comida en el plato y, sobre todo, alguien que los quiera.\n\nNosotros nos encargamos de cuidarlos, vacunarlos y prepararlos para que lleguen a ti en las mejores condiciones. Tú solo tienes que dar el primer paso.\n\n¿Estás listo para cambiar una vida? Quizás ellos ya están listos para cambiar la tuya.",
+    "images": [
+      "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=800",
+      "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800",
+      "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=800",
+      "https://images.unsplash.com/photo-1601979031925-424e53b6caaa?w=800"
+    ]
     "text": "En AdoptMe creemos que cada animal merece una segunda oportunidad. Cada día, cientos de perros y gatos esperan en refugios a que alguien les abra la puerta de un hogar. No buscan mucho: un lugar cálido, comida en el plato y, sobre todo, alguien que los quiera.\n\nNosotros nos encargamos de cuidarlos, vacunarlos y prepararlos para que lleguen a ti en las mejores condiciones. Tú solo tienes que dar el primer paso.\n\n¿Estás listo para cambiar una vida? Quizás ellos ya están listos para cambiar la tuya.",
     "images": [
       "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=800",
@@ -192,12 +207,37 @@
       }
     ],
     "mapUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3551.5!2d-15.4194!3d28.1235!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjjCsDA3JzI0LjYiTiAxNcKwMjUnMDkuOCJX!5e0!3m2!1ses!2ses!4v1234567890",
+    "title": "¿Tienes un animal que necesita ayuda? ¡Escríbenos!",
+    "reasons": [
+      {
+        "icon": "🐾",
+        "title": "Quieres dejar un animal en adopción",
+        "text": "Si no puedes seguir cuidando a tu mascota o has encontrado un animal en la calle, podemos ayudarte a encontrarle un nuevo hogar."
+      },
+      {
+        "icon": "🔍",
+        "title": "Has encontrado un animal perdido",
+        "text": "Si has encontrado un perro o gato sin dueño, contáctanos y te ayudamos a localizarlo o a tramitar su acogida temporal."
+      },
+      {
+        "icon": "❤️",
+        "title": "Quieres ser voluntario o acoger",
+        "text": "Si quieres ayudar sin adoptar, puedes ser familia de acogida temporal o unirte a nuestro equipo de voluntarios."
+      },
+      {
+        "icon": "💬",
+        "title": "Tienes cualquier otra consulta",
+        "text": "Llámanos, escríbenos por correo o pásate por nuestra sede. Estaremos encantados de atenderte."
+      }
+    ],
+    "mapUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3551.5!2d-15.4194!3d28.1235!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjjCsDA3JzI0LjYiTiAxNcKwMjUnMDkuOCJX!5e0!3m2!1ses!2ses!4v1234567890",
     "info": [
       "📍 Calle Ejemplo 42, Las Palmas de Gran Canaria",
       "📞 +34 928 000 000",
       "✉️ hola@adoptme.es",
       "🕐 Lunes a viernes: 9:00 – 18:00",
       "🕐 Sábados: 10:00 – 14:00"
+    ]
     ]
   },
   "animals": [
@@ -585,9 +625,22 @@
       "type": "admin",
       "email": "alejandro@adoptme.es",
       "telefono": 605040908,
+      "telefono": 605040908,
       "user": "alejandro",
       "password": "Eresunmatao:1"
     }
+  ],
+  "schedule": {
+    "slots": [
+      "10:00",
+      "11:00",
+      "12:00",
+      "13:00",
+      "16:00",
+      "17:00",
+      "18:00"
+    ]
+  }
   ],
   "schedule": {
     "slots": [

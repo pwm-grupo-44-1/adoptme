@@ -82,3 +82,11 @@ body.scrolled .footer-left .btn,
 body.scrolled .footer-right .btn {
     padding: 0.2rem 0.8rem;
 }
+
+/* Botones del footer se adaptan al texto */
+.footer-left .btn,
+.footer-right .btn {
+    width: auto;
+    padding: 0.3rem 1rem;
+    white-space: nowrap;
+}

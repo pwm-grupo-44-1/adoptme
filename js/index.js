@@ -187,7 +187,8 @@ function renderFooter(footerData) {
     if (legal) legal.textContent = footerData.copyright;
 }
 
-// ─── RENDER HOME (Versión Carrusel V1) ────────────────────────────────────────
+
+// ─── RENDER HOME ──────────────────────────────────────────────────────────────
 function renderHome(data) {
     const text = document.getElementById('hero-text');
     if (text && data.text) {
@@ -196,55 +197,9 @@ function renderHome(data) {
             .map(p => `<p>${p}</p>`)
             .join('');
     }
-
-    const images = data.images || (data.image ? [data.image] : []);
-    if (!images.length) return;
-
-    const track = document.getElementById('carousel-track');
-    const dots  = document.getElementById('carousel-dots');
-    if (!track) return; // Fallback si el HTML no tiene carrusel
-
-    let current = 0;
-    let autoTimer;
-
-    track.innerHTML = '';
-    images.forEach(src => {
-        const slide = document.createElement('div');
-        slide.className = 'carousel-slide';
-        slide.style.backgroundImage = `url('${src}')`;
-        track.appendChild(slide);
-    });
-
-    if (dots) {
-        dots.innerHTML = '';
-        images.forEach((_, i) => {
-            const dot = document.createElement('button');
-            dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
-            dot.addEventListener('click', () => goTo(i));
-            dots.appendChild(dot);
-        });
-    }
-
-    function goTo(index) {
-        current = (index + images.length) % images.length;
-        track.style.transform = `translateX(-${current * 100}%)`;
-        document.querySelectorAll('.carousel-dot').forEach((d, i) =>
-            d.classList.toggle('active', i === current));
-        resetAuto();
-    }
-
-    function resetAuto() {
-        clearInterval(autoTimer);
-        autoTimer = setInterval(() => goTo(current + 1), 4000);
-    }
-
-    document.querySelector('.carousel-prev')?.addEventListener('click', () => goTo(current - 1));
-    document.querySelector('.carousel-next')?.addEventListener('click', () => goTo(current + 1));
-
-    resetAuto();
 }
 
-// ─── RENDER BASIC PAGES ───────────────────────────────────────────────────────
+// ─── RENDER ABOUT US ──────────────────────────────────────────────────────────
 function renderAboutUs(data) {
     const container = document.getElementById('about_us');
     if (!container) return;
