@@ -9,6 +9,7 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: #90c984;
 }
 
 /* ── Carrusel ── */
@@ -88,7 +89,7 @@ main {
 
 /* ── Texto ── */
 .hero-text {
-    color: #4a7477;
+    color: #fefefe;
     width: 100%;
     font-size: 1.3em;
     line-height: 1.5;

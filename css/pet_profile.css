@@ -29,7 +29,7 @@ main {
 }
 
 .box-text {
-    background-color: #fddb72;
+    background-color: #ece59c !important;
     border-radius: 0.5rem;
     border: 1px solid #000;
     width: 40rem;

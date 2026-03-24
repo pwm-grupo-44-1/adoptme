@@ -1,18 +1,10 @@
 header {
     background: #bbdcbf;
-    width: 100%;
+    width: auto;
     align-items: center;
     position: sticky;
     top: 0;
     z-index: 100;
-    background-image: url("../img/header-background.png");
-    background-size: cover;
-    background-position: center;
-    transition:
-        padding 0.28s ease,
-        min-height 0.28s ease,
-        box-shadow 0.28s ease,
-        background-color 0.28s ease;
 }
 
 nav {
@@ -20,39 +12,31 @@ nav {
     align-items: center;
 }
 
-a {
-    text-decoration: none;
-    color: var(--color-text);
-}
+a {text-decoration: none;}
 
 .header-inner {
     width: 100%;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    backdrop-filter: blur(8px);
-    padding: 0;
-    min-height: 0;
-    transition: padding 0.28s ease, min-height 0.28s ease, gap 0.28s ease;
+    justify-content: space-between;
+    gap: 40px;
 }
 
 .brand {
     display: flex;
     align-items: center;
+    gap: 2em;
 }
 
 .logo {
-    width: 10rem;
-    aspect-ratio: 1 / 1;
-    height: auto;
-    border-radius: 24%;
+    width: 4em;
+    height: 4em;
+    border-radius: 50%;
+    background: #fddb72;
     position: relative;
     flex: 0 0 auto;
-    margin: 1rem;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    transition: width 0.28s ease, margin 0.28s ease;
+    margin: 1rem 1rem 1rem 1.5rem;
+    background-size: 250%;
 }
 
 /* “X” del logo */
@@ -68,20 +52,22 @@ a {
 }
 
 .brand-title {
-    font-size: 3rem;
-    transition: font-size 0.28s ease;
+    font-size: 2rem;
+
+    color: #009688;
 }
 
 .socials {
+    display: flex;
+    gap: 1rem;
 }
 
 .social-ico {
+    margin: -1rem 0.5rem;
     height: auto;
     width: auto;
-    font-size: 2rem;
+    font-size: 1rem;   /* ← aquí controlas el tamaño */
     color: #10946d;
-    padding: 0.9rem 0 0 0;
-    transition: font-size 0.28s ease, padding 0.28s ease, color 0.25s ease;
 }
 
 .social-ico:hover {
@@ -90,52 +76,28 @@ a {
 
 .grid {
     display: grid;
-    grid-template-columns: 0fr 1fr;
-    grid-template-rows: 2fr 1fr;
+    grid-template-columns: 7rem 1fr;
+    grid-template-rows: auto auto;
 }
 
 /* Columna 1 ocupando las 2 filas */
 .left {
-    grid-column: 1;
-    grid-row: 1 / 3;
-    /* ocupa fila 1 y fila 2 */
+  grid-column: 1;
+  grid-row: 1 / span 2; /* ocupa fila 1 y fila 2 */
 }
 
 .right-top {
     grid-column: 2;
     grid-row: 1;
-    align-content: end;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 5rem;
 }
 
 .right-bottom {
-    grid-column: 2;
-    grid-row: 2;
-    display: flex;
-    justify-content: space-between;
-}
-
-
-
-
-body.scrolled header {
-    box-shadow: 0 10px 24px rgba(74, 116, 119, 0.12);
-}
-
-body.scrolled .header-inner {
-    padding-top: 0.2rem;
-    padding-bottom: 0.2rem;
-}
-
-body.scrolled .logo {
-    width: 7.5rem;
-    margin: 0.75rem;
-}
-
-body.scrolled .brand-title {
-    font-size: 2.25rem;
-}
-
-body.scrolled .social-ico {
-    font-size: 1.5rem;
-    padding-top: 0.45rem;
+  grid-column: 2;
+  grid-row: 2;
+  display: flex;
+  justify-content: center;
 }

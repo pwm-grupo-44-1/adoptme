@@ -40,6 +40,7 @@
 }
 
 .pet-profile-text {
+    color: white;
     font-size: 1rem;
     text-align: justify;
     align-content: center;
@@ -63,14 +64,9 @@
 }
 
 .sidebar {
-    position: sticky;
-    top: 14rem;
-    height: fit-content;
+    position: relative;
+    height: 100%;
     padding: 1rem;
-    background: white;
-    border-radius: 1rem;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-    margin: 0rem 1rem;
 }
 
 .sidebar-title {
@@ -121,6 +117,7 @@
     padding: 0.8rem 1rem;
     font-size: 0.9rem;
     font-weight: 800;
+    color: #10946d;
     background: #fddb72;
     cursor: pointer;
     display: flex;
@@ -162,8 +159,9 @@ details[open] .filter-label::after {
     padding: 0.7rem;
     margin-top: 0.8rem;
     border-radius: 4px;
-    border: 1px solid #10946d4f;
+    border: 2px solid #10946d;
     background: transparent;
+    color: #10946d;
     font-family: inherit;
     font-size: 0.9rem;
     font-weight: 800;
@@ -180,5 +178,6 @@ details[open] .filter-label::after {
 .results-count {
     padding: 0.5rem 8rem;
     font-size: 0.9rem;
+    color: #fff;
     font-weight: 700;
 }

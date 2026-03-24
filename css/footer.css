@@ -2,13 +2,6 @@ footer {
     position: sticky;
     bottom: 0;
     z-index: 100;
-    background-image: url("../img/footer-background.png");
-    background-size: cover;
-    background-position: center;
-    transition:
-        padding 0.28s ease,
-        box-shadow 0.28s ease,
-        min-height 0.28s ease;
 }
 
 .footer {
@@ -16,12 +9,8 @@ footer {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     align-items: center;
-    background-color: var(--footer-bg);
-    border-top: 1px solid var(--border-light);
-    box-shadow: var(--shadow-soft);
+    background-color: #bbdcbf;
     padding-top: 1rem;
-    backdrop-filter: blur(8px);
-    transition: padding 0.28s ease, gap 0.28s ease;
 }
 
 .footer-left,
@@ -36,16 +25,13 @@ footer {
 .footer-center {
     text-align: center;
     font-size: 1rem;
-    height: stretch;
-    color: var(--text-body);
 }
 
 .footer-legal {
-    grid-column: 1 / -1;
-    justify-content: center;
+    grid-column: 1 / -1;       /* ocupa las 3 columnas */
+    justify-content: center;   /* centrado */
     padding: 0.5rem 0;
-    font-size: 1.3em;
-    color: var(--text-muted);
+    font-size: 0.6em;
 }
 
 /* Botones del footer se adaptan al texto */
@@ -54,31 +40,4 @@ footer {
     width: auto;
     padding: 0.3rem 1rem;
     white-space: nowrap;
-    height: 6rem;
-}
-
-
-
-
-body.scrolled footer {
-    transform: scaleY(var(--footer-scale-scroll));
-    box-shadow: 0 -8px 20px rgba(74, 116, 119, 0.10);
-}
-
-body.scrolled .footer {
-    padding-top: 0.75rem;
-}
-
-body.scrolled .footer-center {
-    font-size: 0.85rem;
-}
-
-body.scrolled .footer-legal {
-    padding: 0.35rem 0;
-    font-size: 0.52em;
-}
-
-body.scrolled .footer-left .btn,
-body.scrolled .footer-right .btn {
-    padding: 0.2rem 0.8rem;
 }

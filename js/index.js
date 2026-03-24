@@ -1,11 +1,10 @@
 document.addEventListener('DOMContentLoaded', init);
 
-// Usuario logueado (se guarda en sesión)
-let currentUser = JSON.parse(sessionStorage.getItem('adoptme_user') || 'null');
+// Usuario logueado unificado (usamos localStorage como en la V2)
+let currentUser = JSON.parse(localStorage.getItem('userActive') || 'null');
 
 const DB_PATH = '../data/db.json';
 const TMPL    = '../html/templates/';
-
 
 function loadTemplate(fileName, id) {
     return fetch(fileName)
@@ -20,7 +19,6 @@ function loadTemplate(fileName, id) {
         .catch(err => console.error(err));
 }
 
-
 async function fetchDB() {
     try {
         const res = await fetch(DB_PATH);
@@ -32,71 +30,57 @@ async function fetchDB() {
     }
 }
 
-
 // ─── ROUTER ───────────────────────────────────────────────────────────────────
 async function router(db) {
     const hash = window.location.hash.slice(1).split('?')[0] || 'home';
-
     window.scrollTo(0, 0);
 
     switch (hash) {
-
         case 'home':
         case '':
             await loadTemplate(TMPL + 'template_home.html', 'main');
             renderHome(db.home);
             break;
-
         case 'adoption_list':
             await loadTemplate(TMPL + 'template_adoption_list.html', 'main');
             renderAdoptionList(db.animals);
             break;
-
         case 'pet_profile':
             await loadTemplate(TMPL + 'template_pet_profile.html', 'main');
             renderPetProfile(db.animals);
             break;
-
         case 'login':
             await loadTemplate(TMPL + 'template_login.html', 'main');
             initLogin(db.users);
             break;
-
         case 'about_us':
             await loadTemplate(TMPL + 'template_about_us.html', 'main');
             renderAboutUs(db.about_us);
             break;
-
         case 'stories':
             await loadTemplate(TMPL + 'template_stories.html', 'main');
             renderStories(db.stories);
             break;
-
         case 'faq':
             await loadTemplate(TMPL + 'template_faq.html', 'main');
             renderFaq(db.faq);
             break;
-
         case 'legal':
             await loadTemplate(TMPL + 'template_legal.html', 'main');
             renderLegal(db.legal);
             break;
-
         case 'contact_us':
             await loadTemplate(TMPL + 'template_contact_us.html', 'main');
             renderContactUs(db.contact_us);
             break;
-
         case 'schedule':
             await loadTemplate(TMPL + 'template_schedule.html', 'main');
-            renderSchedule(db.schedule);
+            renderSchedule(db.schedule); // Rescatado de la V1
             break;
-
         default:
             await loadTemplate(TMPL + 'template_home.html', 'main');
     }
 }
-
 
 // ─── INIT ─────────────────────────────────────────────────────────────────────
 async function init() {
@@ -110,12 +94,10 @@ async function init() {
     renderFooter(db.footer);
 
     await router(db);
-
     window.addEventListener('hashchange', () => router(db));
 }
 
-
-// ─── RENDER HEADER ────────────────────────────────────────────────────────────
+// ─── RENDER HEADER (Versión Avanzada V2) ──────────────────────────────────────
 function renderHeader(headerData) {
     const logo = document.querySelector('.logo');
     if (logo) {
@@ -133,7 +115,7 @@ function renderHeader(headerData) {
             socials.innerHTML += `
                 <a class="social-ico" href="${link.url}" target="_blank"
                    rel="noopener noreferrer" aria-label="${link.name}">
-                    <i class="bi ${link.icon}"></i>
+                   <i class="bi ${link.icon || ''}"></i>
                 </a>`;
         });
     }
@@ -142,11 +124,40 @@ function renderHeader(headerData) {
     if (nav) {
         nav.innerHTML = '';
         headerData.navLinks.forEach(link => {
-            nav.innerHTML += `<a class="btn" href="${link.url}">${link.name}</a>`;
+            if (link.name === "Acceder" && currentUser) {
+                const container = document.createElement('div');
+                container.className = 'btn user-nav-stack';
+
+                const nameLabel = document.createElement('span');
+                nameLabel.className = 'user-nav-name';
+                nameLabel.textContent = ` ${currentUser.name}`;
+
+                const logoutBtn = document.createElement('a');
+                logoutBtn.className = 'btn-logout-nav';
+                logoutBtn.textContent = 'Cerrar Sesión';
+                logoutBtn.href = "#home";
+
+                logoutBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    localStorage.removeItem('userActive');
+                    currentUser = null;
+                    alert("Has cerrado sesión. ¡Vuelve pronto!");
+                    location.reload();
+                });
+
+                container.appendChild(nameLabel);
+                container.appendChild(logoutBtn);
+                nav.appendChild(container);
+            } else {
+                const a = document.createElement('a');
+                a.className = 'btn';
+                a.textContent = link.name;
+                a.href = link.url;
+                nav.appendChild(a);
+            }
         });
     }
 }
-
 
 // ─── RENDER FOOTER ────────────────────────────────────────────────────────────
 function renderFooter(footerData) {
@@ -176,10 +187,8 @@ function renderFooter(footerData) {
     if (legal) legal.textContent = footerData.copyright;
 }
 
-
-// ─── RENDER HOME ──────────────────────────────────────────────────────────────
+// ─── RENDER HOME (Versión Carrusel V1) ────────────────────────────────────────
 function renderHome(data) {
-    // ── Texto ──
     const text = document.getElementById('hero-text');
     if (text && data.text) {
         text.innerHTML = data.text
@@ -188,18 +197,16 @@ function renderHome(data) {
             .join('');
     }
 
-    // ── Carrusel ──
     const images = data.images || (data.image ? [data.image] : []);
     if (!images.length) return;
 
     const track = document.getElementById('carousel-track');
     const dots  = document.getElementById('carousel-dots');
-    if (!track) return;
+    if (!track) return; // Fallback si el HTML no tiene carrusel
 
     let current = 0;
     let autoTimer;
 
-    // Crear slides
     track.innerHTML = '';
     images.forEach(src => {
         const slide = document.createElement('div');
@@ -208,7 +215,6 @@ function renderHome(data) {
         track.appendChild(slide);
     });
 
-    // Crear puntos
     if (dots) {
         dots.innerHTML = '';
         images.forEach((_, i) => {
@@ -238,11 +244,10 @@ function renderHome(data) {
     resetAuto();
 }
 
-// ─── RENDER ABOUT US ──────────────────────────────────────────────────────────
+// ─── RENDER BASIC PAGES ───────────────────────────────────────────────────────
 function renderAboutUs(data) {
     const container = document.getElementById('about_us');
     if (!container) return;
-
     container.innerHTML = '';
     data.forEach(member => {
         container.innerHTML += `
@@ -255,12 +260,9 @@ function renderAboutUs(data) {
     });
 }
 
-
-// ─── RENDER FAQ ───────────────────────────────────────────────────────────────
 function renderFaq(faqData) {
     const container = document.getElementById('faq_item');
     if (!container) return;
-
     container.innerHTML = '';
     faqData.forEach(item => {
         container.innerHTML += `
@@ -269,19 +271,14 @@ function renderFaq(faqData) {
                     <input type="checkbox" class="faq-toggle" />
                     ${item.question}
                 </label>
-                <div class="faq-answer">
-                    <p>${item.answer}</p>
-                </div>
+                <div class="faq-answer"><p>${item.answer}</p></div>
             </div>`;
     });
 }
 
-
-// ─── RENDER LEGAL ─────────────────────────────────────────────────────────────
 function renderLegal(legalData) {
     const container = document.getElementById('faq_item');
     if (!container) return;
-
     container.innerHTML = '';
     legalData.forEach(item => {
         container.innerHTML += `
@@ -290,19 +287,14 @@ function renderLegal(legalData) {
                     <input type="checkbox" class="faq-toggle" />
                     ${item.title}
                 </label>
-                <div class="faq-answer">
-                    <p>${item.content}</p>
-                </div>
+                <div class="faq-answer"><p>${item.content}</p></div>
             </div>`;
     });
 }
 
-
-// ─── RENDER STORIES ───────────────────────────────────────────────────────────
 function renderStories(storiesData) {
     const container = document.getElementById('review');
     if (!container) return;
-
     container.innerHTML = '';
     storiesData.forEach(story => {
         container.innerHTML += `
@@ -315,14 +307,11 @@ function renderStories(storiesData) {
     });
 }
 
-
-// ─── RENDER CONTACT US ────────────────────────────────────────────────────────
+// ─── RENDER CONTACT US (Versión Avanzada V1) ──────────────────────────────────
 function renderContactUs(data) {
-    // Título izquierda
     const title = document.getElementById('contact-title');
     if (title && data.title) title.textContent = data.title;
 
-    // Razones para contactar
     const reasons = document.getElementById('contact-reasons');
     if (reasons && data.reasons) {
         reasons.innerHTML = '';
@@ -338,11 +327,9 @@ function renderContactUs(data) {
         });
     }
 
-    // Mapa de Google Maps
     const map = document.getElementById('contact-map-iframe');
     if (map && data.mapUrl) map.src = data.mapUrl;
 
-    // Info de contacto
     const list = document.getElementById('contact-list');
     if (list && data.info) {
         list.innerHTML = '';
@@ -352,26 +339,21 @@ function renderContactUs(data) {
     }
 }
 
-
-// ─── RENDER ADOPTION LIST ─────────────────────────────────────────────────────
+// ─── RENDER ADOPTION LIST (Versión Avanzada Filtros V1) ───────────────────────
 function renderAdoptionList(animals) {
-
     function parseWeight(w) { return parseFloat(w) || 0; }
-
     function weightRange(w) {
         const kg = parseWeight(w);
         if (kg <= 5)  return 'Pequeño (≤5kg)';
         if (kg <= 15) return 'Mediano (6-15kg)';
         return 'Grande (>15kg)';
     }
-
     function ageRange(age) {
         if (age <= 2) return 'Cachorro (0-2 años)';
         if (age <= 6) return 'Adulto (3-6 años)';
         return 'Senior (7+ años)';
     }
 
-    // ── Rellenar opciones dinámicas en los select ──
     function fillSelect(id, values) {
         const sel = document.getElementById(id);
         if (!sel) return;
@@ -383,7 +365,6 @@ function renderAdoptionList(animals) {
                 sel.appendChild(opt);
             }
         });
-        // Restaurar estado guardado (RF-16)
         const saved = sessionStorage.getItem('filter_' + id);
         if (saved) sel.value = saved;
     }
@@ -392,14 +373,12 @@ function renderAdoptionList(animals) {
     fillSelect('filter-hair',  animals.map(a => a["hair type"]));
     fillSelect('filter-mood',  animals.map(a => a.mood));
 
-    // Restaurar selects fijos
     ['filter-age', 'filter-weight', 'sort-select'].forEach(id => {
         const sel = document.getElementById(id);
         const saved = sessionStorage.getItem('filter_' + id);
         if (sel && saved) sel.value = saved;
     });
 
-    // ── Aplicar filtros combinados (RF-15) ──
     function applyFilters() {
         const breed  = document.getElementById('filter-breed')?.value  || 'all';
         const age    = document.getElementById('filter-age')?.value    || 'all';
@@ -408,7 +387,6 @@ function renderAdoptionList(animals) {
         const mood   = document.getElementById('filter-mood')?.value   || 'all';
         const sort   = document.getElementById('sort-select')?.value   || '';
 
-        // Guardar estado (RF-16)
         sessionStorage.setItem('filter_filter-breed',  breed);
         sessionStorage.setItem('filter_filter-age',    age);
         sessionStorage.setItem('filter_filter-weight', weight);
@@ -425,7 +403,6 @@ function renderAdoptionList(animals) {
             return true;
         });
 
-        // Ordenar (RF-17)
         if (sort === 'age-asc')     result.sort((a, b) => a.age - b.age);
         if (sort === 'age-desc')    result.sort((a, b) => b.age - a.age);
         if (sort === 'weight-asc')  result.sort((a, b) => parseWeight(a.weight) - parseWeight(b.weight));
@@ -437,12 +414,10 @@ function renderAdoptionList(animals) {
         renderAnimalCards(result);
     }
 
-    // Escuchar cambios en todos los select
     ['filter-breed','filter-age','filter-weight','filter-hair','filter-mood','sort-select'].forEach(id => {
         document.getElementById(id)?.addEventListener('change', applyFilters);
     });
 
-    // Reset (RF-16: limpia sessionStorage)
     document.getElementById('filter-reset')?.addEventListener('click', () => {
         ['filter-breed','filter-age','filter-weight','filter-hair','filter-mood','sort-select'].forEach(id => {
             const sel = document.getElementById(id);
@@ -454,7 +429,6 @@ function renderAdoptionList(animals) {
 
     applyFilters();
 }
-
 
 function renderAnimalCards(animals) {
     const container = document.getElementById('pets-list');
@@ -484,7 +458,6 @@ function renderAnimalCards(animals) {
     });
 }
 
-
 // ─── RENDER PET PROFILE ───────────────────────────────────────────────────────
 function renderPetProfile(animals) {
     const hashParams = window.location.hash.split('?')[1] || '';
@@ -503,49 +476,112 @@ function renderPetProfile(animals) {
         boxes[4].textContent = animal.description;
     }
 
-    const photo = document.querySelector('.dog-profile .photo-card-profile');
+    const photo = document.querySelector('.dog-profile .photo-card-profile, .dog-profile .photo-card');
     if (photo) {
-        photo.src = animal.image;
-        photo.alt = `Foto de ${animal.name}`;
+        if(photo.tagName === 'IMG') {
+            photo.src = animal.image;
+            photo.alt = `Foto de ${animal.name}`;
+        } else {
+            photo.style.backgroundImage = `url('${animal.image}')`;
+            photo.style.backgroundSize  = 'cover';
+        }
     }
 }
 
-
-// ─── LOGIN ────────────────────────────────────────────────────────────────────
+// ─── LOGIN (Versión Avanzada V2) ──────────────────────────────────────────────
 function initLogin(users) {
-    const form = document.querySelector('.login-inputs');
+    const form = document.getElementById('auth-form');
     if (!form) return;
 
-    const errorMsg = document.createElement('p');
-    errorMsg.style.cssText = 'color:red; text-align:center; margin-top:0.5rem;';
-    form.appendChild(errorMsg);
+    const regFields = document.querySelectorAll('.reg-only');
+    const btnVerify = document.getElementById('btn-verify');
+    const btnLogin = document.getElementById('btn-login');
+    const btnRegister = document.getElementById('btn-register');
+
+    document.querySelectorAll('.toggle-password').forEach(ojo => {
+        ojo.addEventListener('click', function() {
+            const input = this.previousElementSibling;
+            if (input.type === "password") {
+                input.type = "text";
+                this.style.color = "#111211";
+            } else {
+                input.type = "password";
+                this.style.color = "#10946d";
+            }
+        });
+    });
+
+    const esEmailValido = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    const esTelefonoValido = (tel) => /^[6789]\d{8}$/.test(tel);
+    const esPasswordSegura = (pass) => {
+        const reglas = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/;
+        return reglas.test(pass);
+    };
+
+    btnVerify.addEventListener('click', () => {
+        const email = document.getElementById('register-email').value;
+        const pass = document.getElementById('register-password').value;
+        const isLoginMode = regFields[0].classList.contains('hidden');
+
+        if (!esEmailValido(email)) return alert("El correo no parece un correo real.");
+        if (!esPasswordSegura(pass)) return alert("La contraseña es muy débil. Necesitas 8 caracteres, una mayúscula, un número y un símbolo.");
+
+        if (!isLoginMode) {
+            const tel = document.getElementById('register-phone').value;
+            const repass = document.getElementById('register-repassword').value;
+
+            if (!esTelefonoValido(tel)) return alert("El teléfono debe tener 9 números y empezar por 6,7,8,9.");
+            if (pass !== repass) return alert("¡Las contraseñas no son iguales!");
+        }
+
+        alert("✅ ¡Todo perfecto! Ya puedes darle al botón de abajo.");
+        btnLogin.style.boxShadow = "0 0 15px #6bffb5";
+    });
+
+    btnLogin.addEventListener('click', () => {
+        regFields.forEach(field => {
+            field.classList.add('hidden');
+            field.removeAttribute('required');
+        });
+        btnLogin.classList.remove('secondary');
+        btnRegister.classList.add('secondary');
+        btnLogin.type = "submit";
+    });
+
+    btnRegister.addEventListener('click', () => {
+        regFields.forEach(field => {
+            field.classList.remove('hidden');
+            field.setAttribute('required', '');
+        });
+        btnRegister.classList.remove('secondary');
+        btnLogin.classList.add('secondary');
+        btnLogin.type = "button";
+    });
 
     form.addEventListener('submit', e => {
         e.preventDefault();
+        const email = document.getElementById('register-email').value;
+        const pass = document.getElementById('register-password').value;
+        const isLoginMode = regFields[0].classList.contains('hidden');
 
-        const inputUser = document.getElementById('login-name').value.trim();
-        const inputPass = document.getElementById('login-password').value;
-
-        // Busca por campo "user" o por "email"
-        const found = users.find(u =>
-            (u.user === inputUser || u.email === inputUser) && u.password === inputPass
-        );
-
-        if (found) {
-            currentUser = found;
-            sessionStorage.setItem('adoptme_user', JSON.stringify(found));
-            errorMsg.style.color = 'green';
-            errorMsg.textContent = `¡Bienvenido, ${found.name}!`;
-            // Redirige al home tras 1 segundo
-            setTimeout(() => { window.location.hash = '#home'; }, 1000);
+        if (isLoginMode) {
+            const encontrado = users.find(u => u.email === email && u.password === pass);
+            if (encontrado) {
+                localStorage.setItem('userActive', JSON.stringify(encontrado));
+                currentUser = encontrado;
+                alert(`¡Bienvenido, ${encontrado.name}!`);
+                window.location.hash = '#home';
+                location.reload();
+            } else {
+                alert('Correo o contraseña incorrectos.');
+            }
         } else {
-            errorMsg.style.color = 'red';
-            errorMsg.textContent = 'Usuario o contraseña incorrectos.';
+            alert('¡Te has registrado correctamente!');
         }
     });
 }
 
-// ─── RENDER SCHEDULE ──────────────────────────────────────────────────────────
+// ─── RENDER SCHEDULE (Versión Calendario V1 Adaptada) ─────────────────────────
 function renderSchedule(scheduleData) {
     const loginMsg  = document.getElementById('schedule-login-msg');
     const app       = document.getElementById('schedule-app');
@@ -561,7 +597,6 @@ function renderSchedule(scheduleData) {
 
     initCalendar(scheduleData);
 }
-
 
 function initCalendar(scheduleData) {
     const slots    = scheduleData ? scheduleData.slots : ['10:00','11:00','12:00','13:00','16:00','17:00','18:00'];
@@ -586,19 +621,20 @@ function initCalendar(scheduleData) {
         title.textContent = new Date(year, month, 1)
             .toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
 
-        // Primer día de la semana (lunes = 0)
         const firstDay = (new Date(year, month, 1).getDay() + 6) % 7;
         const daysInMonth = new Date(year, month + 1, 0).getDate();
         const today = new Date();
 
         grid.innerHTML = '';
 
-        // Celdas vacías
         for (let i = 0; i < firstDay; i++) {
             const empty = document.createElement('div');
             empty.className = 'cal-day empty';
             grid.appendChild(empty);
         }
+
+        // Usamos email como identificador único de usuario si no hay 'user'
+        const userId = currentUser.user || currentUser.email;
 
         for (let d = 1; d <= daysInMonth; d++) {
             const dayEl  = document.createElement('div');
@@ -606,7 +642,7 @@ function initCalendar(scheduleData) {
             const isPast = date < new Date(today.getFullYear(), today.getMonth(), today.getDate());
             const isToday = date.toDateString() === today.toDateString();
             const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-            const hasBooking = bookings.some(b => b.date === dateStr && b.user === currentUser.user);
+            const hasBooking = bookings.some(b => b.date === dateStr && b.userId === userId);
 
             dayEl.textContent = d;
             dayEl.className   = 'cal-day' +
@@ -618,18 +654,17 @@ function initCalendar(scheduleData) {
                 dayEl.addEventListener('click', () => {
                     document.querySelectorAll('.cal-day.selected').forEach(el => el.classList.remove('selected'));
                     dayEl.classList.add('selected');
-                    renderSlots(dateStr, slots, bookings, saveBookings, renderCalendar, renderBookings);
+                    renderSlots(dateStr, slots, bookings, saveBookings, renderCalendar, renderBookings, userId);
                 });
             }
-
             grid.appendChild(dayEl);
         }
 
         slotsEl.style.display = 'none';
-        renderBookings(bookings);
+        renderBookings(bookings, userId);
     }
 
-    function renderSlots(dateStr, slots, bookings, saveBookings, renderCalendar, renderBookings) {
+    function renderSlots(dateStr, slots, bookings, saveBookings, renderCalendar, renderBookings, userId) {
         const slotsEl   = document.getElementById('cal-slots');
         const slotsGrid = document.getElementById('cal-slots-grid');
         const slotsTitle = document.getElementById('cal-slots-title');
@@ -642,36 +677,35 @@ function initCalendar(scheduleData) {
         slots.forEach(hour => {
             const btn      = document.createElement('button');
             const existing = bookings.find(b => b.date === dateStr && b.hour === hour);
-            const isMine   = existing && existing.user === currentUser.user;
+            const isMine   = existing && existing.userId === userId;
 
             btn.textContent = hour;
             btn.className   = 'slot-btn' + (isMine ? ' mine' : existing ? ' booked' : '');
 
             if (!existing) {
                 btn.addEventListener('click', () => {
-                    bookings.push({ date: dateStr, hour, user: currentUser.user, name: currentUser.name });
+                    bookings.push({ date: dateStr, hour, userId: userId, name: currentUser.name });
                     saveBookings();
                     renderCalendar();
-                    renderSlots(dateStr, slots, bookings, saveBookings, renderCalendar, renderBookings);
+                    renderSlots(dateStr, slots, bookings, saveBookings, renderCalendar, renderBookings, userId);
                 });
             } else if (isMine) {
                 btn.title = 'Tu reserva — haz clic para cancelar';
                 btn.addEventListener('click', () => {
-                    const idx = bookings.findIndex(b => b.date === dateStr && b.hour === hour && b.user === currentUser.user);
+                    const idx = bookings.findIndex(b => b.date === dateStr && b.hour === hour && b.userId === userId);
                     if (idx !== -1) bookings.splice(idx, 1);
                     saveBookings();
                     renderCalendar();
-                    renderSlots(dateStr, slots, bookings, saveBookings, renderCalendar, renderBookings);
+                    renderSlots(dateStr, slots, bookings, saveBookings, renderCalendar, renderBookings, userId);
                 });
             }
-
             slotsGrid.appendChild(btn);
         });
     }
 
-    function renderBookings(bookings) {
+    function renderBookings(bookings, userId) {
         const myBookings = bookings
-            .filter(b => b.user === currentUser.user)
+            .filter(b => b.userId === userId)
             .sort((a, b) => a.date.localeCompare(b.date) || a.hour.localeCompare(b.hour));
 
         const container  = document.getElementById('cal-bookings');
@@ -695,15 +729,13 @@ function initCalendar(scheduleData) {
             cancelBtn.className   = 'cancel-btn';
             cancelBtn.textContent = 'Cancelar';
             cancelBtn.addEventListener('click', () => {
-                const idx = bookings.findIndex(bk => bk.date === b.date && bk.hour === b.hour && bk.user === currentUser.user);
+                const idx = bookings.findIndex(bk => bk.date === b.date && bk.hour === b.hour && bk.userId === userId);
                 if (idx !== -1) bookings.splice(idx, 1);
                 saveBookings();
                 renderCalendar();
                 const selected = document.querySelector('.cal-day.selected');
                 if (selected) {
-                    // Re-render slots si hay día seleccionado
-                    const dateStr = b.date;
-                    renderSlots(dateStr, slots, bookings, saveBookings, renderCalendar, renderBookings);
+                    renderSlots(b.date, slots, bookings, saveBookings, renderCalendar, renderBookings, userId);
                 }
             });
 
@@ -712,7 +744,6 @@ function initCalendar(scheduleData) {
         });
     }
 
-    // Navegación mes
     document.getElementById('cal-prev').addEventListener('click', () => {
         current.setMonth(current.getMonth() - 1);
         renderCalendar();
@@ -724,6 +755,4 @@ function initCalendar(scheduleData) {
     });
 
     renderCalendar();
-
-
 }

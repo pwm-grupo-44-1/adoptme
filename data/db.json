@@ -1,6 +1,6 @@
 {
   "header": {
-    "logo": "../img/logo-adoptme.png",
+    "logo": "../img/Logo.png",
     "title": "AdoptMe!",
     "socialLinks": [
       {
@@ -83,22 +83,22 @@
   },
   "about_us": [
     {
-      "name": "Alejandro C. Hernández",
-      "role": "Voluntario principal",
-      "description": "Lleva 5 años dedicando su tiempo libre al cuidado y socialización de los animales en acogida.",
+      "name": "Alejandro Celis",
+      "role": "Fundadora",
+      "description": "Veterinaria con más de 10 años de experiencia. Creó AdoptMe! con el sueño de encontrar un hogar para cada animal abandonado.",
       "image": "https://randomuser.me/api/portraits/men/16.jpg"
     },
     {
-      "name": "Esther Viera",
-      "role": "Fundadora",
-      "description": "Veterinaria con más de 10 años de experiencia. Creó AdoptMe! con el sueño de encontrar un hogar para cada animal abandonado.",
-      "image": "https://randomuser.me/api/portraits/women/68.jpg"
-    },
-    {
-      "name": "Nestor J. Henríquez",
+      "name": "Nestor Jesús",
       "role": "Coordinador de adopciones",
       "description": "Se encarga de gestionar el proceso de adopción y asegurarse de que cada mascota encuentre la familia perfecta.",
       "image": "https://randomuser.me/api/portraits/men/32.jpg"
+    },
+    {
+      "name": "Esther Viera",
+      "role": "Voluntaria principal",
+      "description": "Lleva 5 años dedicando su tiempo libre al cuidado y socialización de los animales en acogida.",
+      "image": "https://randomuser.me/api/portraits/women/68.jpg"
     }
   ],
   "faq": [
@@ -201,294 +201,6 @@
     ]
   },
   "animals": [
-    {
-      "id": 1,
-      "name": "Chispita",
-      "breed": "Caniche",
-      "description": "Perrita muy cariñosa y juguetona, perfecta para familias con niños.",
-      "age": 3,
-      "mood": "Alegre y juguetona",
-      "weight": "5 kg",
-      "hair type": "Pelo corto rizado",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/7/73/Lion_waiting_in_Namibia.jpg",
-      "clicks": 0
-    },
-    {
-      "id": 2,
-      "name": "Thor",
-      "breed": "Pastor Alemán",
-      "description": "Perro leal y protector. Necesita espacio y ejercicio diario.",
-      "age": 5,
-      "mood": "Tranquilo y obediente",
-      "weight": "30 kg",
-      "hair type": "Pelo largo",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/d/d9/Collage_of_Nine_Dogs.jpg",
-      "clicks": 0
-    },
-    {
-      "id": 3,
-      "name": "Michi",
-      "breed": "Gato común",
-      "description": "Gato independiente pero muy cariñoso cuando quiere. Le encanta el sol.",
-      "age": 2,
-      "mood": "Independiente",
-      "weight": "4 kg",
-      "hair type": "Pelo corto",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/4/4d/Cat_November_2010-1a.jpg",
-      "clicks": 0
-    },
-    {
-      "id": 4,
-      "name": "Luna",
-      "breed": "Labrador",
-      "description": "Perra muy sociable y activa. Ideal para familias con jardín.",
-      "age": 4,
-      "mood": "Enérgica y sociable",
-      "weight": "25 kg",
-      "hair type": "Pelo corto liso",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/3/34/Labrador_on_Quantock_%282175262184%29.jpg",
-      "clicks": 0
-    },
-    {
-      "id": 5,
-      "name": "Rocky",
-      "breed": "Bulldog Francés",
-      "description": "Pequeño pero con mucha personalidad. Le encanta el sofá.",
-      "age": 6,
-      "mood": "Perezoso y afectuoso",
-      "weight": "12 kg",
-      "hair type": "Pelo muy corto",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/7/73/Lion_waiting_in_Namibia.jpg",
-      "clicks": 0
-    },
-    {
-      "id": 6,
-      "name": "Simba",
-      "breed": "Gato persa",
-      "description": "Gato elegante y tranquilo. Necesita cepillado diario.",
-      "age": 3,
-      "mood": "Calmado y curioso",
-      "weight": "5 kg",
-      "hair type": "Pelo largo",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/4/4d/Cat_November_2010-1a.jpg",
-      "clicks": 0
-    },
-    {
-      "id": 1,
-      "name": "Chispita",
-      "breed": "Caniche",
-      "description": "Perrita muy cariñosa y juguetona, perfecta para familias con niños.",
-      "age": 3,
-      "mood": "Alegre y juguetona",
-      "weight": "5 kg",
-      "hair type": "Pelo corto rizado",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/7/73/Lion_waiting_in_Namibia.jpg",
-      "clicks": 0
-    },
-    {
-      "id": 2,
-      "name": "Thor",
-      "breed": "Pastor Alemán",
-      "description": "Perro leal y protector. Necesita espacio y ejercicio diario.",
-      "age": 5,
-      "mood": "Tranquilo y obediente",
-      "weight": "30 kg",
-      "hair type": "Pelo largo",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/d/d9/Collage_of_Nine_Dogs.jpg",
-      "clicks": 0
-    },
-    {
-      "id": 3,
-      "name": "Michi",
-      "breed": "Gato común",
-      "description": "Gato independiente pero muy cariñoso cuando quiere. Le encanta el sol.",
-      "age": 2,
-      "mood": "Independiente",
-      "weight": "4 kg",
-      "hair type": "Pelo corto",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/4/4d/Cat_November_2010-1a.jpg",
-      "clicks": 0
-    },
-    {
-      "id": 4,
-      "name": "Luna",
-      "breed": "Labrador",
-      "description": "Perra muy sociable y activa. Ideal para familias con jardín.",
-      "age": 4,
-      "mood": "Enérgica y sociable",
-      "weight": "25 kg",
-      "hair type": "Pelo corto liso",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/3/34/Labrador_on_Quantock_%282175262184%29.jpg",
-      "clicks": 0
-    },
-    {
-      "id": 5,
-      "name": "Rocky",
-      "breed": "Bulldog Francés",
-      "description": "Pequeño pero con mucha personalidad. Le encanta el sofá.",
-      "age": 6,
-      "mood": "Perezoso y afectuoso",
-      "weight": "12 kg",
-      "hair type": "Pelo muy corto",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/7/73/Lion_waiting_in_Namibia.jpg",
-      "clicks": 0
-    },
-    {
-      "id": 6,
-      "name": "Simba",
-      "breed": "Gato persa",
-      "description": "Gato elegante y tranquilo. Necesita cepillado diario.",
-      "age": 3,
-      "mood": "Calmado y curioso",
-      "weight": "5 kg",
-      "hair type": "Pelo largo",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/4/4d/Cat_November_2010-1a.jpg",
-      "clicks": 0
-    },
-    {
-      "id": 1,
-      "name": "Chispita",
-      "breed": "Caniche",
-      "description": "Perrita muy cariñosa y juguetona, perfecta para familias con niños.",
-      "age": 3,
-      "mood": "Alegre y juguetona",
-      "weight": "5 kg",
-      "hair type": "Pelo corto rizado",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/7/73/Lion_waiting_in_Namibia.jpg",
-      "clicks": 0
-    },
-    {
-      "id": 2,
-      "name": "Thor",
-      "breed": "Pastor Alemán",
-      "description": "Perro leal y protector. Necesita espacio y ejercicio diario.",
-      "age": 5,
-      "mood": "Tranquilo y obediente",
-      "weight": "30 kg",
-      "hair type": "Pelo largo",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/d/d9/Collage_of_Nine_Dogs.jpg",
-      "clicks": 0
-    },
-    {
-      "id": 3,
-      "name": "Michi",
-      "breed": "Gato común",
-      "description": "Gato independiente pero muy cariñoso cuando quiere. Le encanta el sol.",
-      "age": 2,
-      "mood": "Independiente",
-      "weight": "4 kg",
-      "hair type": "Pelo corto",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/4/4d/Cat_November_2010-1a.jpg",
-      "clicks": 0
-    },
-    {
-      "id": 4,
-      "name": "Luna",
-      "breed": "Labrador",
-      "description": "Perra muy sociable y activa. Ideal para familias con jardín.",
-      "age": 4,
-      "mood": "Enérgica y sociable",
-      "weight": "25 kg",
-      "hair type": "Pelo corto liso",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/3/34/Labrador_on_Quantock_%282175262184%29.jpg",
-      "clicks": 0
-    },
-    {
-      "id": 5,
-      "name": "Rocky",
-      "breed": "Bulldog Francés",
-      "description": "Pequeño pero con mucha personalidad. Le encanta el sofá.",
-      "age": 6,
-      "mood": "Perezoso y afectuoso",
-      "weight": "12 kg",
-      "hair type": "Pelo muy corto",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/7/73/Lion_waiting_in_Namibia.jpg",
-      "clicks": 0
-    },
-    {
-      "id": 6,
-      "name": "Simba",
-      "breed": "Gato persa",
-      "description": "Gato elegante y tranquilo. Necesita cepillado diario.",
-      "age": 3,
-      "mood": "Calmado y curioso",
-      "weight": "5 kg",
-      "hair type": "Pelo largo",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/4/4d/Cat_November_2010-1a.jpg",
-      "clicks": 0
-    },
-    {
-      "id": 1,
-      "name": "Chispita",
-      "breed": "Caniche",
-      "description": "Perrita muy cariñosa y juguetona, perfecta para familias con niños.",
-      "age": 3,
-      "mood": "Alegre y juguetona",
-      "weight": "5 kg",
-      "hair type": "Pelo corto rizado",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/7/73/Lion_waiting_in_Namibia.jpg",
-      "clicks": 0
-    },
-    {
-      "id": 2,
-      "name": "Thor",
-      "breed": "Pastor Alemán",
-      "description": "Perro leal y protector. Necesita espacio y ejercicio diario.",
-      "age": 5,
-      "mood": "Tranquilo y obediente",
-      "weight": "30 kg",
-      "hair type": "Pelo largo",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/d/d9/Collage_of_Nine_Dogs.jpg",
-      "clicks": 0
-    },
-    {
-      "id": 3,
-      "name": "Michi",
-      "breed": "Gato común",
-      "description": "Gato independiente pero muy cariñoso cuando quiere. Le encanta el sol.",
-      "age": 2,
-      "mood": "Independiente",
-      "weight": "4 kg",
-      "hair type": "Pelo corto",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/4/4d/Cat_November_2010-1a.jpg",
-      "clicks": 0
-    },
-    {
-      "id": 4,
-      "name": "Luna",
-      "breed": "Labrador",
-      "description": "Perra muy sociable y activa. Ideal para familias con jardín.",
-      "age": 4,
-      "mood": "Enérgica y sociable",
-      "weight": "25 kg",
-      "hair type": "Pelo corto liso",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/3/34/Labrador_on_Quantock_%282175262184%29.jpg",
-      "clicks": 0
-    },
-    {
-      "id": 5,
-      "name": "Rocky",
-      "breed": "Bulldog Francés",
-      "description": "Pequeño pero con mucha personalidad. Le encanta el sofá.",
-      "age": 6,
-      "mood": "Perezoso y afectuoso",
-      "weight": "12 kg",
-      "hair type": "Pelo muy corto",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/7/73/Lion_waiting_in_Namibia.jpg",
-      "clicks": 0
-    },
-    {
-      "id": 6,
-      "name": "Simba",
-      "breed": "Gato persa",
-      "description": "Gato elegante y tranquilo. Necesita cepillado diario.",
-      "age": 3,
-      "mood": "Calmado y curioso",
-      "weight": "5 kg",
-      "hair type": "Pelo largo",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/4/4d/Cat_November_2010-1a.jpg",
-      "clicks": 0
-    },
     {
       "id": 1,
       "name": "Chispita",
