@@ -132,47 +132,15 @@ function renderHeader(headerData) {
         });
     }
 
-    const user = JSON.parse(localStorage.getItem('userActive'));
     const nav = document.querySelector('nav');
-
     if (nav) {
         nav.innerHTML = '';
         headerData.navLinks.forEach(link => {
-
-            if (link.name === "Acceder" && user) {
-                const container = document.createElement('div');
-                container.className = 'btn user-nav-stack';
-
-                const nameLabel = document.createElement('span');
-                nameLabel.className = 'user-nav-name';
-                nameLabel.textContent = ` ${user.name}`;
-
-                const logoutBtn = document.createElement('a');
-                logoutBtn.className = 'btn-logout-nav'; // Clase nueva para estilo pequeño
-                logoutBtn.textContent = 'Cerrar Sesión';
-                logoutBtn.href = "#home";
-
-                logoutBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    localStorage.removeItem('userActive');
-                    alert("Has cerrado sesión. ¡Vuelve pronto!");
-                    location.reload();
-                });
-
-                container.appendChild(nameLabel);
-                container.appendChild(logoutBtn);
-                nav.appendChild(container);
-
-            } else {
-                const a = document.createElement('a');
-                a.className = 'btn';
-                a.textContent = link.name;
-                a.href = link.url;
-                nav.appendChild(a);
-            }
+            nav.innerHTML += `<a class="btn" href="${link.url}">${link.name}</a>`;
         });
     }
 }
+
 
 // ─── RENDER FOOTER ────────────────────────────────────────────────────────────
 function renderFooter(footerData) {
@@ -353,13 +321,12 @@ function renderAdoptionList(animals) {
 }
 
 
-// ─── RENDER ANIMAL CARDS ─────────────────────────────────────────────────────
 function renderAnimalCards(animals) {
     const container = document.getElementById('pets-list');
     if (!container) return;
     container.innerHTML = '';
-    animals.forEach(animal => {
 
+    animals.forEach(animal => {
         container.innerHTML += `
             <div class="item-list">
                 <div class="photo-btn-column">
@@ -381,6 +348,7 @@ function renderAnimalCards(animals) {
             </div>`;
     });
 }
+
 
 // ─── RENDER PET PROFILE ───────────────────────────────────────────────────────
 function renderPetProfile(animals) {
@@ -410,102 +378,33 @@ function renderPetProfile(animals) {
 
 
 // ─── LOGIN ────────────────────────────────────────────────────────────────────
-
 function initLogin(users) {
-    const form = document.getElementById('auth-form');
+    const form = document.querySelector('.login-inputs');
     if (!form) return;
 
-    const regFields = document.querySelectorAll('.reg-only');
-    const btnVerify = document.getElementById('btn-verify');
-    const btnLogin = document.getElementById('btn-login');
-    const btnRegister = document.getElementById('btn-register');
+    const errorMsg = document.createElement('p');
+    errorMsg.style.cssText = 'color:red; text-align:center; margin-top:0.5rem;';
+    form.appendChild(errorMsg);
 
-    // El ojo
-    document.querySelectorAll('.toggle-password').forEach(ojo => {
-        ojo.addEventListener('click', function() {
-            const input = this.previousElementSibling;
-            if (input.type === "password") {
-                input.type = "text";
-                this.style.color = "#111211";
-            } else {
-                input.type = "password";
-                this.style.color = "#10946d";
-            }
-        });
-    });
-
-    const esEmailValido = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    const esTelefonoValido = (tel) => /^[6789]\d{8}$/.test(tel);
-    const esPasswordSegura = (pass) => {
-        const reglas = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/;
-        return reglas.test(pass);
-    };
-
-    // Confirmacion
-    btnVerify.addEventListener('click', () => {
-        const email = document.getElementById('register-email').value;
-        const pass = document.getElementById('register-password').value;
-        const isLoginMode = regFields[0].classList.contains('hidden');
-
-
-        if (!esEmailValido(email)) return alert("El correo no parece un correo real.");
-        if (!esPasswordSegura(pass)) return alert("La contraseña es muy débil. Necesitas 8 caracteres, una mayúscula, un número y un símbolo.");
-
-
-        if (!isLoginMode) {
-            const tel = document.getElementById('register-phone').value;
-            const repass = document.getElementById('register-repassword').value;
-
-            if (!esTelefonoValido(tel)) return alert("El teléfono debe tener 9 números y empezar por 6,7,8,9.");
-            if (pass !== repass) return alert("¡Las contraseñas no son iguales!");
-        }
-
-        alert("✅ ¡Todo perfecto! Ya puedes darle al botón de abajo.");
-        btnLogin.style.boxShadow = "0 0 15px #6bffb5";
-    });
-
-    // Incia sesion
-    btnLogin.addEventListener('click', () => {
-        regFields.forEach(field => {
-            field.classList.add('hidden');
-            field.removeAttribute('required');
-        });
-        btnLogin.classList.remove('secondary');
-        btnRegister.classList.add('secondary');
-        btnLogin.type = "submit";
-    });
-
-    // Registrarse
-    btnRegister.addEventListener('click', () => {
-        regFields.forEach(field => {
-            field.classList.remove('hidden');
-            field.setAttribute('required', '');
-        });
-        btnRegister.classList.remove('secondary');
-        btnLogin.classList.add('secondary');
-        btnLogin.type = "button";
-    });
-
-    // Se evia formulario
     form.addEventListener('submit', e => {
         e.preventDefault();
-        const email = document.getElementById('register-email').value;
-        const pass = document.getElementById('register-password').value;
-        const isLoginMode = regFields[0].classList.contains('hidden');
 
-        if (isLoginMode) {
-            const encontrado = users.find(u => u.email === email && u.password === pass);
-            if (encontrado) {
-                // GUARDAR SESIÓN ACTIVA
-                localStorage.setItem('userActive', JSON.stringify(encontrado));
-                alert(`¡Bienvenido, ${encontrado.name}!`);
-                window.location.hash = '#home';
-                location.reload();
-            } else {
-                alert('Correo o contraseña incorrectos.');
-            }
+        const inputUser = document.getElementById('login-name').value.trim();
+        const inputPass = document.getElementById('login-password').value;
+
+        // Busca por campo "user" o por "email"
+        const found = users.find(u =>
+            (u.user === inputUser || u.email === inputUser) && u.password === inputPass
+        );
+
+        if (found) {
+            errorMsg.style.color = 'green';
+            errorMsg.textContent = `¡Bienvenido, ${found.name}!`;
+            // Redirige al home tras 1 segundo
+            setTimeout(() => { window.location.hash = '#home'; }, 1000);
         } else {
-            alert('¡Te has registrado correctamente!');
+            errorMsg.style.color = 'red';
+            errorMsg.textContent = 'Usuario o contraseña incorrectos.';
         }
     });
 }

@@ -2,7 +2,9 @@ header {
     background: #bbdcbf;
     width: auto;
     align-items: center;
-    padding: 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
 nav {
@@ -27,12 +29,14 @@ a {text-decoration: none;}
 }
 
 .logo {
-    width: 6em;
-    height: 6em;
+    width: 4em;
+    height: 4em;
     border-radius: 50%;
     background: #fddb72;
     position: relative;
     flex: 0 0 auto;
+    margin: 1rem 1rem 1rem 1.5rem;
+    background-size: 250%;
 }
 
 /* “X” del logo */
@@ -44,16 +48,7 @@ a {text-decoration: none;}
     left: 50%;
     width: 6em;
     height: 0.1em;
-    background: #333;
     transform-origin: center;
-}
-
-.logo::before {
-    transform: translate(-50%, -50%) rotate(45deg);
-}
-
-.logo::after {
-    transform: translate(-50%, -50%) rotate(-45deg);
 }
 
 .brand-title {
@@ -69,14 +64,14 @@ a {text-decoration: none;}
 
 .social-ico {
     margin: -1rem 0.5rem;
-    /* display: flow-root; */
-    height: 2rem;
-    width: 2rem;
-    border: 1px solid #000000;
-    background: linear-gradient(to bottom right,
-            transparent 49.5%, #000 50%, transparent 50.5%),
-        linear-gradient(to top right,
-            transparent 49.5%, #000 50%, transparent 50.5%);
+    height: auto;
+    width: auto;
+    font-size: 1rem;   /* ← aquí controlas el tamaño */
+    color: #10946d;
+}
+
+.social-ico:hover {
+    color: #fddb72;
 }
 
 .grid {
@@ -97,7 +92,7 @@ a {text-decoration: none;}
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 2rem 0;
+    padding: 1rem 5rem;
 }
 
 .right-bottom {
