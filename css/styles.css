@@ -38,27 +38,213 @@ body {
     min-height: 100vh;
     margin: 0;
     /*background-color: #90c984;*/
-    font-family: DynaPuff, Arial, Helvetica, sans-serif;
+    font-family: "Rum Raisin", Arial, Helvetica, sans-serif;
     color: var(--color-text);
     font-style: normal;
-    font-weight: bold;
 }
 
 body.page {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    background-image: url("../img/header-background.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    background-attachment: fixed;
+    backdrop-filter: blur(6px);
 }
 
 /* el contenido crece y empuja el footer */
 main {
     flex: 1 1 auto;
     display: flex;
-    background-image: url("../img/main-background.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    .header-inner {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    backdrop-filter: blur(8px);
+    /* gap: 40px; */
+};
+    .header-inner {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    backdrop-filter: blur(8px);
+    /* gap: 40px; */
+};
+    .header-inner {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    backdrop-filter: blur(8px);
+    /* gap: 40px; */
+};
+    .header-inner {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    backdrop-filter: blur(8px);
+    /* gap: 40px; */
+};
+    .header-inner {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    backdrop-filter: blur(8px);
+    /* gap: 40px; */
+};
+    .header-inner {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    backdrop-filter: blur(8px);
+    /* gap: 40px; */
+};
+    
+    .header-inner {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    backdrop-filter: blur(8px);
+    /* gap: 40px; */
+};
 }
 
 .btn {
@@ -67,10 +253,9 @@ main {
     height: stretch;
     align-items: center;
     justify-content: center;
-    background-color: #f2f5c5;
     color: var(--color-text);
-    font-size: 1.4rem;
-    font-weight: 700;
+    font-size: xx-large;
+    font-weight: normal;
     text-decoration: none;
     border: solid 1px #90c98433;
     transition: background-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;

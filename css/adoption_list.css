@@ -40,7 +40,7 @@
 }
 
 .pet-profile-text {
-    font-size: 1rem;
+    font-size: larger;
     text-align: justify;
     align-content: center;
     margin: 0 0 3rem 0;
@@ -67,7 +67,7 @@
     top: 14rem;
     height: fit-content;
     padding: 1rem;
-    background: white;
+    background: #f4f5c9;
     border-radius: 1rem;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
     margin: 0rem 1rem;
@@ -119,9 +119,8 @@
 .filter-label {
     list-style: none;
     padding: 0.8rem 1rem;
-    font-size: 0.9rem;
-    font-weight: 800;
-    background: #fddb72;
+    font-size: larger;
+    background: #fafbe6;
     cursor: pointer;
     display: flex;
     justify-content: space-between;

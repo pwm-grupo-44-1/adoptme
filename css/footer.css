@@ -2,13 +2,13 @@ footer {
     position: sticky;
     bottom: 0;
     z-index: 100;
-    background-image: url("../img/footer-background.png");
+    /* background-image: url("../img/footer-background.png"); */
     background-size: cover;
     background-position: center;
-    transition:
+    /* transition:
         padding 0.28s ease,
         box-shadow 0.28s ease,
-        min-height 0.28s ease;
+        min-height 0.28s ease; */
 }
 
 .footer {
@@ -16,11 +16,11 @@ footer {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     align-items: center;
-    background-color: var(--footer-bg);
+    background-color: #f4f5c9;
     border-top: 1px solid var(--border-light);
     box-shadow: var(--shadow-soft);
     padding-top: 1rem;
-    backdrop-filter: blur(8px);
+    /* backdrop-filter: blur(8px); */
     transition: padding 0.28s ease, gap 0.28s ease;
 }
 
@@ -46,6 +46,7 @@ footer {
     padding: 0.5rem 0;
     font-size: 1.3em;
     color: var(--text-muted);
+    background-color: aliceblue;
 }
 
 /* Botones del footer se adaptan al texto */
@@ -55,38 +56,4 @@ footer {
     padding: 0.3rem 1rem;
     white-space: nowrap;
     height: 6rem;
-}
-
-
-
-
-body.scrolled footer {
-    transform: scaleY(var(--footer-scale-scroll));
-    box-shadow: 0 -8px 20px rgba(74, 116, 119, 0.10);
-}
-
-body.scrolled .footer {
-    padding-top: 0.75rem;
-}
-
-body.scrolled .footer-center {
-    font-size: 0.85rem;
-}
-
-body.scrolled .footer-legal {
-    padding: 0.35rem 0;
-    font-size: 0.52em;
-}
-
-body.scrolled .footer-left .btn,
-body.scrolled .footer-right .btn {
-    padding: 0.2rem 0.8rem;
-}
-
-/* Botones del footer se adaptan al texto */
-.footer-left .btn,
-.footer-right .btn {
-    width: auto;
-    padding: 0.3rem 1rem;
-    white-space: nowrap;
 }

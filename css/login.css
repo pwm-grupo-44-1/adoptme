@@ -77,13 +77,10 @@ main {
 /* Botón Principal (Iniciar Sesión) */
 .btn-small {
     padding: 10px 22px;
-    background-color: #90c984; /* El verde de tu paleta */
-    color: #000000;
-    border: 2px solid #90c984;
+     /* El verde de tu paleta */
     border-radius: 8px;
-    font-family: "DynaPuff", system-ui; /* Mantenemos tu tipografía */
-    font-size: 0.95rem;
-    font-weight: bold;
+    font-family: "Rum Raisin", system-ui; /* Mantenemos tu tipografía */
+    font-size: larger;
     cursor: pointer;
     transition: all 0.3s ease;
 }
@@ -98,7 +95,7 @@ main {
 .btn-small.secondary {
     background-color: transparent; /* Sin fondo */
     color: #10946d; /* Texto en verde oscuro */
-    border: 2px solid #90c984; /* Solo el borde */
+    border: 1px solid #90c984; /* Solo el borde */
 }
 
 .btn-small.secondary:hover {
@@ -126,8 +123,8 @@ main {
     color: #10946d;
     border: 2px solid #10946d;
     border-radius: 8px;
-    font-family: "DynaPuff", system-ui;
-    font-weight: bold;
+    font-family: "Rum Raisin", system-ui;
+    font-size: larger;
     cursor: pointer;
     transition: all 0.3s ease;
 }

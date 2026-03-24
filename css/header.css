@@ -1,11 +1,11 @@
 header {
-    background: #bbdcbf;
+    background: #bbdcbf00;
     width: auto;
     align-items: center;
     position: sticky;
     top: 0;
     z-index: 100;
-    background-image: url("../img/header-background.png");
+    /* background-image: url("../img/header-background.png"); */
 }
 
 nav {
@@ -23,6 +23,7 @@ a {
     display: flex;
     justify-content: space-between;
     backdrop-filter: blur(8px);
+    background-color: #f0f3c2;
     /* gap: 40px; */
 }
 
