@@ -187,7 +187,7 @@ function renderFooter(footerData) {
     if (legal) legal.textContent = footerData.copyright;
 }
 
-// ─── RENDER HOME (Versión Carrusel V1) ────────────────────────────────────────
+// ─── RENDER HOME (Carrusel Infinito) ────────────────────────────────────────
 function renderHome(data) {
     const text = document.getElementById('hero-text');
     if (text && data.text) {
@@ -202,12 +202,29 @@ function renderHome(data) {
 
     const track = document.getElementById('carousel-track');
     const dots  = document.getElementById('carousel-dots');
-    if (!track) return; // Fallback si el HTML no tiene carrusel
+    if (!track) return;
 
-    let current = 0;
+    // Si solo hay 1 imagen, simplemente la mostramos y cancelamos el carrusel
+    if (images.length === 1) {
+        track.innerHTML = `<div class="carousel-slide" style="background-image: url('${images[0]}')"></div>`;
+        if (dots) dots.innerHTML = '';
+        return;
+    }
+
+    let current = 1; // El índice 1 será nuestra primera imagen "real"
     let autoTimer;
+    let isTransitioning = false; // Evita clics rápidos que rompan la animación
 
     track.innerHTML = '';
+
+    // 1. Clonamos la ÚLTIMA imagen y la ponemos al principio (para cuando le den a la flecha "Atrás")
+    const lastClone = document.createElement('div');
+    lastClone.className = 'carousel-slide';
+    lastClone.style.backgroundImage = `url('${images[images.length - 1]}')`;
+    lastClone.dataset.clone = 'last';
+    track.appendChild(lastClone);
+
+    // 2. Insertamos las imágenes REALES
     images.forEach(src => {
         const slide = document.createElement('div');
         slide.className = 'carousel-slide';
@@ -215,29 +232,82 @@ function renderHome(data) {
         track.appendChild(slide);
     });
 
+    // 3. Clonamos la PRIMERA imagen y la ponemos al final (para el avance infinito)
+    const firstClone = document.createElement('div');
+    firstClone.className = 'carousel-slide';
+    firstClone.style.backgroundImage = `url('${images[0]}')`;
+    firstClone.dataset.clone = 'first';
+    track.appendChild(firstClone);
+
+    // Estado inicial: Nos saltamos el primer clon y mostramos la imagen real 1 sin animación
+    track.style.transition = 'none';
+    track.style.transform = `translateX(-100%)`;
+
+    // ── Puntos indicadores ──
     if (dots) {
         dots.innerHTML = '';
         images.forEach((_, i) => {
             const dot = document.createElement('button');
             dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
-            dot.addEventListener('click', () => goTo(i));
+            dot.addEventListener('click', () => {
+                if (isTransitioning) return;
+                goTo(i + 1); // +1 porque el índice 0 es el clon trasero
+            });
             dots.appendChild(dot);
         });
     }
 
+    function updateDots() {
+        if (!dots) return;
+        let dotIndex = current - 1;
+        // Ajustamos los índices si estamos sobre un clon
+        if (current === images.length + 1) dotIndex = 0;
+        if (current === 0) dotIndex = images.length - 1;
+
+        document.querySelectorAll('.carousel-dot').forEach((d, i) => {
+            d.classList.toggle('active', i === dotIndex);
+        });
+    }
+
     function goTo(index) {
-        current = (index + images.length) % images.length;
+        if (isTransitioning) return;
+        isTransitioning = true;
+        current = index;
+
+        // Hacemos el movimiento suave (asegúrate de no tener "transition" puesto fijo en tu CSS de .carousel-track)
+        track.style.transition = 'transform 0.5s ease-in-out';
         track.style.transform = `translateX(-${current * 100}%)`;
-        document.querySelectorAll('.carousel-dot').forEach((d, i) =>
-            d.classList.toggle('active', i === current));
+
+        updateDots();
         resetAuto();
     }
 
+    // ── MAGIA INFINITA: Detectamos cuándo termina la animación ──
+    track.addEventListener('transitionend', () => {
+        isTransitioning = false;
+        const slides = track.children;
+
+        // Si acabamos de llegar al clon del final (falso principio)...
+        if (slides[current].dataset.clone === 'first') {
+            track.style.transition = 'none'; // Quitamos la animación
+            current = 1;                     // Nos teletransportamos al principio real
+            track.style.transform = `translateX(-${current * 100}%)`;
+        }
+
+        // Si acabamos de llegar al clon del principio (falso final)...
+        if (slides[current].dataset.clone === 'last') {
+            track.style.transition = 'none'; // Quitamos la animación
+            current = images.length;         // Nos teletransportamos al final real
+            track.style.transform = `translateX(-${current * 100}%)`;
+        }
+    });
+
     function resetAuto() {
         clearInterval(autoTimer);
-        autoTimer = setInterval(() => goTo(current + 1), 4000);
+        autoTimer = setInterval(() => goTo(current + 1), 4000); // 4 segundos
     }
 
+    // Controles de las flechas (si las tienes en el HTML)
     document.querySelector('.carousel-prev')?.addEventListener('click', () => goTo(current - 1));
     document.querySelector('.carousel-next')?.addEventListener('click', () => goTo(current + 1));
 
