@@ -34,7 +34,7 @@ body.page{
   flex-direction: column;
 }
 
-/* el contenido crece y empuja el footer */
+
 main{
   flex: 1 1 auto;
   display: flex;
