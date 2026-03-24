@@ -724,4 +724,6 @@ function initCalendar(scheduleData) {
     });
 
     renderCalendar();
+
+
 }

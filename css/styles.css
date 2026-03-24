@@ -17,6 +17,14 @@
 :root {
     --color-text: #4a7477;
 
+    --header-shrink-factor: 0.75;
+    --footer-shrink-factor: 0.75;
+
+    --scroll-arrow-size: 58px;
+    --scroll-arrow-bg: rgba(242, 245, 197, 0.92);
+    --scroll-arrow-color: #4a7477;
+    --scroll-arrow-shadow: 0 8px 24px rgba(74, 116, 119, 0.18);
+
 }
 
 
@@ -61,7 +69,7 @@ main {
     justify-content: center;
     background-color: #f2f5c5;
     color: var(--color-text);
-    font-size: 1rem;
+    font-size: 1.4rem;
     font-weight: 700;
     text-decoration: none;
     border: solid 1px #90c98433;
@@ -76,4 +84,89 @@ main {
 
 button {
     color: var(--color-text);
+}
+
+/* Estado general al hacer scroll */
+body.scrolled header,
+body.scrolled footer {
+    backdrop-filter: blur(10px);
+}
+
+
+
+
+
+/* Flecha flotante de scroll */
+/* Flecha flotante de scroll: solo para adoption_list */
+.scroll-down-indicator {
+    position: fixed;
+    left: 50%;
+    bottom: 2rem;
+    transform: translateX(-50%);
+    width: var(--scroll-arrow-size);
+    height: var(--scroll-arrow-size);
+    border-radius: 999px;
+    border: 1px solid rgba(144, 201, 132, 0.35);
+    background: var(--scroll-arrow-bg);
+    color: var(--scroll-arrow-color);
+    box-shadow: var(--scroll-arrow-shadow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 300;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+        opacity 0.25s ease,
+        visibility 0.25s ease,
+        box-shadow 0.25s ease,
+        background-color 0.25s ease;
+}
+
+.scroll-down-indicator.is-visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    animation: scrollArrowBounceCentered 1.35s ease-in-out infinite;
+}
+
+.scroll-down-indicator:hover {
+    background-color: #e2e9a9;
+    box-shadow: 0 10px 26px rgba(74, 116, 119, 0.24);
+}
+
+.scroll-down-indicator svg {
+    width: 28px;
+    height: 28px;
+}
+
+@keyframes scrollArrowBounceCentered {
+    0%,
+    100% {
+        transform: translateX(-50%) translateY(0);
+    }
+    25% {
+        transform: translateX(-50%) translateY(4px);
+    }
+    50% {
+        transform: translateX(-50%) translateY(10px);
+    }
+    70% {
+        transform: translateX(-50%) translateY(5px);
+    }
+}
+
+@media (max-width: 768px) {
+    .scroll-down-indicator {
+        bottom: 1.5rem;
+        width: 50px;
+        height: 50px;
+    }
+
+    .scroll-down-indicator svg {
+        width: 24px;
+        height: 24px;
+    }
 }

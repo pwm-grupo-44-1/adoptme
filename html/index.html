@@ -19,11 +19,13 @@
     <link rel="stylesheet" href="../css/pet_profile.css">
     <link rel="stylesheet" href="../css/stories.css">
     <link rel="stylesheet" href="../css/schedule.css">
-    
+    <link rel="icon" href="../img/favicon.png" sizes="any">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DynaPuff:wght@400..700&family=Indie+Flower&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=DynaPuff:wght@400..700&family=Indie+Flower&display=swap"
+        rel="stylesheet">
+
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -38,6 +40,74 @@
 
     <footer id="footer"></footer>
 
+    <button class="scroll-down-indicator" id="scrollDownIndicator" aria-label="Ver más contenido" type="button">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 5v11" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" />
+            <path d="M7 13l5 6 5-6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"
+                stroke-linejoin="round" />
+        </svg>
+    </button>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const body = document.body;
+            const scrollArrow = document.getElementById("scrollDownIndicator");
+
+            const isAdoptionListPage =
+                body.classList.contains("adoption-list") ||
+                document.querySelector(".adoption-list") !== null ||
+                document.querySelector("#adoption_list") !== null ||
+                document.querySelector(".adoption_list") !== null;
+
+            let isShrunk = false;
+            let ticking = false;
+
+            const SHRINK_ON = 40;
+            const SHRINK_OFF = 30;
+
+            function updateScrollUI() {
+                const scrollTop = window.scrollY || window.pageYOffset;
+                const viewportHeight = window.innerHeight;
+                const documentHeight = document.documentElement.scrollHeight;
+
+                if (!isShrunk && scrollTop > SHRINK_ON) {
+                    isShrunk = true;
+                    body.classList.add("scrolled");
+                } else if (isShrunk && scrollTop < SHRINK_OFF) {
+                    isShrunk = false;
+                    body.classList.remove("scrolled");
+                }
+
+                if (scrollArrow) {
+                    const hasMoreBelow = scrollTop + viewportHeight < documentHeight - 40;
+                    const mustShowArrow = isAdoptionListPage && hasMoreBelow;
+                    scrollArrow.classList.toggle("is-visible", mustShowArrow);
+                }
+
+                ticking = false;
+            }
+
+            function onScroll() {
+                if (!ticking) {
+                    window.requestAnimationFrame(updateScrollUI);
+                    ticking = true;
+                }
+            }
+
+            window.addEventListener("scroll", onScroll, { passive: true });
+            window.addEventListener("resize", onScroll);
+
+            if (scrollArrow) {
+                scrollArrow.addEventListener("click", () => {
+                    window.scrollBy({
+                        top: Math.round(window.innerHeight * 0.75),
+                        behavior: "smooth"
+                    });
+                });
+            }
+
+            updateScrollUI();
+        });
+    </script>
 </body>
 
 </html>
