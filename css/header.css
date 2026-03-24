@@ -1,18 +1,11 @@
 header {
     background: #bbdcbf;
-    width: 100%;
+    width: auto;
     align-items: center;
     position: sticky;
     top: 0;
     z-index: 100;
     background-image: url("../img/header-background.png");
-    background-size: cover;
-    background-position: center;
-    transition:
-        padding 0.28s ease,
-        min-height 0.28s ease,
-        box-shadow 0.28s ease,
-        background-color 0.28s ease;
 }
 
 nav {
@@ -29,11 +22,8 @@ a {
     width: 100%;
     display: flex;
     justify-content: space-between;
-    align-items: center;
     backdrop-filter: blur(8px);
-    padding: 0;
-    min-height: 0;
-    transition: padding 0.28s ease, min-height 0.28s ease, gap 0.28s ease;
+    /* gap: 40px; */
 }
 
 .brand {
@@ -43,16 +33,12 @@ a {
 
 .logo {
     width: 10rem;
-    aspect-ratio: 1 / 1;
-    height: auto;
+    height: 10rem;
     border-radius: 24%;
     position: relative;
     flex: 0 0 auto;
     margin: 1rem;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    transition: width 0.28s ease, margin 0.28s ease;
+    background-size: 250%;
 }
 
 /* “X” del logo */
@@ -69,19 +55,17 @@ a {
 
 .brand-title {
     font-size: 3rem;
-    transition: font-size 0.28s ease;
 }
 
-.socials {
-}
+.socials {}
 
 .social-ico {
     height: auto;
     width: auto;
     font-size: 2rem;
+    /* ← aquí controlas el tamaño */
     color: #10946d;
     padding: 0.9rem 0 0 0;
-    transition: font-size 0.28s ease, padding 0.28s ease, color 0.25s ease;
 }
 
 .social-ico:hover {
@@ -112,30 +96,4 @@ a {
     grid-row: 2;
     display: flex;
     justify-content: space-between;
-}
-
-
-
-
-body.scrolled header {
-    box-shadow: 0 10px 24px rgba(74, 116, 119, 0.12);
-}
-
-body.scrolled .header-inner {
-    padding-top: 0.2rem;
-    padding-bottom: 0.2rem;
-}
-
-body.scrolled .logo {
-    width: 7.5rem;
-    margin: 0.75rem;
-}
-
-body.scrolled .brand-title {
-    font-size: 2.25rem;
-}
-
-body.scrolled .social-ico {
-    font-size: 1.5rem;
-    padding-top: 0.45rem;
 }

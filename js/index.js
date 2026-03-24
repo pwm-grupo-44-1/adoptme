@@ -3,9 +3,6 @@ document.addEventListener('DOMContentLoaded', init);
 // Usuario logueado unificado (usamos localStorage como en la V2)
 let currentUser = JSON.parse(localStorage.getItem('userActive') || 'null');
 
-// Usuario logueado unificado (usamos localStorage como en la V2)
-let currentUser = JSON.parse(localStorage.getItem('userActive') || 'null');
-
 const DB_PATH = '../data/db.json';
 const TMPL    = '../html/templates/';
 
@@ -79,7 +76,6 @@ async function router(db) {
         case 'schedule':
             await loadTemplate(TMPL + 'template_schedule.html', 'main');
             renderSchedule(db.schedule); // Rescatado de la V1
-            renderSchedule(db.schedule); // Rescatado de la V1
             break;
         default:
             await loadTemplate(TMPL + 'template_home.html', 'main');
@@ -102,7 +98,6 @@ async function init() {
 }
 
 // ─── RENDER HEADER (Versión Avanzada V2) ──────────────────────────────────────
-// ─── RENDER HEADER (Versión Avanzada V2) ──────────────────────────────────────
 function renderHeader(headerData) {
     const logo = document.querySelector('.logo');
     if (logo) {
@@ -122,9 +117,6 @@ function renderHeader(headerData) {
                    rel="noopener noreferrer" aria-label="${link.name}">
                    <i class="bi ${link.icon || ''}"></i>
                 </a>`;
-                   rel="noopener noreferrer" aria-label="${link.name}">
-                   <i class="bi ${link.icon || ''}"></i>
-                </a>`;
         });
     }
 
@@ -132,37 +124,6 @@ function renderHeader(headerData) {
     if (nav) {
         nav.innerHTML = '';
         headerData.navLinks.forEach(link => {
-            if (link.name === "Acceder" && currentUser) {
-                const container = document.createElement('div');
-                container.className = 'btn user-nav-stack';
-
-                const nameLabel = document.createElement('span');
-                nameLabel.className = 'user-nav-name';
-                nameLabel.textContent = ` ${currentUser.name}`;
-
-                const logoutBtn = document.createElement('a');
-                logoutBtn.className = 'btn-logout-nav';
-                logoutBtn.textContent = 'Cerrar Sesión';
-                logoutBtn.href = "#home";
-
-                logoutBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    localStorage.removeItem('userActive');
-                    currentUser = null;
-                    alert("Has cerrado sesión. ¡Vuelve pronto!");
-                    location.reload();
-                });
-
-                container.appendChild(nameLabel);
-                container.appendChild(logoutBtn);
-                nav.appendChild(container);
-            } else {
-                const a = document.createElement('a');
-                a.className = 'btn';
-                a.textContent = link.name;
-                a.href = link.url;
-                nav.appendChild(a);
-            }
             if (link.name === "Acceder" && currentUser) {
                 const container = document.createElement('div');
                 container.className = 'btn user-nav-stack';
@@ -226,9 +187,8 @@ function renderFooter(footerData) {
     if (legal) legal.textContent = footerData.copyright;
 }
 
-// ─── RENDER HOME (Versión Carrusel V1) ────────────────────────────────────────
+// ─── RENDER HOME (Carrusel Infinito) ────────────────────────────────────────
 function renderHome(data) {
-    const text = document.getElementById('hero-text');
     const text = document.getElementById('hero-text');
     if (text && data.text) {
         text.innerHTML = data.text
@@ -242,12 +202,29 @@ function renderHome(data) {
 
     const track = document.getElementById('carousel-track');
     const dots  = document.getElementById('carousel-dots');
-    if (!track) return; // Fallback si el HTML no tiene carrusel
+    if (!track) return;
 
-    let current = 0;
+    // Si solo hay 1 imagen, simplemente la mostramos y cancelamos el carrusel
+    if (images.length === 1) {
+        track.innerHTML = `<div class="carousel-slide" style="background-image: url('${images[0]}')"></div>`;
+        if (dots) dots.innerHTML = '';
+        return;
+    }
+
+    let current = 1; // El índice 1 será nuestra primera imagen "real"
     let autoTimer;
+    let isTransitioning = false; // Evita clics rápidos que rompan la animación
 
     track.innerHTML = '';
+
+    // 1. Clonamos la ÚLTIMA imagen y la ponemos al principio (para cuando le den a la flecha "Atrás")
+    const lastClone = document.createElement('div');
+    lastClone.className = 'carousel-slide';
+    lastClone.style.backgroundImage = `url('${images[images.length - 1]}')`;
+    lastClone.dataset.clone = 'last';
+    track.appendChild(lastClone);
+
+    // 2. Insertamos las imágenes REALES
     images.forEach(src => {
         const slide = document.createElement('div');
         slide.className = 'carousel-slide';
@@ -255,29 +232,82 @@ function renderHome(data) {
         track.appendChild(slide);
     });
 
+    // 3. Clonamos la PRIMERA imagen y la ponemos al final (para el avance infinito)
+    const firstClone = document.createElement('div');
+    firstClone.className = 'carousel-slide';
+    firstClone.style.backgroundImage = `url('${images[0]}')`;
+    firstClone.dataset.clone = 'first';
+    track.appendChild(firstClone);
+
+    // Estado inicial: Nos saltamos el primer clon y mostramos la imagen real 1 sin animación
+    track.style.transition = 'none';
+    track.style.transform = `translateX(-100%)`;
+
+    // ── Puntos indicadores ──
     if (dots) {
         dots.innerHTML = '';
         images.forEach((_, i) => {
             const dot = document.createElement('button');
             dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
-            dot.addEventListener('click', () => goTo(i));
+            dot.addEventListener('click', () => {
+                if (isTransitioning) return;
+                goTo(i + 1); // +1 porque el índice 0 es el clon trasero
+            });
             dots.appendChild(dot);
         });
     }
 
+    function updateDots() {
+        if (!dots) return;
+        let dotIndex = current - 1;
+        // Ajustamos los índices si estamos sobre un clon
+        if (current === images.length + 1) dotIndex = 0;
+        if (current === 0) dotIndex = images.length - 1;
+
+        document.querySelectorAll('.carousel-dot').forEach((d, i) => {
+            d.classList.toggle('active', i === dotIndex);
+        });
+    }
+
     function goTo(index) {
-        current = (index + images.length) % images.length;
+        if (isTransitioning) return;
+        isTransitioning = true;
+        current = index;
+
+        // Hacemos el movimiento suave (asegúrate de no tener "transition" puesto fijo en tu CSS de .carousel-track)
+        track.style.transition = 'transform 0.5s ease-in-out';
         track.style.transform = `translateX(-${current * 100}%)`;
-        document.querySelectorAll('.carousel-dot').forEach((d, i) =>
-            d.classList.toggle('active', i === current));
+
+        updateDots();
         resetAuto();
     }
 
+    // ── MAGIA INFINITA: Detectamos cuándo termina la animación ──
+    track.addEventListener('transitionend', () => {
+        isTransitioning = false;
+        const slides = track.children;
+
+        // Si acabamos de llegar al clon del final (falso principio)...
+        if (slides[current].dataset.clone === 'first') {
+            track.style.transition = 'none'; // Quitamos la animación
+            current = 1;                     // Nos teletransportamos al principio real
+            track.style.transform = `translateX(-${current * 100}%)`;
+        }
+
+        // Si acabamos de llegar al clon del principio (falso final)...
+        if (slides[current].dataset.clone === 'last') {
+            track.style.transition = 'none'; // Quitamos la animación
+            current = images.length;         // Nos teletransportamos al final real
+            track.style.transform = `translateX(-${current * 100}%)`;
+        }
+    });
+
     function resetAuto() {
         clearInterval(autoTimer);
-        autoTimer = setInterval(() => goTo(current + 1), 4000);
+        autoTimer = setInterval(() => goTo(current + 1), 4000); // 4 segundos
     }
 
+    // Controles de las flechas (si las tienes en el HTML)
     document.querySelector('.carousel-prev')?.addEventListener('click', () => goTo(current - 1));
     document.querySelector('.carousel-next')?.addEventListener('click', () => goTo(current + 1));
 
@@ -312,7 +342,6 @@ function renderFaq(faqData) {
                     ${item.question}
                 </label>
                 <div class="faq-answer"><p>${item.answer}</p></div>
-                <div class="faq-answer"><p>${item.answer}</p></div>
             </div>`;
     });
 }
@@ -328,7 +357,6 @@ function renderLegal(legalData) {
                     <input type="checkbox" class="faq-toggle" />
                     ${item.title}
                 </label>
-                <div class="faq-answer"><p>${item.content}</p></div>
                 <div class="faq-answer"><p>${item.content}</p></div>
             </div>`;
     });
@@ -349,7 +377,6 @@ function renderStories(storiesData) {
     });
 }
 
-// ─── RENDER CONTACT US (Versión Avanzada V1) ──────────────────────────────────
 // ─── RENDER CONTACT US (Versión Avanzada V1) ──────────────────────────────────
 function renderContactUs(data) {
     const title = document.getElementById('contact-title');
@@ -373,38 +400,13 @@ function renderContactUs(data) {
     const map = document.getElementById('contact-map-iframe');
     if (map && data.mapUrl) map.src = data.mapUrl;
 
-    const title = document.getElementById('contact-title');
-    if (title && data.title) title.textContent = data.title;
-
-    const reasons = document.getElementById('contact-reasons');
-    if (reasons && data.reasons) {
-        reasons.innerHTML = '';
-        data.reasons.forEach(r => {
-            reasons.innerHTML += `
-                <div class="contact-reason">
-                    <span class="contact-reason-icon">${r.icon}</span>
-                    <div class="contact-reason-text">
-                        <h3>${r.title}</h3>
-                        <p>${r.text}</p>
-                    </div>
-                </div>`;
-        });
-    }
-
-    const map = document.getElementById('contact-map-iframe');
-    if (map && data.mapUrl) map.src = data.mapUrl;
-
     const list = document.getElementById('contact-list');
-    if (list && data.info) {
     if (list && data.info) {
         list.innerHTML = '';
         data.info.forEach(line => {
             list.innerHTML += `<li>${line}</li>`;
         });
     }
-}
-
-// ─── RENDER ADOPTION LIST (Versión Avanzada Filtros V1) ───────────────────────
 }
 
 // ─── RENDER ADOPTION LIST (Versión Avanzada Filtros V1) ───────────────────────
@@ -491,94 +493,7 @@ function renderAdoptionList(animals) {
             const sel = document.getElementById(id);
             if (sel) sel.value = sel.options[0].value;
             sessionStorage.removeItem('filter_' + id);
-    function parseWeight(w) { return parseFloat(w) || 0; }
-    function weightRange(w) {
-        const kg = parseWeight(w);
-        if (kg <= 5)  return 'Pequeño (≤5kg)';
-        if (kg <= 15) return 'Mediano (6-15kg)';
-        return 'Grande (>15kg)';
-    }
-    function ageRange(age) {
-        if (age <= 2) return 'Cachorro (0-2 años)';
-        if (age <= 6) return 'Adulto (3-6 años)';
-        return 'Senior (7+ años)';
-    }
-
-    function fillSelect(id, values) {
-        const sel = document.getElementById(id);
-        if (!sel) return;
-        const unique = [...new Set(values)].sort();
-        unique.forEach(v => {
-            if (![...sel.options].some(o => o.value === v)) {
-                const opt = document.createElement('option');
-                opt.value = opt.textContent = v;
-                sel.appendChild(opt);
-            }
         });
-        const saved = sessionStorage.getItem('filter_' + id);
-        if (saved) sel.value = saved;
-    }
-
-    fillSelect('filter-breed', animals.map(a => a.breed));
-    fillSelect('filter-hair',  animals.map(a => a["hair type"]));
-    fillSelect('filter-mood',  animals.map(a => a.mood));
-
-    ['filter-age', 'filter-weight', 'sort-select'].forEach(id => {
-        const sel = document.getElementById(id);
-        const saved = sessionStorage.getItem('filter_' + id);
-        if (sel && saved) sel.value = saved;
-    });
-
-    function applyFilters() {
-        const breed  = document.getElementById('filter-breed')?.value  || 'all';
-        const age    = document.getElementById('filter-age')?.value    || 'all';
-        const weight = document.getElementById('filter-weight')?.value || 'all';
-        const hair   = document.getElementById('filter-hair')?.value   || 'all';
-        const mood   = document.getElementById('filter-mood')?.value   || 'all';
-        const sort   = document.getElementById('sort-select')?.value   || '';
-
-        sessionStorage.setItem('filter_filter-breed',  breed);
-        sessionStorage.setItem('filter_filter-age',    age);
-        sessionStorage.setItem('filter_filter-weight', weight);
-        sessionStorage.setItem('filter_filter-hair',   hair);
-        sessionStorage.setItem('filter_filter-mood',   mood);
-        sessionStorage.setItem('filter_sort-select',   sort);
-
-        let result = animals.filter(a => {
-            if (breed  !== 'all' && a.breed           !== breed)  return false;
-            if (age    !== 'all' && ageRange(a.age)   !== age)    return false;
-            if (weight !== 'all' && weightRange(a.weight) !== weight) return false;
-            if (hair   !== 'all' && a["hair type"]    !== hair)   return false;
-            if (mood   !== 'all' && a.mood             !== mood)   return false;
-            return true;
-        });
-
-        if (sort === 'age-asc')     result.sort((a, b) => a.age - b.age);
-        if (sort === 'age-desc')    result.sort((a, b) => b.age - a.age);
-        if (sort === 'weight-asc')  result.sort((a, b) => parseWeight(a.weight) - parseWeight(b.weight));
-        if (sort === 'weight-desc') result.sort((a, b) => parseWeight(b.weight) - parseWeight(a.weight));
-
-        const count = document.getElementById('results-count');
-        if (count) count.textContent = `${result.length} mascota${result.length !== 1 ? 's' : ''} encontrada${result.length !== 1 ? 's' : ''}`;
-
-        renderAnimalCards(result);
-    }
-
-    ['filter-breed','filter-age','filter-weight','filter-hair','filter-mood','sort-select'].forEach(id => {
-        document.getElementById(id)?.addEventListener('change', applyFilters);
-    });
-
-    document.getElementById('filter-reset')?.addEventListener('click', () => {
-        ['filter-breed','filter-age','filter-weight','filter-hair','filter-mood','sort-select'].forEach(id => {
-            const sel = document.getElementById(id);
-            if (sel) sel.value = sel.options[0].value;
-            sessionStorage.removeItem('filter_' + id);
-        });
-        applyFilters();
-    });
-
-    applyFilters();
-}
         applyFilters();
     });
 
@@ -632,15 +547,7 @@ function renderPetProfile(animals) {
     }
 
     const photo = document.querySelector('.dog-profile .photo-card-profile, .dog-profile .photo-card');
-    const photo = document.querySelector('.dog-profile .photo-card-profile, .dog-profile .photo-card');
     if (photo) {
-        if(photo.tagName === 'IMG') {
-            photo.src = animal.image;
-            photo.alt = `Foto de ${animal.name}`;
-        } else {
-            photo.style.backgroundImage = `url('${animal.image}')`;
-            photo.style.backgroundSize  = 'cover';
-        }
         if(photo.tagName === 'IMG') {
             photo.src = animal.image;
             photo.alt = `Foto de ${animal.name}`;
@@ -652,76 +559,10 @@ function renderPetProfile(animals) {
 }
 
 // ─── LOGIN (Versión Avanzada V2) ──────────────────────────────────────────────
-// ─── LOGIN (Versión Avanzada V2) ──────────────────────────────────────────────
 function initLogin(users) {
-    const form = document.getElementById('auth-form');
     const form = document.getElementById('auth-form');
     if (!form) return;
 
-    const regFields = document.querySelectorAll('.reg-only');
-    const btnVerify = document.getElementById('btn-verify');
-    const btnLogin = document.getElementById('btn-login');
-    const btnRegister = document.getElementById('btn-register');
-
-    document.querySelectorAll('.toggle-password').forEach(ojo => {
-        ojo.addEventListener('click', function() {
-            const input = this.previousElementSibling;
-            if (input.type === "password") {
-                input.type = "text";
-                this.style.color = "#111211";
-            } else {
-                input.type = "password";
-                this.style.color = "#10946d";
-            }
-        });
-    });
-
-    const esEmailValido = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    const esTelefonoValido = (tel) => /^[6789]\d{8}$/.test(tel);
-    const esPasswordSegura = (pass) => {
-        const reglas = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/;
-        return reglas.test(pass);
-    };
-
-    btnVerify.addEventListener('click', () => {
-        const email = document.getElementById('register-email').value;
-        const pass = document.getElementById('register-password').value;
-        const isLoginMode = regFields[0].classList.contains('hidden');
-
-        if (!esEmailValido(email)) return alert("El correo no parece un correo real.");
-        if (!esPasswordSegura(pass)) return alert("La contraseña es muy débil. Necesitas 8 caracteres, una mayúscula, un número y un símbolo.");
-
-        if (!isLoginMode) {
-            const tel = document.getElementById('register-phone').value;
-            const repass = document.getElementById('register-repassword').value;
-
-            if (!esTelefonoValido(tel)) return alert("El teléfono debe tener 9 números y empezar por 6,7,8,9.");
-            if (pass !== repass) return alert("¡Las contraseñas no son iguales!");
-        }
-
-        alert("✅ ¡Todo perfecto! Ya puedes darle al botón de abajo.");
-        btnLogin.style.boxShadow = "0 0 15px #6bffb5";
-    });
-
-    btnLogin.addEventListener('click', () => {
-        regFields.forEach(field => {
-            field.classList.add('hidden');
-            field.removeAttribute('required');
-        });
-        btnLogin.classList.remove('secondary');
-        btnRegister.classList.add('secondary');
-        btnLogin.type = "submit";
-    });
-
-    btnRegister.addEventListener('click', () => {
-        regFields.forEach(field => {
-            field.classList.remove('hidden');
-            field.setAttribute('required', '');
-        });
-        btnRegister.classList.remove('secondary');
-        btnLogin.classList.add('secondary');
-        btnLogin.type = "button";
-    });
     const regFields = document.querySelectorAll('.reg-only');
     const btnVerify = document.getElementById('btn-verify');
     const btnLogin = document.getElementById('btn-login');
@@ -804,202 +645,10 @@ function initLogin(users) {
             } else {
                 alert('Correo o contraseña incorrectos.');
             }
-        const email = document.getElementById('register-email').value;
-        const pass = document.getElementById('register-password').value;
-        const isLoginMode = regFields[0].classList.contains('hidden');
-
-        if (isLoginMode) {
-            const encontrado = users.find(u => u.email === email && u.password === pass);
-            if (encontrado) {
-                localStorage.setItem('userActive', JSON.stringify(encontrado));
-                currentUser = encontrado;
-                alert(`¡Bienvenido, ${encontrado.name}!`);
-                window.location.hash = '#home';
-                location.reload();
-            } else {
-                alert('Correo o contraseña incorrectos.');
-            }
         } else {
             alert('¡Te has registrado correctamente!');
-            alert('¡Te has registrado correctamente!');
         }
     });
-}
-
-// ─── RENDER SCHEDULE (Versión Calendario V1 Adaptada) ─────────────────────────
-function renderSchedule(scheduleData) {
-    const loginMsg  = document.getElementById('schedule-login-msg');
-    const app       = document.getElementById('schedule-app');
-
-    if (!currentUser) {
-        if (loginMsg) loginMsg.style.display = 'block';
-        if (app)      app.style.display      = 'none';
-        return;
-    }
-
-    if (loginMsg) loginMsg.style.display = 'none';
-    if (app)      app.style.display      = 'block';
-
-    initCalendar(scheduleData);
-}
-
-function initCalendar(scheduleData) {
-    const slots    = scheduleData ? scheduleData.slots : ['10:00','11:00','12:00','13:00','16:00','17:00','18:00'];
-    const bookings = JSON.parse(sessionStorage.getItem('adoptme_bookings') || '[]');
-
-    let current = new Date();
-    current.setDate(1);
-
-    function saveBookings() {
-        sessionStorage.setItem('adoptme_bookings', JSON.stringify(bookings));
-    }
-
-    function renderCalendar() {
-        const title   = document.getElementById('cal-month-title');
-        const grid    = document.getElementById('cal-grid');
-        const slotsEl = document.getElementById('cal-slots');
-        if (!grid) return;
-
-        const year  = current.getFullYear();
-        const month = current.getMonth();
-
-        title.textContent = new Date(year, month, 1)
-            .toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
-
-        const firstDay = (new Date(year, month, 1).getDay() + 6) % 7;
-        const daysInMonth = new Date(year, month + 1, 0).getDate();
-        const today = new Date();
-
-        grid.innerHTML = '';
-
-        for (let i = 0; i < firstDay; i++) {
-            const empty = document.createElement('div');
-            empty.className = 'cal-day empty';
-            grid.appendChild(empty);
-        }
-
-        // Usamos email como identificador único de usuario si no hay 'user'
-        const userId = currentUser.user || currentUser.email;
-
-        for (let d = 1; d <= daysInMonth; d++) {
-            const dayEl  = document.createElement('div');
-            const date   = new Date(year, month, d);
-            const isPast = date < new Date(today.getFullYear(), today.getMonth(), today.getDate());
-            const isToday = date.toDateString() === today.toDateString();
-            const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-            const hasBooking = bookings.some(b => b.date === dateStr && b.userId === userId);
-
-            dayEl.textContent = d;
-            dayEl.className   = 'cal-day' +
-                (isPast        ? ' past'        : ' available') +
-                (isToday       ? ' today'       : '') +
-                (hasBooking    ? ' has-booking' : '');
-
-            if (!isPast) {
-                dayEl.addEventListener('click', () => {
-                    document.querySelectorAll('.cal-day.selected').forEach(el => el.classList.remove('selected'));
-                    dayEl.classList.add('selected');
-                    renderSlots(dateStr, slots, bookings, saveBookings, renderCalendar, renderBookings, userId);
-                });
-            }
-            grid.appendChild(dayEl);
-        }
-
-        slotsEl.style.display = 'none';
-        renderBookings(bookings, userId);
-    }
-
-    function renderSlots(dateStr, slots, bookings, saveBookings, renderCalendar, renderBookings, userId) {
-        const slotsEl   = document.getElementById('cal-slots');
-        const slotsGrid = document.getElementById('cal-slots-grid');
-        const slotsTitle = document.getElementById('cal-slots-title');
-
-        const [y, m, d] = dateStr.split('-');
-        slotsTitle.textContent = `Horas disponibles — ${d}/${m}/${y}`;
-        slotsGrid.innerHTML = '';
-        slotsEl.style.display = 'block';
-
-        slots.forEach(hour => {
-            const btn      = document.createElement('button');
-            const existing = bookings.find(b => b.date === dateStr && b.hour === hour);
-            const isMine   = existing && existing.userId === userId;
-
-            btn.textContent = hour;
-            btn.className   = 'slot-btn' + (isMine ? ' mine' : existing ? ' booked' : '');
-
-            if (!existing) {
-                btn.addEventListener('click', () => {
-                    bookings.push({ date: dateStr, hour, userId: userId, name: currentUser.name });
-                    saveBookings();
-                    renderCalendar();
-                    renderSlots(dateStr, slots, bookings, saveBookings, renderCalendar, renderBookings, userId);
-                });
-            } else if (isMine) {
-                btn.title = 'Tu reserva — haz clic para cancelar';
-                btn.addEventListener('click', () => {
-                    const idx = bookings.findIndex(b => b.date === dateStr && b.hour === hour && b.userId === userId);
-                    if (idx !== -1) bookings.splice(idx, 1);
-                    saveBookings();
-                    renderCalendar();
-                    renderSlots(dateStr, slots, bookings, saveBookings, renderCalendar, renderBookings, userId);
-                });
-            }
-            slotsGrid.appendChild(btn);
-        });
-    }
-
-    function renderBookings(bookings, userId) {
-        const myBookings = bookings
-            .filter(b => b.userId === userId)
-            .sort((a, b) => a.date.localeCompare(b.date) || a.hour.localeCompare(b.hour));
-
-        const container  = document.getElementById('cal-bookings');
-        const list       = document.getElementById('bookings-list');
-        if (!container || !list) return;
-
-        if (myBookings.length === 0) {
-            container.style.display = 'none';
-            return;
-        }
-
-        container.style.display = 'block';
-        list.innerHTML = '';
-
-        myBookings.forEach(b => {
-            const [y, m, d] = b.date.split('-');
-            const li = document.createElement('li');
-            li.innerHTML = `<span>📅 ${d}/${m}/${y} a las ${b.hour}</span>`;
-
-            const cancelBtn = document.createElement('button');
-            cancelBtn.className   = 'cancel-btn';
-            cancelBtn.textContent = 'Cancelar';
-            cancelBtn.addEventListener('click', () => {
-                const idx = bookings.findIndex(bk => bk.date === b.date && bk.hour === b.hour && bk.userId === userId);
-                if (idx !== -1) bookings.splice(idx, 1);
-                saveBookings();
-                renderCalendar();
-                const selected = document.querySelector('.cal-day.selected');
-                if (selected) {
-                    renderSlots(b.date, slots, bookings, saveBookings, renderCalendar, renderBookings, userId);
-                }
-            });
-
-            li.appendChild(cancelBtn);
-            list.appendChild(li);
-        });
-    }
-
-    document.getElementById('cal-prev').addEventListener('click', () => {
-        current.setMonth(current.getMonth() - 1);
-        renderCalendar();
-    });
-
-    document.getElementById('cal-next').addEventListener('click', () => {
-        current.setMonth(current.getMonth() + 1);
-        renderCalendar();
-    });
-
-    renderCalendar();
 }
 
 // ─── RENDER SCHEDULE (Versión Calendario V1 Adaptada) ─────────────────────────
