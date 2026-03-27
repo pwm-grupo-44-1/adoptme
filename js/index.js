@@ -842,6 +842,7 @@ function initLogin(users) {
         const reglas = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/;
         return reglas.test(pass);
     };
+    btnLogin.click();
 
     btnVerify.addEventListener('click', () => {
         const email = document.getElementById('register-email').value;
@@ -872,6 +873,8 @@ function initLogin(users) {
         btnRegister.classList.add('secondary');
         btnLogin.type = "submit";
     });
+
+    btnLogin.click();
 
     btnRegister.addEventListener('click', () => {
         regFields.forEach(field => {
