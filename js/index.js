@@ -443,6 +443,8 @@ function initLogin(users) {
         btnLogin.type = "submit";
     });
 
+    btnLogin.click();
+
     // Registrarse
     btnRegister.addEventListener('click', () => {
         regFields.forEach(field => {
