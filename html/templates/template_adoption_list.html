@@ -1,69 +1,154 @@
-<div class="layout">
-  <aside class="sidebar" aria-label="Filtros">
-    <h2 class="sidebar-title">Filtrar por</h2>
+<div class="adoption-page-wrapper">
 
-    <div class="filter-accordion">
+  <!-- ══ PANEL DE ADMINISTRADOR (solo visible si admin) ══ -->
+  <div id="admin-panel" class="admin-panel" style="display:none;" aria-label="Panel de administración">
 
-      <details class="filter-section">
-        <summary class="filter-label">Raza</summary>
-        <select class="filter-select" id="filter-breed">
-          <option value="all">Todas</option>
-        </select>
-      </details>
-
-      <details class="filter-section">
-        <summary class="filter-label">Edad</summary>
-        <select class="filter-select" id="filter-age">
-          <option value="all">Todas</option>
-          <option value="Cachorro (0-2 años)">Cachorro (0-2 años)</option>
-          <option value="Adulto (3-6 años)">Adulto (3-6 años)</option>
-          <option value="Senior (7+ años)">Senior (7+ años)</option>
-        </select>
-      </details>
-
-      <details class="filter-section">
-        <summary class="filter-label">Peso</summary>
-        <select class="filter-select" id="filter-weight">
-          <option value="all">Todos</option>
-          <option value="Pequeño (≤5kg)">Pequeño (≤5kg)</option>
-          <option value="Mediano (6-15kg)">Mediano (6-15kg)</option>
-          <option value="Grande (>15kg)">Grande (>15kg)</option>
-        </select>
-      </details>
-
-      <details class="filter-section">
-        <summary class="filter-label">Tipo de pelo</summary>
-        <select class="filter-select" id="filter-hair">
-          <option value="all">Todos</option>
-        </select>
-      </details>
-
-      <details class="filter-section">
-        <summary class="filter-label">Comportamiento</summary>
-        <select class="filter-select" id="filter-mood">
-          <option value="all">Todos</option>
-        </select>
-      </details>
-
-      <details class="filter-section">
-        <summary class="filter-label">Ordenar por</summary>
-        <select class="filter-select" id="sort-select">
-          <option value="">Sin orden</option>
-          <option value="age-asc">Edad ↑</option>
-          <option value="age-desc">Edad ↓</option>
-          <option value="weight-asc">Peso ↑</option>
-          <option value="weight-desc">Peso ↓</option>
-        </select>
-      </details>
-
+    <div class="admin-panel-header">
+      <span class="admin-panel-title"><i class="bi bi-house-gear"></i> Panel de Administrador</span>
+      <button class="admin-toggle-btn" id="admin-toggle-btn" aria-expanded="false">
+        <i class="bi bi-plus-circle"></i> Añadir nuevo animal
+      </button>
     </div>
 
-    <button class="filter-reset" id="filter-reset">Limpiar filtros</button>
+    <form class="admin-add-form" id="admin-add-form" style="display:none;" novalidate>
+      <div class="admin-form-grid">
 
-  </aside>
+        <div class="admin-field">
+          <label for="admin-name">Nombre *</label>
+          <input type="text" id="admin-name" placeholder="Ej: Luna" required>
+        </div>
 
-  <section class="pets-list">
-    <div class="results-count" id="results-count"></div>
-    <div id="pets-list"></div>
-  </section>
+        <div class="admin-field">
+          <label for="admin-gender">Género *</label>
+          <select id="admin-gender" required>
+            <option value="">-- Seleccionar --</option>
+            <option value="Male">Macho</option>
+            <option value="Female">Hembra</option>
+          </select>
+        </div>
+
+        <div class="admin-field">
+          <label for="admin-breed">Raza *</label>
+          <input type="text" id="admin-breed" placeholder="Ej: Labrador" required>
+        </div>
+
+        <div class="admin-field">
+          <label for="admin-age">Edad (años) *</label>
+          <input type="number" id="admin-age" min="0" max="30" placeholder="Ej: 3" required>
+        </div>
+
+        <div class="admin-field">
+          <label for="admin-weight">Peso *</label>
+          <input type="text" id="admin-weight" placeholder="Ej: 12 kg" required>
+        </div>
+
+        <div class="admin-field">
+          <label for="admin-hair">Tipo de pelo *</label>
+          <input type="text" id="admin-hair" placeholder="Ej: Pelo corto liso" required>
+        </div>
+
+        <div class="admin-field">
+          <label for="admin-mood">Carácter *</label>
+          <input type="text" id="admin-mood" placeholder="Ej: Alegre y juguetona" required>
+        </div>
+
+        <div class="admin-field admin-field--full">
+          <label>Imágenes * <span style="font-weight:400;text-transform:none;">(la primera será la principal)</span></label>
+          <div class="admin-file-picker">
+            <input type="file" id="admin-image" accept="image/*" multiple required style="display:none;">
+            <button type="button" class="admin-file-btn" id="admin-file-btn"><i class="bi bi-images"></i> Seleccionar imágenes</button>
+            <span class="admin-file-name" id="admin-file-name">Ningún archivo seleccionado</span>
+          </div>
+        </div>
+
+        <div class="admin-field admin-field--full">
+          <label for="admin-description">Descripción *</label>
+          <textarea id="admin-description" rows="2" placeholder="Describe la personalidad, necesidades y curiosidades del animal..." required></textarea>
+        </div>
+
+      </div>
+
+      <div class="admin-form-actions">
+        <button type="submit" class="admin-submit-btn"><i class="bi bi-check-circle"></i> Añadir animal</button>
+        <button type="button" class="admin-cancel-btn" id="admin-cancel-btn">Cancelar</button>
+        <span class="admin-form-note">* Todos los campos son obligatorios</span>
+      </div>
+    </form>
+
+  </div>
+
+  <!-- ══ LAYOUT PRINCIPAL ══ -->
+  <div class="layout">
+    <aside class="sidebar" aria-label="Filtros">
+      <h2 class="sidebar-title">Filtrar por</h2>
+
+      <div class="filter-accordion">
+
+        <details class="filter-section">
+          <summary class="filter-label">Género</summary>
+          <div class="filter-options" id="filter-gender">
+            <label><input type="checkbox" value="Male"> Macho</label>
+            <label><input type="checkbox" value="Female"> Hembra</label>
+          </div>
+        </details>
+
+        <details class="filter-section">
+          <summary class="filter-label">Raza</summary>
+          <div class="filter-options" id="filter-breed">
+          </div>
+        </details>
+
+        <details class="filter-section">
+          <summary class="filter-label">Edad</summary>
+          <div class="filter-options" id="filter-age">
+            <label><input type="checkbox" value="Cachorro (0-2 años)"> Cachorro (0-2 años)</label>
+            <label><input type="checkbox" value="Adulto (3-6 años)"> Adulto (3-6 años)</label>
+            <label><input type="checkbox" value="Senior (7+ años)"> Senior (7+ años)</label>
+          </div>
+        </details>
+
+        <details class="filter-section">
+          <summary class="filter-label">Peso</summary>
+          <div class="filter-options" id="filter-weight">
+            <label><input type="checkbox" value="Pequeño (≤5kg)"> Pequeño (≤5kg)</label>
+            <label><input type="checkbox" value="Mediano (6-15kg)"> Mediano (6-15kg)</label>
+            <label><input type="checkbox" value="Grande (>15kg)"> Grande (>15kg)</label>
+          </div>
+        </details>
+
+        <details class="filter-section">
+          <summary class="filter-label">Tipo de pelo</summary>
+          <div class="filter-options" id="filter-hair">
+          </div>
+        </details>
+
+        <details class="filter-section">
+          <summary class="filter-label">Comportamiento</summary>
+          <div class="filter-options" id="filter-mood">
+          </div>
+        </details>
+
+        <details class="filter-section">
+          <summary class="filter-label">Ordenar por</summary>
+          <select class="filter-select" id="sort-select">
+            <option value="">Sin orden</option>
+            <option value="age-asc">Edad ↑</option>
+            <option value="age-desc">Edad ↓</option>
+            <option value="weight-asc">Peso ↑</option>
+            <option value="weight-desc">Peso ↓</option>
+          </select>
+        </details>
+
+      </div>
+
+      <button class="filter-reset" id="filter-reset">Limpiar filtros</button>
+
+    </aside>
+
+    <section class="pets-list">
+      <div class="results-count" id="results-count"></div>
+      <div id="pets-list"></div>
+    </section>
+  </div>
+
 </div>

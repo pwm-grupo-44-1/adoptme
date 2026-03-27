@@ -6,6 +6,47 @@ let currentUser = JSON.parse(localStorage.getItem('userActive') || 'null');
 const DB_PATH = '../data/db.json';
 const TMPL    = '../html/templates/';
 
+// ─── UTILIDADES DE VISITAS ────────────────────────────────────────────────────
+function getVisits(animalId) {
+    const visits = JSON.parse(localStorage.getItem('adoptme_visits') || '{}');
+    return visits[animalId] || 0;
+}
+
+function incrementVisit(animalId) {
+    const visits = JSON.parse(localStorage.getItem('adoptme_visits') || '{}');
+    visits[animalId] = (visits[animalId] || 0) + 1;
+    localStorage.setItem('adoptme_visits', JSON.stringify(visits));
+}
+
+function isAdmin() {
+    return currentUser && currentUser.type === 'admin';
+}
+
+// ─── UTILIDADES DE ANIMALES EN LOCALSTORAGE ───────────────────────────────────
+function getStoredAnimals() {
+    return JSON.parse(localStorage.getItem('adoptme_extra_animals') || '[]');
+}
+
+function saveStoredAnimals(animals) {
+    localStorage.setItem('adoptme_extra_animals', JSON.stringify(animals));
+}
+
+function getAllAnimals(dbAnimals) {
+    return [...dbAnimals, ...getStoredAnimals()];
+}
+
+// Devuelve la imagen principal (compatible con formato antiguo y nuevo)
+function getMainImage(animal) {
+    if (Array.isArray(animal.images) && animal.images.length > 0) return animal.images[0];
+    return animal.image || '';
+}
+
+// Devuelve las imágenes extra (todas menos la principal)
+function getExtraImages(animal) {
+    if (Array.isArray(animal.images) && animal.images.length > 1) return animal.images.slice(1);
+    return [];
+}
+
 function loadTemplate(fileName, id) {
     return fetch(fileName)
         .then(res => {
@@ -410,7 +451,123 @@ function renderContactUs(data) {
 }
 
 // ─── RENDER ADOPTION LIST (Versión Avanzada Filtros V1) ───────────────────────
-function renderAdoptionList(animals) {
+function renderAdoptionList(dbAnimals) {
+
+    // Mezclamos los animales del db.json con los guardados en localStorage
+    const animals = getAllAnimals(dbAnimals);
+
+    // ── Panel de administrador ──
+    const adminPanel = document.getElementById('admin-panel');
+    if (adminPanel && isAdmin()) {
+        adminPanel.style.display = 'block';
+
+        const toggleBtn  = document.getElementById('admin-toggle-btn');
+        const form       = document.getElementById('admin-add-form');
+        const cancelBtn  = document.getElementById('admin-cancel-btn');
+
+        toggleBtn.addEventListener('click', () => {
+            const open = form.style.display !== 'none';
+            form.style.display = open ? 'none' : 'block';
+            toggleBtn.setAttribute('aria-expanded', String(!open));
+        });
+
+        cancelBtn.addEventListener('click', () => {
+            form.style.display = 'none';
+            toggleBtn.setAttribute('aria-expanded', 'false');
+            form.reset();
+            document.getElementById('admin-file-name').textContent = 'Ningún archivo seleccionado';
+        });
+
+        // ── Botón personalizado de imagen ──
+        const fileBtn   = document.getElementById('admin-file-btn');
+        const fileInput = document.getElementById('admin-image');
+        const fileName  = document.getElementById('admin-file-name');
+
+        fileBtn.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', () => {
+            const count = fileInput.files.length;
+            fileName.textContent = count === 0
+                ? 'Ningún archivo seleccionado'
+                : count === 1
+                    ? fileInput.files[0].name
+                    : `${count} imágenes seleccionadas (principal: ${fileInput.files[0].name})`;
+        });
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+
+            const name        = document.getElementById('admin-name').value.trim();
+            const breed       = document.getElementById('admin-breed').value.trim();
+            const gender      = document.getElementById('admin-gender').value;
+            const age         = parseInt(document.getElementById('admin-age').value);
+            const weight      = document.getElementById('admin-weight').value.trim();
+            const hair        = document.getElementById('admin-hair').value.trim();
+            const mood        = document.getElementById('admin-mood').value.trim();
+            const imageInput  = document.getElementById('admin-image');
+            const description = document.getElementById('admin-description').value.trim();
+            const files       = Array.from(imageInput.files);
+
+            if (!name || !breed || !gender || isNaN(age) || !weight || !hair || !mood || files.length === 0 || !description) {
+                alert('Por favor, rellena todos los campos obligatorios.');
+                return;
+            }
+
+            // Comprobamos tamaño máximo por archivo (1 MB)
+            const MAX_SIZE_MB = 1;
+            const tooBig = files.find(f => f.size > MAX_SIZE_MB * 1024 * 1024);
+            if (tooBig) {
+                alert(`"${tooBig.name}" supera el límite de ${MAX_SIZE_MB} MB por imagen.`);
+                return;
+            }
+
+            // Convertimos todos los archivos a base64 en paralelo
+            const readFile = f => new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload  = ev => resolve(ev.target.result);
+                reader.onerror = () => reject(new Error(`Error leyendo ${f.name}`));
+                reader.readAsDataURL(f);
+            });
+
+            Promise.all(files.map(readFile))
+                .then(images => {
+                    const allIds = animals.map(a => a.id);
+                    const newId  = allIds.length > 0 ? Math.max(...allIds) + 1 : 1;
+
+                    const newAnimal = {
+                        id: newId,
+                        name,
+                        breed,
+                        gender,
+                        description,
+                        age,
+                        mood,
+                        weight,
+                        'hair type': hair,
+                        images,   // array: images[0] = principal, resto = galería
+                        clicks: 0
+                    };
+
+                    const stored = getStoredAnimals();
+                    stored.push(newAnimal);
+                    saveStoredAnimals(stored);
+                    animals.push(newAnimal);
+
+                    fillSelect('filter-breed', animals.map(a => a.breed));
+                    fillSelect('filter-hair',  animals.map(a => a['hair type']));
+                    fillSelect('filter-mood',  animals.map(a => a.mood));
+
+                    form.reset();
+                    document.getElementById('admin-file-name').textContent = 'Ningún archivo seleccionado';
+                    form.style.display = 'none';
+                    toggleBtn.setAttribute('aria-expanded', 'false');
+
+                    applyFilters();
+                    alert(`✅ ¡Animal "${name}" añadido con ${images.length} foto${images.length !== 1 ? 's' : ''}!`);
+                })
+                .catch(err => alert(err.message));
+        });
+    }
+
     function parseWeight(w) { return parseFloat(w) || 0; }
     function weightRange(w) {
         const kg = parseWeight(w);
@@ -424,52 +581,84 @@ function renderAdoptionList(animals) {
         return 'Senior (7+ años)';
     }
 
-    function fillSelect(id, values) {
-        const sel = document.getElementById(id);
-        if (!sel) return;
+    // NUEVO: Función para rellenar checkboxes dinámicos
+    function fillCheckboxes(id, values) {
+        const container = document.getElementById(id);
+        if (!container) return;
         const unique = [...new Set(values)].sort();
+
         unique.forEach(v => {
-            if (![...sel.options].some(o => o.value === v)) {
-                const opt = document.createElement('option');
-                opt.value = opt.textContent = v;
-                sel.appendChild(opt);
+            // Solo lo añade si no existe ya
+            if (!container.querySelector(`input[value="${v}"]`)) {
+                container.innerHTML += `<label><input type="checkbox" value="${v}"> ${v}</label>`;
             }
         });
-        const saved = sessionStorage.getItem('filter_' + id);
-        if (saved) sel.value = saved;
     }
 
-    fillSelect('filter-breed', animals.map(a => a.breed));
-    fillSelect('filter-hair',  animals.map(a => a["hair type"]));
-    fillSelect('filter-mood',  animals.map(a => a.mood));
+    fillCheckboxes('filter-breed', animals.map(a => a.breed));
+    fillCheckboxes('filter-hair',  animals.map(a => a['hair type']));
+    fillCheckboxes('filter-mood',  animals.map(a => a.mood));
 
-    ['filter-age', 'filter-weight', 'sort-select'].forEach(id => {
-        const sel = document.getElementById(id);
-        const saved = sessionStorage.getItem('filter_' + id);
-        if (sel && saved) sel.value = saved;
-    });
+    // NUEVO: Función para recuperar sesión
+    function restoreSession() {
+        ['filter-gender','filter-breed','filter-age','filter-weight','filter-hair','filter-mood'].forEach(id => {
+            let saved = [];
+            try {
+                // Intentamos leerlo con el nuevo formato (Array)
+                saved = JSON.parse(sessionStorage.getItem('filter_' + id) || '[]');
+                // Si por alguna razón no es un array, forzamos a que lo sea
+                if (!Array.isArray(saved)) saved = [];
+            } catch (error) {
+                // Si falla (porque había guardado un "all" de la versión vieja), lo limpiamos
+                saved = [];
+                sessionStorage.removeItem('filter_' + id);
+            }
+
+            const container = document.getElementById(id);
+            if(container) {
+                container.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                    cb.checked = saved.includes(cb.value);
+                });
+            }
+        });
+        const savedSort = sessionStorage.getItem('filter_sort-select');
+        const sortSelect = document.getElementById('sort-select');
+        if (sortSelect && savedSort) sortSelect.value = savedSort;
+    }
+
+    // NUEVO: Función para obtener los valores marcados
+    function getCheckedValues(id) {
+        const container = document.getElementById(id);
+        if (!container) return [];
+        return Array.from(container.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
+    }
 
     function applyFilters() {
-        const breed  = document.getElementById('filter-breed')?.value  || 'all';
-        const age    = document.getElementById('filter-age')?.value    || 'all';
-        const weight = document.getElementById('filter-weight')?.value || 'all';
-        const hair   = document.getElementById('filter-hair')?.value   || 'all';
-        const mood   = document.getElementById('filter-mood')?.value   || 'all';
-        const sort   = document.getElementById('sort-select')?.value   || '';
+        const genders = getCheckedValues('filter-gender');
+        const breeds  = getCheckedValues('filter-breed');
+        const ages    = getCheckedValues('filter-age');
+        const weights = getCheckedValues('filter-weight');
+        const hairs   = getCheckedValues('filter-hair');
+        const moods   = getCheckedValues('filter-mood');
+        const sort    = document.getElementById('sort-select')?.value || '';
 
-        sessionStorage.setItem('filter_filter-breed',  breed);
-        sessionStorage.setItem('filter_filter-age',    age);
-        sessionStorage.setItem('filter_filter-weight', weight);
-        sessionStorage.setItem('filter_filter-hair',   hair);
-        sessionStorage.setItem('filter_filter-mood',   mood);
+        // Guardar sesión (ahora guardamos arrays)
+        sessionStorage.setItem('filter_filter-gender', JSON.stringify(genders));
+        sessionStorage.setItem('filter_filter-breed',  JSON.stringify(breeds));
+        sessionStorage.setItem('filter_filter-age',    JSON.stringify(ages));
+        sessionStorage.setItem('filter_filter-weight', JSON.stringify(weights));
+        sessionStorage.setItem('filter_filter-hair',   JSON.stringify(hairs));
+        sessionStorage.setItem('filter_filter-mood',   JSON.stringify(moods));
         sessionStorage.setItem('filter_sort-select',   sort);
 
         let result = animals.filter(a => {
-            if (breed  !== 'all' && a.breed           !== breed)  return false;
-            if (age    !== 'all' && ageRange(a.age)   !== age)    return false;
-            if (weight !== 'all' && weightRange(a.weight) !== weight) return false;
-            if (hair   !== 'all' && a["hair type"]    !== hair)   return false;
-            if (mood   !== 'all' && a.mood             !== mood)   return false;
+            // Si el array tiene algo (usuario marcó opciones), filtramos. Si está vacío (longitud 0), pasan todos.
+            if (genders.length > 0 && !genders.includes(a.gender)) return false;
+            if (breeds.length > 0  && !breeds.includes(a.breed))   return false;
+            if (ages.length > 0    && !ages.includes(ageRange(a.age))) return false;
+            if (weights.length > 0 && !weights.includes(weightRange(a.weight))) return false;
+            if (hairs.length > 0   && !hairs.includes(a["hair type"])) return false;
+            if (moods.length > 0   && !moods.includes(a.mood))     return false;
             return true;
         });
 
@@ -484,14 +673,17 @@ function renderAdoptionList(animals) {
         renderAnimalCards(result);
     }
 
-    ['filter-breed','filter-age','filter-weight','filter-hair','filter-mood','sort-select'].forEach(id => {
-        document.getElementById(id)?.addEventListener('change', applyFilters);
-    });
+    restoreSession();
+
+    // Detectar cambios en cualquier checkbox o select
+    document.querySelector('.filter-accordion')?.addEventListener('change', applyFilters);
 
     document.getElementById('filter-reset')?.addEventListener('click', () => {
-        ['filter-breed','filter-age','filter-weight','filter-hair','filter-mood','sort-select'].forEach(id => {
-            const sel = document.getElementById(id);
-            if (sel) sel.value = sel.options[0].value;
+        document.querySelectorAll('.filter-accordion input[type="checkbox"]').forEach(cb => cb.checked = false);
+        const sortSelect = document.getElementById('sort-select');
+        if (sortSelect) sortSelect.value = "";
+
+        ['filter-gender','filter-breed','filter-age','filter-weight','filter-hair','filter-mood','sort-select'].forEach(id => {
             sessionStorage.removeItem('filter_' + id);
         });
         applyFilters();
@@ -505,37 +697,78 @@ function renderAnimalCards(animals) {
     if (!container) return;
     container.innerHTML = '';
 
+    const admin = isAdmin();
+
     animals.forEach(animal => {
-        container.innerHTML += `
-            <div class="item-list">
-                <div class="photo-btn-column">
-                    <a href="#pet_profile?id=${animal.id}">
-                        <img class="photo-card-list" src="${animal.image}" alt="Foto de ${animal.name}">
-                    </a>
-                    <a class="btn-pet-detail" href="#pet_profile?id=${animal.id}">Ver perfil</a>
-                </div>
-                <div class="pet-profile-text">
-                    <ul>
-                        <li><strong>Nombre:</strong> ${animal.name}</li>
-                        <li><strong>Raza:</strong> ${animal.breed}</li>
-                        <li><strong>Edad:</strong> ${animal.age} años</li>
-                        <li><strong>Peso:</strong> ${animal.weight}</li>
-                        <li><strong>Pelo:</strong> ${animal["hair type"]}</li>
-                        <li><strong>Carácter:</strong> ${animal.mood}</li>
-                    </ul>
-                </div>
+        const visits = admin ? getVisits(animal.id) : 0;
+
+        const card = document.createElement('div');
+        card.className = 'item-list';
+        card.innerHTML = `
+            <div class="photo-btn-column">
+                <a href="#pet_profile?id=${animal.id}">
+                    <img class="photo-card-list" src="${getMainImage(animal)}" alt="Foto de ${animal.name}">
+                </a>
+                <a class="btn-pet-detail" href="#pet_profile?id=${animal.id}">Ver perfil</a>
+                ${admin ? `
+                <div class="admin-card-actions">
+                    <span class="visit-badge">👁️ ${visits} visita${visits !== 1 ? 's' : ''}</span>
+                    <button class="btn-delete-animal" title="Eliminar animal">🗑️ Eliminar</button>
+                </div>` : ''}
+            </div>
+            <div class="pet-profile-text">
+                <ul>
+                    <li><strong>Nombre:</strong> ${animal.name}</li>
+                    <li><strong>Raza:</strong> ${animal.breed}</li>
+                    <li><strong>Género:</strong> ${animal.gender === 'Male' ? '<i class="bi bi-gender-male"></i> Macho' : animal.gender === 'Female' ? '<i class="bi bi-gender-female"></i> Hembra' : '-'}</li>
+                    <li><strong>Edad:</strong> ${animal.age} años</li>
+                    <li><strong>Peso:</strong> ${animal.weight}</li>
+                    <li><strong>Pelo:</strong> ${animal["hair type"]}</li>
+                    <li><strong>Carácter:</strong> ${animal.mood}</li>
+                </ul>
             </div>`;
+
+        if (admin) {
+            card.querySelector('.btn-delete-animal').addEventListener('click', () => {
+                if (!confirm(`¿Seguro que quieres eliminar a ${animal.name}?`)) return;
+
+                // Si es un animal de localStorage, lo borramos de allí
+                const stored = getStoredAnimals();
+                const storedIdx = stored.findIndex(a => a.id === animal.id);
+                if (storedIdx !== -1) {
+                    stored.splice(storedIdx, 1);
+                    saveStoredAnimals(stored);
+                }
+
+                // Lo eliminamos del array en memoria (tanto db como localStorage)
+                const memIdx = animals.findIndex(a => a.id === animal.id);
+                if (memIdx !== -1) animals.splice(memIdx, 1);
+
+                card.remove();
+
+                // Actualizar contador de resultados
+                const count = document.getElementById('results-count');
+                const visible = container.querySelectorAll('.item-list').length;
+                if (count) count.textContent = `${visible} mascota${visible !== 1 ? 's' : ''} encontrada${visible !== 1 ? 's' : ''}`;
+            });
+        }
+
+        container.appendChild(card);
     });
 }
 
 // ─── RENDER PET PROFILE ───────────────────────────────────────────────────────
-function renderPetProfile(animals) {
+function renderPetProfile(dbAnimals) {
+    const animals    = getAllAnimals(dbAnimals);
     const hashParams = window.location.hash.split('?')[1] || '';
     const params     = new URLSearchParams(hashParams);
     const id         = parseInt(params.get('id'));
 
     const animal = animals.find(a => a.id === id) || animals[0];
     if (!animal) return;
+
+    // Registrar visita (solo si el ID venía en la URL, no en el fallback)
+    if (params.get('id')) incrementVisit(animal.id);
 
     const boxes = document.querySelectorAll('.box-text');
     if (boxes.length >= 5) {
@@ -546,15 +779,37 @@ function renderPetProfile(animals) {
         boxes[4].textContent = animal.description;
     }
 
+    // ── Imagen principal ──
+    const mainSrc = getMainImage(animal);
     const photo = document.querySelector('.dog-profile .photo-card-profile, .dog-profile .photo-card');
     if (photo) {
-        if(photo.tagName === 'IMG') {
-            photo.src = animal.image;
+        if (photo.tagName === 'IMG') {
+            photo.src = mainSrc;
             photo.alt = `Foto de ${animal.name}`;
         } else {
-            photo.style.backgroundImage = `url('${animal.image}')`;
+            photo.style.backgroundImage = `url('${mainSrc}')`;
             photo.style.backgroundSize  = 'cover';
         }
+    }
+
+    // ── Galería de fotos extra ──
+    const extras = getExtraImages(animal);
+    const dogProfile = document.querySelector('.dog-profile');
+    const existingGallery = document.getElementById('pet-gallery');
+    if (existingGallery) existingGallery.remove();
+
+    if (extras.length > 0 && dogProfile) {
+        const gallery = document.createElement('div');
+        gallery.id = 'pet-gallery';
+        gallery.className = 'pet-gallery';
+        gallery.innerHTML = `<h3 class="pet-gallery-title">📷 Más fotos</h3>
+            <div class="pet-gallery-grid">
+                ${extras.map(src => `
+                    <a href="${src}" target="_blank" class="pet-gallery-item">
+                        <img src="${src}" alt="Foto extra de ${animal.name}">
+                    </a>`).join('')}
+            </div>`;
+        dogProfile.after(gallery);
     }
 }
 
