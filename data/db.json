@@ -556,6 +556,15 @@
       "telefono": 605040908,
       "user": "alejandro",
       "password": "Eresunmatao:1"
+    },
+    {
+      "id": 4,
+      "name": "Ernestina",
+      "type": "admin",
+      "email": "ernestina@adoptme.es",
+      "telefono": 605014708,
+      "user": "Ernestina",
+      "password": "Ernestina"
     }
   ],
   "schedule": {

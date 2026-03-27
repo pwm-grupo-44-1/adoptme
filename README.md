@@ -105,12 +105,39 @@ Cada animal cuenta con una página detallada que incluye:
 
 ## Nombre y ubicacion de los mockups para móvil y tablet 
 
-## Pagina de inicio 
+## Página de inicio 
+La página de inicio de la aplicación web es `index.html`, que se encuentra en: /html/templates/index.html.
 
+ Es el punto de entrada principal del proyecto **"AdoptMe!!"**. Al cargar el archivo,  carga automáticamente la vista desde `template_home.html`.
+
+Desde este archivo central se gestiona:
+* La carga dinámica del encabezado (`template_header.html`) y el pie de página (`template_footer.html`).
+* La navegación entre las distintas secciones (Mascotas, Nosotros, Login, etc.).
+* La persistencia de la sesión del usuario a través de `localStorage`.
 ## Aspectos responsive implementados 
 
 ## Carga de templates y contenido JSON
 
+| Página / Sección | Template Inyectado | Datos desde `db.json` | Función encargada |
+| :--- | :--- | :--- | :--- |
+| **Cabecera** | `template_header.html` | Seccion `header` | `renderHeader` |
+| **Pie de página** | `template_footer.html` | Sección `footer` | `renderFooter` |
+| **Inicio** | `template_home.html` | Sección `home` | `renderHome` |
+| **Mascotas** | `template_adoption_list.html` | Sección `animals` | `renderAdoptionList` |
+| **Perfil Mascota** | `template_pet_profile.html` | Sección `animals` | `renderPetProfile` |
+| **Nosotros** | `template_about_us.html` | Sección `about_us` | `renderAboutUs` |
+| **Historias** | `template_stories.html` | Sección `stories` | `renderStories` |
+| **FAQ** | `template_faq.html` | Sección `faq` | `renderFaq` |
+| **Legal** | `template_legal.html` | Sección `legal` | `renderLegal` |
+| **Contacto** | `template_contact_us.html` | Sección `contact_us` | `renderContactUs` |
+| **Calendario** | `template_schedule.html` | Sección `schedule` | `renderSchedule` |
+| **Acceso** | `template_login.html` | Sección `users` | `initLogin` |
+
+### Detalles de la implementación técnica:
+
+* **Carga de datos JSON:** Se utiliza la función asíncrona `fetchDB()` para recuperar el archivo `../data/db.json`. Este archivo centraliza toda la información, desde los enlaces de redes sociales hasta la base de datos de animales y usuarios.
+* **Carga de templates:** La función `loadTemplate()` utiliza `fetch` para obtener el código HTML de los archivos en `../html/templates/`. Una vez obtenida la plantilla, se inserta en el DOM y se procede a su renderizado con los datos del JSON.
+* **Ubicación del contenido:** Los datos se encuentran en un servidor local simulado a través del archivo `db.json`.
 
 
 ## Validaciones HTML implementadas, de los formularios
@@ -130,8 +157,8 @@ Para el correcto funcionamiento de la aplicación, se han implementado validacio
 
 
 ## Usuario y contraseña de prueba
-* **Usuario:**  `[...]` 
-* **Contraseña:** `[...]`
+* **Usuario:**  `[ernestina@adoptme.es]` 
+* **Contraseña:** `[Ernestina]`
 
 
 ## Otros Aspectos a Considerar
