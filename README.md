@@ -103,6 +103,36 @@ Cada animal cuenta con una página detallada que incluye:
 *  template_schedule.html
 *  template_stories.html
 
+## Nombre y ubicacion de los mockups para móvil y tablet 
+
+## Pagina de inicio 
+
+## Aspectos responsive implementados 
+
+## Carga de templates y contenido JSON
+
+
+
+## Validaciones HTML implementadas, de los formularios
+Para el correcto funcionamiento de la aplicación, se han implementado validaciones nativas en el formulario de acceso y registro , y por otro lado támbien en el de añadir mascotas:
+
+### Formulario de Acceso y Registro (`template_login.html`)
+* **Nombre de usuario:** Definido como obligatorio mediante el atributo `required`.
+* **Correo electrónico:** Utiliza `type="email"` para validar el formato de dirección y el atributo `required` para evitar campos vacíos.
+* **Teléfono:** Implementa `type="tel"` y una expresión regular con `pattern="[6789][0-9]{8}"`, que obliga a introducir 9 dígitos comenzando por 6, 7, 8 o 9.
+* **Contraseña:** Marcada como obligatoria (`required`) con una restricción de longitud mínima de 8 caracteres mediante `minlength="8"`, title que actúa como guía visual informando los requisitos de mayúsculas, números y símbolos.
+
+### Formulario de Administración (`template_adoption_list.html`)
+* **Campos Obligatorios:** Los campos de **Nombre**, **Género**, **Raza**, **Peso**, **Tipo de pelo** y **Carácter** cuentan con el atributo `required` para impedir el envío de formularios incompletos.
+* **Edad:** Se utiliza `type="number"` junto con los atributos `min="0"` y `max="30"`, limitando el rango a una edad lógica para los animales del refugio.
+* **Gestión de Imágenes:** El input de archivos emplea `accept="image/*"` para filtrar y permitir únicamente formatos de imagen, además del atributo `multiple` para habilitar la carga de una galería completa de fotos.
+* **Descripción:** El área de texto (`textarea`) es obligatoria mediante el atributo `required`, garantizando que cada mascota cuente con una descripción detallada para los adoptantes.
+
+
+## Usuario y contraseña de prueba
+* **Usuario:**  `[...]` 
+* **Contraseña:** `[...]`
+
 
 ## Otros Aspectos a Considerar
 * **Tecnologías:** HTML5, CSS3 y JavaScript.
