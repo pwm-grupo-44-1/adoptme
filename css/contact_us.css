@@ -80,37 +80,6 @@
     line-height: 1.6;
 }
 
-
-/* ── Tablet apaisada ── */
-@media (min-width: 600px) and (max-width: 900px) {
-    .contact {
-        flex-direction: column;
-        gap: 2rem;
-        margin: 2rem 3rem;
-    }
-
-    .contact-title {
-        font-size: 1.6rem;
-    }
-
-    .contact-reason-text h3 {
-        font-size: 1.3rem;
-    }
-
-    .contact-reason-text p {
-        font-size: 1.2rem;
-    }
-
-    .contact-map {
-        height: 16rem;
-    }
-
-    .contact-text {
-        font-size: 1.5rem;
-    }
-}
-
-
 /* ── Tablet apaisada ── */
 @media (min-width: 600px) and (max-width: 900px) {
     .contact {
