@@ -152,9 +152,9 @@ a {
 }
 
 /* ══════════════════════════════════════════════
-   TABLET APAISADA  —  768px ↔ 1024px
+   TABLET APAISADA  —  600px ↔ 900px
 ══════════════════════════════════════════════ */
-@media (min-width: 768px) and (max-width: 1024px) {
+@media (min-width: 600px) and (max-width: 900px) {
 
     .logo {
         width: 5rem;
@@ -174,5 +174,9 @@ a {
     .btn {
         font-size: large;
         width: 6rem;
+    }
+
+    nav {
+        gap: 0;
     }
 }

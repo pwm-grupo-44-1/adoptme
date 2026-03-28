@@ -541,7 +541,7 @@ details[open] .filter-label::after {
 /* ══════════════════════════════════════════════
    TABLET APAISADA  —  768px ↔ 1024px
 ══════════════════════════════════════════════ */
-@media (min-width: 768px) and (max-width: 1024px) {
+@media (min-width: 600px) and (max-width: 900px) {
 
     /* ── Layout y sidebar ── */
     .layout {
