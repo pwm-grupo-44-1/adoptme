@@ -22,7 +22,7 @@
 
 }
 
-input[type="checkbox"] {
+.faq-toggle input[type="checkbox"] {
     display: none;
 }
 

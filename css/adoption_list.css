@@ -3,7 +3,7 @@
     grid-template-columns: repeat(2, 1fr);
     column-gap: 4rem;
     row-gap: 4rem;
-    padding: 2rem 8rem 0 8rem;
+    padding: 2rem 3rem 0 3rem;
 }
 
 .item-list {
@@ -43,7 +43,7 @@
     font-size: larger;
     text-align: justify;
     align-content: center;
-    margin: 0 0 3rem 0;
+    margin: 0 0 7rem 0;
 }
 
 .pet-profile-text  ul {
@@ -71,7 +71,7 @@
     background: #f4f5c9;
     border-radius: 1rem;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-    margin: 0rem 1rem;
+    margin: 0 1rem;
 }
 
 .sidebar-title {
@@ -107,7 +107,7 @@
 .filter-accordion {
     display: flex;
     flex-direction: column;
-    gap: 0.3rem;
+    gap: 0.5rem;
     margin-bottom: 1rem;
 }
 
@@ -115,25 +115,29 @@
     border-radius: 6px;
     overflow: hidden;
     border: 1px solid rgba(0,0,0,0.1);
+    background: #fffdf0; /* Fondo unificado */
 }
 
 .filter-label {
     list-style: none;
     padding: 0.8rem 1rem;
-    font-size: larger;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #4a7477;
     background: #fafbe6;
     cursor: pointer;
     display: flex;
     justify-content: space-between;
     align-items: center;
     user-select: none;
+    border-bottom: 1px solid transparent;
 }
 
 .filter-label::-webkit-details-marker { display: none; }
 
 .filter-label::after {
     content: '▾';
-    font-size: 0.8rem;
+    font-size: 1.2rem;
     transition: transform 0.2s;
 }
 
@@ -141,11 +145,56 @@ details[open] .filter-label::after {
     transform: rotate(-180deg);
 }
 
+/* ── Opciones (Checkboxes) ── */
+.filter-options {
+    padding: 0.8rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    max-height: 12rem;
+    overflow-y: auto;
+}
+
+/* ── Estilo bonito para la barra de scroll de los filtros (Opcional pero muy pro) ── */
+.filter-options::-webkit-scrollbar {
+    width: 6px; /* Barra delgadita y elegante */
+}
+
+.filter-options::-webkit-scrollbar-track {
+    background: #fffdf0; /* Fondo cremita */
+    border-radius: 4px;
+}
+
+.filter-options::-webkit-scrollbar-thumb {
+    background: #a8c084; /* Verde clarito para el tirador */
+    border-radius: 4px;
+}
+
+.filter-options::-webkit-scrollbar-thumb:hover {
+    background: #10946d; /* Verde oscuro al pasar el ratón */
+}
+
+.filter-options label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    color: #333;
+}
+
+.filter-options input[type="checkbox"] {
+    accent-color: #10946d; /* Tu color verde */
+    width: 1.1rem;
+    height: 1.1rem;
+    cursor: pointer;
+}
+
+/* Select de Ordenar */
 .filter-select {
     width: 100%;
     padding: 0.6rem 0.8rem;
     border: none;
-    border-top: 1px solid rgba(0,0,0,0.1);
     background: #fffdf0;
     font-family: inherit;
     font-size: 0.9rem;
@@ -178,7 +227,330 @@ details[open] .filter-label::after {
 
 /* Contador resultados */
 .results-count {
-    padding: 0.5rem 8rem;
+    padding: 0.5rem 3rem;
     font-size: 0.9rem;
     font-weight: 700;
+}
+
+
+/* ══════════════════════════════════════════════
+   WRAPPER PÁGINA (arregla flex de main)
+══════════════════════════════════════════════ */
+
+.adoption-page-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 2rem;
+}
+
+/* ══════════════════════════════════════════════
+   PANEL DE ADMINISTRADOR
+══════════════════════════════════════════════ */
+
+.admin-panel {
+    margin: 1.2rem 1.5rem 0;
+    background: #f4f5c9;
+    border: 1px solid #c8d87a;
+    border-radius: 0.8rem;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(74, 116, 119, 0.12);
+}
+
+.admin-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1.2rem;
+    background: #e8edaa;
+    border-bottom: 1px solid #c8d87a;
+}
+
+.admin-panel-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #4a7477;
+}
+
+.admin-toggle-btn {
+    padding: 0.45rem 1rem;
+    border-radius: 5px;
+    border: 1px solid #4a7477;
+    background: #4a7477;
+    color: #fff;
+    font-family: inherit;
+    font-weight: 500;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+}
+
+.admin-toggle-btn:hover {
+    background: #0d7a5a;
+    transform: translateY(-1px);
+}
+
+/* ── Formulario ── */
+
+.admin-add-form {
+    padding: 1rem 1.2rem 0.8rem;
+}
+
+.admin-form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.7rem;
+}
+
+.admin-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.admin-field--full {
+    grid-column: 1 / -1;
+}
+
+.admin-field label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #4a7477;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.admin-field input,
+.admin-field textarea {
+    padding: 0.45rem 0.65rem;
+    border-radius: 5px;
+    border: 1px solid #a8c084;
+    background: #fffdf0;
+    color: #4a7477;
+    font-family: inherit;
+    font-size: 0.88rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    resize: vertical;
+}
+
+/* ── MODO DIOS PARA EL SELECT DEL ADMIN ── */
+.admin-field select {
+    /* Le quitamos el estilo asqueroso de Windows/Chrome */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    /* Le ponemos los colores de AdoptMe! */
+    padding: 0.45rem 0.65rem;
+    border-radius: 5px;
+    border: 1px solid #a8c084;
+    background-color: #fffdf0;
+    color: #4a7477;
+    font-family: inherit;
+    font-size: 0.88rem;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s;
+
+    /* Como le hemos quitado el estilo, también se borra la flechita.
+       Le dibujamos una flechita verde personalizada a la derecha: */
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%234a7477%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.7rem top 50%;
+    background-size: 0.65rem auto;
+    padding-right: 2rem; /* Para que el texto no pise nuestra flecha nueva */
+}
+
+.admin-field input:focus,
+.admin-field textarea:focus,
+.admin-field select:focus {
+    border-color: #10946d;
+    box-shadow: 0 0 0 2px rgba(16,148,109,0.15);
+}
+
+.admin-field input::placeholder,
+.admin-field textarea::placeholder {
+    color: #a0b8a0;
+    font-size: 0.82rem;
+}
+
+/* ── Acciones ── */
+
+.admin-form-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin-top: 0.8rem;
+    padding-bottom: 0.2rem;
+}
+
+.admin-submit-btn {
+    padding: 0.5rem 1.2rem;
+    border-radius: 5px;
+    border: none;
+    background: #fddb72;
+    color: #4a7477;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+}
+
+.admin-submit-btn:hover {
+    background: #f5ca40;
+    transform: translateY(-1px);
+}
+
+.admin-cancel-btn {
+    padding: 0.5rem 0.9rem;
+    border-radius: 5px;
+    border: 1px solid #a8c084;
+    background: transparent;
+    color: #4a7477;
+    font-family: inherit;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.admin-cancel-btn:hover {
+    border-color: #4a7477;
+    background: #e8edaa;
+}
+
+.admin-form-note {
+    margin-left: auto;
+    font-size: 0.75rem;
+    color: #7a9e80;
+    font-style: italic;
+}
+
+
+/* ── Selector de imagen personalizado ── */
+
+.admin-file-picker {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.admin-file-btn {
+    flex-shrink: 0;
+    padding: 0.45rem 1rem;
+    border-radius: 5px;
+    border: 1px solid #a8c084;
+    background: #e8edaa;
+    color: #4a7477;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, transform 0.1s;
+    white-space: nowrap;
+}
+
+.admin-file-btn:hover {
+    background: #d6e07a;
+    border-color: #4a7477;
+    transform: translateY(-1px);
+}
+
+.admin-file-name {
+    font-size: 0.82rem;
+    color: #7a9e80;
+    font-style: italic;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.visit-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    background: #f4f5c9;
+    color: #4a7477;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 0.4rem;
+    border: 1px solid #c8d87a;
+    width: fit-content;
+}
+/* ══════════════════════════════════════════════
+   GALERÍA DE FOTOS EN PET PROFILE
+══════════════════════════════════════════════ */
+
+.pet-gallery {
+    padding: 2rem 3rem;
+}
+
+.pet-gallery-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 0 0 1rem 0;
+    color: #4a7477;
+}
+
+.pet-gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+    gap: 1rem;
+}
+
+.pet-gallery-item {
+    display: block;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #c8d87a;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.pet-gallery-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+.pet-gallery-item img {
+    width: 100%;
+    height: 12rem;
+    object-fit: cover;
+    display: block;
+}
+
+/* ── Acciones admin en tarjeta (visitas + eliminar) ── */
+
+.admin-card-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.4rem;
+    flex-wrap: wrap;
+}
+
+.btn-delete-animal {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    border: 1px solid #e07a7a;
+    background: #f4f5c9;
+    color: #c0392b;
+    font-size: 1rem;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    width: fit-content;
+}
+
+.btn-delete-animal:hover {
+    background: #c0392b;
+    color: #fff;
+    border-color: #c0392b;
+    transform: translateY(-1px);
 }

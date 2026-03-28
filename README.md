@@ -103,6 +103,63 @@ Cada animal cuenta con una página detallada que incluye:
 *  template_schedule.html
 *  template_stories.html
 
+## Nombre y ubicacion de los mockups para móvil y tablet 
+
+## Página de inicio 
+La página de inicio de la aplicación web es `index.html`, que se encuentra en: /html/templates/index.html.
+
+ Es el punto de entrada principal del proyecto **"AdoptMe!!"**. Al cargar el archivo,  carga automáticamente la vista desde `template_home.html`.
+
+Desde este archivo central se gestiona:
+* La carga dinámica del encabezado (`template_header.html`) y el pie de página (`template_footer.html`).
+* La navegación entre las distintas secciones (Mascotas, Nosotros, Login, etc.).
+* La persistencia de la sesión del usuario a través de `localStorage`.
+## Aspectos responsive implementados 
+
+## Carga de templates y contenido JSON
+
+| Página / Sección | Template Inyectado | Datos desde `db.json` | Función encargada |
+| :--- | :--- | :--- | :--- |
+| **Cabecera** | `template_header.html` | Seccion `header` | `renderHeader` |
+| **Pie de página** | `template_footer.html` | Sección `footer` | `renderFooter` |
+| **Inicio** | `template_home.html` | Sección `home` | `renderHome` |
+| **Mascotas** | `template_adoption_list.html` | Sección `animals` | `renderAdoptionList` |
+| **Perfil Mascota** | `template_pet_profile.html` | Sección `animals` | `renderPetProfile` |
+| **Nosotros** | `template_about_us.html` | Sección `about_us` | `renderAboutUs` |
+| **Historias** | `template_stories.html` | Sección `stories` | `renderStories` |
+| **FAQ** | `template_faq.html` | Sección `faq` | `renderFaq` |
+| **Legal** | `template_legal.html` | Sección `legal` | `renderLegal` |
+| **Contacto** | `template_contact_us.html` | Sección `contact_us` | `renderContactUs` |
+| **Calendario** | `template_schedule.html` | Sección `schedule` | `renderSchedule` |
+| **Acceso** | `template_login.html` | Sección `users` | `initLogin` |
+
+### Detalles de la implementación técnica:
+
+* **Carga de datos JSON:** Se utiliza la función asíncrona `fetchDB()` para recuperar el archivo `../data/db.json`. Este archivo centraliza toda la información, desde los enlaces de redes sociales hasta la base de datos de animales y usuarios.
+* **Carga de templates:** La función `loadTemplate()` utiliza `fetch` para obtener el código HTML de los archivos en `../html/templates/`. Una vez obtenida la plantilla, se inserta en el DOM y se procede a su renderizado con los datos del JSON.
+* **Ubicación del contenido:** Los datos se encuentran en un servidor local simulado a través del archivo `db.json`.
+
+
+## Validaciones HTML implementadas, de los formularios
+Para el correcto funcionamiento de la aplicación, se han implementado validaciones nativas en el formulario de acceso y registro , y por otro lado támbien en el de añadir mascotas:
+
+### Formulario de Acceso y Registro (`template_login.html`)
+* **Nombre de usuario:** Definido como obligatorio mediante el atributo `required`.
+* **Correo electrónico:** Utiliza `type="email"` para validar el formato de dirección y el atributo `required` para evitar campos vacíos.
+* **Teléfono:** Implementa `type="tel"` y una expresión regular con `pattern="[6789][0-9]{8}"`, que obliga a introducir 9 dígitos comenzando por 6, 7, 8 o 9.
+* **Contraseña:** Marcada como obligatoria (`required`) con una restricción de longitud mínima de 8 caracteres mediante `minlength="8"`, title que actúa como guía visual informando los requisitos de mayúsculas, números y símbolos.
+
+### Formulario de Administración (`template_adoption_list.html`)
+* **Campos Obligatorios:** Los campos de **Nombre**, **Género**, **Raza**, **Peso**, **Tipo de pelo** y **Carácter** cuentan con el atributo `required` para impedir el envío de formularios incompletos.
+* **Edad:** Se utiliza `type="number"` junto con los atributos `min="0"` y `max="30"`, limitando el rango a una edad lógica para los animales del refugio.
+* **Gestión de Imágenes:** El input de archivos emplea `accept="image/*"` para filtrar y permitir únicamente formatos de imagen, además del atributo `multiple` para habilitar la carga de una galería completa de fotos.
+* **Descripción:** El área de texto (`textarea`) es obligatoria mediante el atributo `required`, garantizando que cada mascota cuente con una descripción detallada para los adoptantes.
+
+
+## Usuario y contraseña de prueba
+* **Usuario:**  `[ernestina@adoptme.es]` 
+* **Contraseña:** `[Ernestina]`
+
 
 ## Otros Aspectos a Considerar
 * **Tecnologías:** HTML5, CSS3 y JavaScript.
