@@ -104,3 +104,27 @@
 .hero-text p+p {
     margin-top: 1rem;
 }
+/* ── Tablet apaisada ── */
+@media (min-width: 600px) and (max-width: 900px) {
+    .hero {
+        width: 92%;
+    }
+
+    .carousel {
+        width: 90%;
+        gap: 1rem;
+    }
+
+    .carousel-track-wrapper {
+        height: 16rem;
+    }
+
+    .carousel-btn {
+        font-size: 2rem;
+    }
+
+    .hero-text {
+        font-size: 1.1em;
+        width: 85%
+    }
+}

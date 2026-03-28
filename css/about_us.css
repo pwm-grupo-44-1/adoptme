@@ -29,3 +29,28 @@
 .text-card-about_us {
     text-align: center;
 }
+/* ── Tablet apaisada ── */
+@media (min-width: 600px) and (max-width: 900px) {
+    #about_us {
+        grid-template-columns: repeat(3, 1fr);
+        padding: 0 2rem;
+        gap: 1.5rem;
+    }
+
+    .photo-card-about_us {
+        height: 11rem;
+        width: 8rem;
+    }
+
+    .card-about_us h2 {
+        font-size: 1.25rem;
+    }
+
+    .card-about_us h3 {
+        font-size: 1rem;
+    }
+
+    .text-card-about_us{
+        font-size: 0.8rem;
+    }
+}

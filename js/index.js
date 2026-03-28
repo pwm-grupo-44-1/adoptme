@@ -1127,14 +1127,16 @@ function initCalendar(scheduleData) {
         });
     }
 
-    document.getElementById('cal-prev').addEventListener('click', () => {
+    document.getElementById('cal-prev').addEventListener('click', (e) => {
         current.setMonth(current.getMonth() - 1);
         renderCalendar();
+        e.currentTarget.blur(); // <-- MAGIA: Le quita el estado "pillado" al botón
     });
 
-    document.getElementById('cal-next').addEventListener('click', () => {
+    document.getElementById('cal-next').addEventListener('click', (e) => {
         current.setMonth(current.getMonth() + 1);
         renderCalendar();
+        e.currentTarget.blur(); // <-- MAGIA: Le quita el estado "pillado" al botón
     });
 
     renderCalendar();
