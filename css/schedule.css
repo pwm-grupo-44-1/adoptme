@@ -211,7 +211,7 @@
     border: 2px solid #b8bb96;
     transition: all 0.15s;
     font-size: 3rem;
-    background-color: #fefefe;
+    background-color: #f4f5c9;
 }
 
 .cal-day.empty {
@@ -219,7 +219,7 @@
 }
 
 .cal-day.past {
-    color: #e1dede;
+    color: #A1C295;
     cursor: not-allowed;
 }
 
