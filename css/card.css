@@ -1,15 +1,13 @@
 .card {
-    margin-top: 4rem;
-    /* padding: 0px 0rem 0; */
+    margin-top: clamp(2rem, 4vw, 4rem);
     justify-items: center;
-    /* justify-content: space-evenly; */
 }
 
 .photo-card {
-    height: 27rem;
-    width: 22rem;
+    width: min(100%, 22rem);
+    aspect-ratio: 22 / 27;
+    height: auto;
     border: 2px solid #000000;
-    /* margin: 0rem; */
     background: linear-gradient(to bottom right,
         transparent 49.5%, #000 50%, transparent 50.5%),
         linear-gradient(to top right,
@@ -19,6 +17,6 @@
 .text-card {
     text-align: center;
     color: #ffffff;
-    font-size: 3rem;
-    margin: 3rem 0;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    margin: clamp(1.5rem, 3vw, 3rem) 0;
 }

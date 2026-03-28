@@ -1,20 +1,16 @@
 .calendar {
-    /* flex: 1 1 auto; */
-    /* display: flex; */
-    /* justify-content: center; */
+    width: min(100%, 62rem);
+    margin: 0 auto;
     align-items: center;
-    /* background: #fefefe; */
     border-radius: 1rem;
-    padding: 2rem;
+    padding: clamp(1rem, 2.5vw, 2rem);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-    /* margin: 0 22rem; */
-    width: 60%;
+    background: rgba(255, 255, 255, 0.25);
 }
 
-/* ── Mensaje no logueado ── */
 .schedule-login-msg {
     text-align: center;
-    font-size: 1.3rem;
+    font-size: clamp(1.05rem, 1vw + 0.8rem, 1.3rem);
     padding: 3rem 0;
     color: #333;
 }
@@ -25,54 +21,34 @@
     text-decoration: underline;
 }
 
-/* ── Cabecera mes ── */
 .schedule-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 1rem;
     margin-bottom: 1.5rem;
-    background: #fefefe;
+    background: #ebefb7;
     border-radius: 1rem;
-    padding: 2rem;
+    padding: clamp(1rem, 2vw, 2rem);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
 
-/* ── Mensaje no logueado ── */
-.schedule-login-msg {
-    text-align: center;
-    font-size: 1.3rem;
-    padding: 3rem 0;
-    color: #333;
-}
-
-.schedule-login-link {
-    color: #10946d;
-    font-weight: 800;
-    text-decoration: underline;
-}
-
-/* ── Cabecera mes ── */
-.schedule-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 1.5rem;
-}
-
 .cal-month-title {
-    font-size: 1.4rem;
+    font-size: clamp(2rem, 1vw + 0.8rem, 1.4rem);
     font-weight: 800;
-    color: #10946d;
+    color: #4a7477;
     text-transform: capitalize;
+    text-align: center;
 }
 
 .cal-nav {
+    flex: 0 0 auto;
     background: #fddb72;
     border: none;
     border-radius: 50%;
-    width: 2.2rem;
-    height: 2.2rem;
-    font-size: 1.1rem;
+    width: clamp(3.2rem, 4vw, 2.8rem);
+    height: clamp(3.2rem, 4vw, 2.8rem);
+    font-size: clamp(1rem, 1vw + 0.5rem, 1.25rem);
     cursor: pointer;
     font-weight: 800;
 }
@@ -82,140 +58,42 @@
     color: #fff;
 }
 
-/* ── Días de la semana ── */
-.cal-weekdays {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    text-align: center;
-    /* font-weight: 800; */
-    font-size: 2rem;
-    color: #10946d;
-    margin-bottom: 0.5rem;
-}
-
-/* ── Grid de días ── */
+.cal-weekdays,
 .cal-grid {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    justify-items: center;
-    margin: 1rem 0 3rem 0;
-    gap: 0.5rem;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
 }
 
-.cal-month-title {
-    font-size: 1.4rem;
-    font-weight: 800;
-    color: #10946d;
-    text-transform: capitalize;
-}
-
-.cal-nav {
-    background: #fddb72;
-    border: none;
-    border-radius: 50%;
-    width: 2.2rem;
-    height: 2.2rem;
-    font-size: 1.1rem;
-    cursor: pointer;
-    font-weight: 800;
-}
-
-.cal-nav:hover {
-    background: #10946d;
-    color: #fff;
-}
-
-/* ── Días de la semana ── */
 .cal-weekdays {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
     text-align: center;
     font-weight: 800;
-    font-size: 0.85rem;
+    font-size: clamp(1.75rem, 0.6vw + 0.6rem, 0.95rem);
     color: #10946d;
     margin-bottom: 0.5rem;
+    gap: 0.35rem;
 }
 
-/* ── Grid de días ── */
 .cal-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 0.4rem;
-    margin-bottom: 1.5rem;
-}
-
-.cal-day {
-    aspect-ratio: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    font-size: 0.95rem;
-    cursor: pointer;
-    border: 2px solid transparent;
-    transition: all 0.15s;
-}
-
-.cal-day.empty {
-    cursor: default;
-}
-
-.cal-day.past {
-    color: #bbb;
-    cursor: not-allowed;
-}
-
-.cal-day.available:hover {
-    background: #fddb72;
-    border-color: #fddb72;
-}
-
-.cal-day.selected {
-    background: #10946d;
-    color: #fff;
-    border-color: #10946d;
-}
-
-.cal-day.has-booking {
-    border-color: #10946d;
-    color: #10946d;
-    font-weight: 800;
-}
-
-.cal-day.today {
-    font-weight: 800;
-    text-decoration: underline;
-}
-
-/* ── Slots de horas ── */
-.cal-slots {
-    margin-bottom: 1.5rem;
-}
-
-.cal-slotsh3 {
-    font-size: 1rem;
-    color: #555;
-    margin-bottom: 0.8rem;
-    gap: 0.4rem;
-    margin-bottom: 1.5rem;
+    gap: clamp(0.25rem, 1vw, 0.5rem);
+    /* margin-bottom: 1.5rem; */
 }
 
 .cal-day {
     aspect-ratio: 1;
     display: grid;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    font-size: 0.95rem;
-    /* cursor: pointer; */
+    place-items: center;
+    border-radius: 20%;
     border: 2px solid #b8bb96;
     transition: all 0.15s;
-    font-size: 3rem;
+    font-size: clamp(3.9rem, 1vw + 0.4rem, 1.4rem);
     background-color: #f4f5c9;
+    cursor: pointer;
 }
 
 .cal-day.empty {
     cursor: default;
+    background: transparent;
+    border-color: transparent;
 }
 
 .cal-day.past {
@@ -246,94 +124,21 @@
     background-color: #f0f3c2;
 }
 
-/* ── Slots de horas ── */
 .cal-slots {
     margin-bottom: 1.5rem;
 }
 
-.cal-slotsh3 {
+.cal-slotsh3,
+.cal-bookingsh3 {
     font-size: 1rem;
-    color: #555;
+    color: #10946d;
     margin-bottom: 0.8rem;
 }
 
-.cal-slots-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem;
-}
-
-.slot-btn {
-    padding: 0.5rem 1rem;
-    border-radius: 0.4rem;
-    border: 2px solid #10946d;
-    background: #fff;
-    color: #10946d;
-    font-weight: 700;
-    cursor: pointer;
-    font-family: inherit;
-    font-size: 0.9rem;
-    transition: all 0.15s;
-}
-
-.slot-btn:hover {
-    background: #10946d;
-    color: #fff;
-}
-
-.slot-btn.booked {
-    background: #fddb72;
-    border-color: #fddb72;
-    color: #333;
-    cursor: default;
-}
-
-.slot-btn.mine {
-    background: #10946d;
-    border-color: #10946d;
-    color: #fff;
-}
-
-/* ── Mis reservas ── */
 .cal-bookingsh3 {
-    font-size: 1rem;
-    color: #10946d;
     font-weight: 800;
-    margin-bottom: 0.6rem;
     border-top: 1px solid #eee;
     padding-top: 1rem;
-}
-
-#bookings-list {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-}
-
-#bookings-listli {
-    background: #f0faf5;
-    border-radius: 0.4rem;
-    padding: 0.5rem 1rem;
-    font-size: 0.9rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.cancel-btn {
-    background: none;
-    border: none;
-    color: #e44;
-    font-weight: 800;
-    cursor: pointer;
-    font-size: 0.85rem;
-    font-family: inherit;
-}
-
-.cancel-btn:hover {
-    text-decoration: underline;
 }
 
 .cal-slots-grid {
@@ -373,16 +178,6 @@
     color: #fff;
 }
 
-/* ── Mis reservas ── */
-.cal-bookingsh3 {
-    font-size: 1rem;
-    color: #10946d;
-    font-weight: 800;
-    margin-bottom: 0.6rem;
-    border-top: 1px solid #eee;
-    padding-top: 1rem;
-}
-
 #bookings-list {
     list-style: none;
     padding: 0;
@@ -391,6 +186,7 @@
     gap: 0.4rem;
 }
 
+#bookings-list li,
 #bookings-listli {
     background: #f0faf5;
     border-radius: 0.4rem;
@@ -399,6 +195,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
 }
 
 .cancel-btn {
@@ -413,5 +211,33 @@
 
 .cancel-btn:hover {
     text-decoration: underline;
-    grid-auto-columns: 1;
+}
+
+@media (max-width: 768px) {
+    .schedule-header {
+        padding: 1rem;
+    }
+
+    .cal-day {
+        border-width: 1px;
+    }
+}
+
+@media (max-width: 576px) {
+    .calendar {
+        padding: 1rem;
+    }
+
+    .schedule-header {
+        gap: 0.5rem;
+    }
+
+    .cal-weekdays {
+        font-size: 0.7rem;
+    }
+
+    .slot-btn {
+        width: 100%;
+        justify-content: center;
+    }
 }

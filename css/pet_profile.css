@@ -1,14 +1,17 @@
 .dog-profile {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    gap: clamp(1.5rem, 3vw, 3rem);
     margin-top: 2rem;
+    flex-wrap: wrap;
 }
 
 .photo-card-profile {
-    height: 32rem;
-    width: 18rem;
+    width: min(100%, 18rem);
+    aspect-ratio: 9 / 16;
+    height: auto;
     border: 2px solid #000000;
-    margin: 0 4rem 0 0;
+    margin: 0;
     object-fit: cover;
     object-position: center;
     display: block;
@@ -16,10 +19,11 @@
 }
 
 .column-data {
-    flex: 1;
+    flex: 1 1 22rem;
+    min-width: min(100%, 18rem);
     display: flex;
     flex-direction: column;
-    gap: 3rem;
+    gap: 2rem;
     justify-content: center;
 }
 
@@ -27,8 +31,8 @@
     background-color: #ece59c !important;
     border-radius: 0.5rem;
     border: 1px solid #000;
-    width: 40rem;
-    padding: 8px;
+    width: min(100%, 40rem);
+    padding: 0.75rem;
     text-align: justify;
 }
 

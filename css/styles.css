@@ -1,6 +1,4 @@
-/* ─── Reset ──── */
-/* ─── Reset ──── */
-/* ─── Reset ──── */
+/* ─── Reset ─── */
 *,
 *::before,
 *::after {
@@ -9,44 +7,45 @@
     box-sizing: border-box;
 }
 
-* {
-    box-sizing: border-box;
-}
-
-/* --- Variables generales ---*/
+/* --- Variables generales --- */
 :root {
     --color-text: #4a7477;
-
     --header-shrink-factor: 0.75;
     --footer-shrink-factor: 0.75;
-
     --scroll-arrow-size: 58px;
     --scroll-arrow-bg: rgba(242, 245, 197, 0.92);
     --scroll-arrow-color: #4a7477;
     --scroll-arrow-shadow: 0 8px 24px rgba(74, 116, 119, 0.18);
 
+    --site-max-width: 1920px;
+    --content-max-width: 1200px;
+    --site-gutter: clamp(1rem, 2.5vw, 2rem);
+    --section-gap: clamp(1rem, 2vw, 2rem);
 }
 
+/* --- Estilos usados en general --- */
+html {
+    width: 100%;
+    min-height: 100%;
+}
 
-/* --- Estilos usados en general ---*/
-html,
 body {
+    width: 100%;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    height: 100%;
-    /* width: 100%; */
-    min-height: 100vh;
     margin: 0;
-    /*background-color: #90c984;*/
+    overflow-x: hidden;
+    background-color: #90c984;
     font-family: "Rum Raisin", Arial, Helvetica, sans-serif;
     color: var(--color-text);
     font-style: normal;
 }
 
 body.page {
-    /* min-height: 5vh; */
     display: flex;
     flex-direction: column;
+    min-height: 100vh;
     background-image: url("../img/header-background.png");
     background-repeat: no-repeat;
     background-position: center center;
@@ -57,30 +56,43 @@ body.page {
 
 main {
     flex: 1 1 auto;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: clamp(1rem, 2vw, 2rem) var(--site-gutter);
+}
+
+main > * {
+    width: min(100%, var(--site-max-width));
+}
+
+img,
+picture,
+svg,
+canvas,
+video,
+iframe {
+    max-width: 100%;
 }
 
 .header-inner {
-    width: 100%;
     display: flex;
     justify-content: space-between;
     backdrop-filter: blur(8px);
-    /* gap: 40px; */
 }
 
 .btn {
-    display: flex;
-    width: 8rem;
-    height: stretch;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
+    min-width: clamp(7rem, 10vw, 8rem);
+    min-height: clamp(3rem, 4vw, 4.5rem);
+    padding: 0.75rem 1rem;
     color: var(--color-text);
-    font-size: xx-large;
+    font-size: clamp(2.3rem, 1.2vw + 0.6rem, 1.8rem);
     font-weight: normal;
     text-decoration: none;
-    /* border: solid 0px #90c98433; */
     transition: background-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
 }
 
@@ -92,89 +104,20 @@ main {
 
 button {
     color: var(--color-text);
-    font-size: 2vh;
-}
-
-/* Estado general al hacer scroll */
-body.scrolled header,
-body.scrolled footer {
-    backdrop-filter: blur(10px);
-}
-
-/* Flecha flotante de scroll: solo para adoption_list */
-.scroll-down-indicator {
-    position: fixed;
-    left: 50%;
-    bottom: 2rem;
-    transform: translateX(-50%);
-    width: var(--scroll-arrow-size);
-    height: var(--scroll-arrow-size);
-    border-radius: 999px;
-    border: 1px solid rgba(144, 201, 132, 0.35);
-    background: var(--scroll-arrow-bg);
-    color: var(--scroll-arrow-color);
-    box-shadow: var(--scroll-arrow-shadow);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 300;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transition:
-        opacity 0.25s ease,
-        visibility 0.25s ease,
-        box-shadow 0.25s ease,
-        background-color 0.25s ease;
-}
-
-.scroll-down-indicator.is-visible {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    animation: scrollArrowBounceCentered 1.35s ease-in-out infinite;
-}
-
-.scroll-down-indicator:hover {
-    background-color: #e2e9a9;
-    box-shadow: 0 10px 26px rgba(74, 116, 119, 0.24);
-}
-
-.scroll-down-indicator svg {
-    width: 28px;
-    height: 28px;
-}
-
-@keyframes scrollArrowBounceCentered {
-
-    0%,
-    100% {
-        transform: translateX(-50%) translateY(0);
-    }
-
-    25% {
-        transform: translateX(-50%) translateY(4px);
-    }
-
-    50% {
-        transform: translateX(-50%) translateY(10px);
-    }
-
-    70% {
-        transform: translateX(-50%) translateY(5px);
-    }
+    font-size: clamp(0.95rem, 1vw + 0.5rem, 1.125rem);
 }
 
 @media (max-width: 768px) {
-    .scroll-down-indicator {
-        bottom: 1.5rem;
-        width: 50px;
-        height: 50px;
+    body.page {
+        background-attachment: scroll;
     }
 
-    .scroll-down-indicator svg {
-        width: 24px;
-        height: 24px;
+    main {
+        padding-inline: 1rem;
+    }
+
+    .btn {
+        min-width: auto;
+        width: auto;
     }
 }

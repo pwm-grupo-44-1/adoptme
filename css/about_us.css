@@ -1,8 +1,10 @@
 #about_us {
+    width: min(100%, 72rem);
+    margin: 0 auto;
     display: grid;
-    grid-template-columns: repeat(3, 28rem);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
     justify-content: center;
-    gap: 2rem;
+    gap: clamp(1rem, 2vw, 2rem);
 }
 
 .about_us > section {
@@ -12,20 +14,27 @@
 .card-about_us {
     display: flex;
     flex-direction: column;
-    align-items: center;    /* ← centra todo horizontalmente */
-    text-align: center;     /* ← centra el texto */
+    align-items: center;
+    text-align: center;
     gap: 0.5rem;
 }
 
 .photo-card-about_us {
-    height: 20rem;
-    width: 15rem;
+    width: min(100%, 15rem);
+    aspect-ratio: 3 / 4;
+    height: auto;
     object-fit: cover;
     object-position: center;
     display: block;
-    margin: 0 auto;         /* ← centra la imagen */
+    margin: 0 auto;
 }
 
 .text-card-about_us {
     text-align: center;
+}
+
+@media (max-width: 1088px){
+    #about_us {
+        grid-template-columns: 1fr;
+    }
 }

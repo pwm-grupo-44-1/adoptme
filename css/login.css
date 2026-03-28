@@ -1,13 +1,14 @@
 .login-box {
     background-color: #ddc781;
-    height: 38rem;
-    width: 38rem;
+    width: min(100%, 38rem);
+    min-height: 25rem;
+    height: auto;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
     gap: 1rem;
-    /* padding: 1rem; */
+    padding: clamp(1.5rem, 2vw, 2rem);
     border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
@@ -15,11 +16,12 @@
 .login-inputs {
     display: flex;
     flex-direction: column;
-    width: 32rem;
-    gap: 2em;
+    width: 100%;
+    gap: 1.25rem;
 }
 
 .login-inputs input {
+    width: 100%;
     padding: 1rem;
     font-size: 1rem;
     background-color: #bbdcbf;
@@ -33,15 +35,15 @@
 }
 
 #login-submit {
-    margin-top: 2rem;
-    width: 40%;
+    margin-top: 1rem;
+    width: min(100%, 12rem);
     align-self: flex-end;
     padding: 15px;
     background-color: #90c984;
     color: #000000;
     border: none;
     border-radius: 8px;
-    font-size: 1.2rem;
+    font-size: clamp(1rem, 1vw + 0.7rem, 1.2rem);
     font-weight: bold;
     cursor: pointer;
     transition: background 0.3s;
@@ -56,23 +58,20 @@
     color: #ffffff;
 }
 
-
-/* Contenedor para alinear a la derecha */
 .login-actions {
     margin-top: 1.5rem;
     display: flex;
     justify-content: flex-end;
+    flex-wrap: wrap;
     gap: 1rem;
     width: 100%;
 }
 
-/* Botón Principal (Iniciar Sesión) */
 .btn-small {
     padding: 10px 22px;
-     /* El verde de tu paleta */
     border-radius: 8px;
-    font-family: "Rum Raisin", system-ui; /* Mantenemos tu tipografía */
-    font-size: larger;
+    font-family: "Rum Raisin", system-ui;
+    font-size: clamp(1rem, 1vw + 0.6rem, 1.25rem);
     cursor: pointer;
     transition: all 0.3s ease;
 }
@@ -83,40 +82,30 @@
     color: white;
 }
 
-/* Botón Secundario (Registrarse) */
 .btn-small.secondary {
-    background-color: transparent; /* Sin fondo */
-    color: #10946d; /* Texto en verde oscuro */
-    border: 1px solid #90c984; /* Solo el borde */
+    background-color: transparent;
+    color: #10946d;
+    border: 1px solid #90c984;
 }
 
 .btn-small.secondary:hover {
-    background-color: #f0fdf4; /* Un toque de luz al pasar el mouse */
+    background-color: #f0fdf4;
     border-color: #10946d;
 }
 
-/* Clase para ocultar campos */
 .hidden {
     display: none !important;
 }
 
-/* Ajuste para que el login-box no se vea vacío al quitar campos */
-.login-box {
-    min-height: 25rem; /* Altura flexible */
-    height: auto;
-    padding: 2rem 0;
-}
-
-/* Estilo para el nuevo botón de confirmación */
 .btn-confirm {
     margin-top: 0.5rem;
     padding: 12px;
-    background-color: #fddb72; /* Color amarillo crema como tus detalles */
+    background-color: #fddb72;
     color: #10946d;
     border: 2px solid #10946d;
     border-radius: 8px;
     font-family: "Rum Raisin", system-ui;
-    font-size: larger;
+    font-size: clamp(1rem, 1vw + 0.6rem, 1.25rem);
     cursor: pointer;
     transition: all 0.3s ease;
 }
@@ -124,10 +113,9 @@
 .btn-confirm:hover {
     background-color: #10946d;
     color: white;
-    transform: scale(1.02); /* Pequeño efecto de pulsado */
+    transform: scale(1.02);
 }
 
-/* Para que el ojo se quede a la derecha dentro del cuadro */
 .password-wrapper {
     position: relative;
     width: 100%;
@@ -151,18 +139,32 @@
 
 .btn.user-nav-stack {
     flex-direction: column;
-    /* height: auto; */
     padding: 5px 10px;
     gap: 2px;
     border: 0;
 }
 
 .user-nav-name {
-    font-size: 2;
+    font-size: 2rem;
     line-height: 1;
 }
 
 .btn-logout-nav {
     font-size: large;
     color: #ff6b6b;
+}
+
+@media (max-width: 576px) {
+    .login-actions {
+        justify-content: stretch;
+    }
+
+    .login-actions > * {
+        width: 100%;
+    }
+
+    #login-submit {
+        width: 100%;
+        align-self: stretch;
+    }
 }

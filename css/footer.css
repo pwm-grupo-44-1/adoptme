@@ -1,26 +1,23 @@
 footer {
+    width: 100%;
     position: sticky;
     bottom: 0;
     z-index: 100;
-    /* background-image: url("../img/footer-background.png"); */
     background-size: cover;
     background-position: center;
-    /* transition:
-        padding 0.28s ease,
-        box-shadow 0.28s ease,
-        min-height 0.28s ease; */
 }
 
 .footer {
-    width: 100%;
+    /* width: min(100%, var(--site-max-width)); */
+    margin: 0 auto;
+    padding-inline: var(--site-gutter);
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     align-items: center;
+    gap: 1rem;
     background-color: #f4f5c9;
     border-top: 1px solid var(--border-light);
     box-shadow: var(--shadow-soft);
-    padding-top: 1rem;
-    /* backdrop-filter: blur(8px); */
     transition: padding 0.28s ease, gap 0.28s ease;
 }
 
@@ -34,9 +31,9 @@ footer {
 }
 
 .footer-center {
+    min-height: 0;
     text-align: center;
-    font-size: 1rem;
-    height: stretch;
+    font-size: clamp(0.95rem, 1vw + 0.4rem, 1rem);
     color: var(--text-body);
 }
 
@@ -44,16 +41,36 @@ footer {
     grid-column: 1 / -1;
     justify-content: center;
     padding: 0.5rem 0;
-    font-size: 1.3em;
+    font-size: clamp(0.95rem, 1vw + 0.4rem, 1.3rem);
     color: var(--text-muted);
     background-color: aliceblue;
+    text-align: center;
 }
 
-/* Botones del footer se adaptan al texto */
 .footer-left .btn,
 .footer-right .btn {
     width: auto;
+    min-height: clamp(3rem, 5vw, 6rem);
     padding: 0.3rem 1rem;
     white-space: nowrap;
-    height: 6rem;
+}
+
+@media (max-width: 768px) {
+    .footer {
+        grid-template-columns: 1fr;
+        padding-block: 0.75rem;
+        display: none;
+    }
+
+    .footer-left,
+    .footer-center,
+    .footer-right {
+        width: 100%;
+    }
+
+    .footer-left .btn,
+    .footer-right .btn {
+        width: 100%;
+        justify-content: center;
+    }
 }

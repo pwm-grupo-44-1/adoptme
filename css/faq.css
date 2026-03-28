@@ -1,15 +1,17 @@
 .box-faq {
+    width: min(100%, 62rem);
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
     flex: 1;
+    gap: 0.8rem;
 }
 
 .faq-group {
-    margin: 0.8rem 0;
+    width: 100%;
+    margin: 0;
     background: #bbdcbf;
     border-radius: 8px;
-    /* overflow: hidden; */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -19,7 +21,7 @@
     padding: 1rem;
     font-weight: bold;
     text-align: center;
-
+    font-size: clamp(3rem, 1vw + 0.6rem, 1.15rem);
 }
 
 .faq-toggle input[type="checkbox"] {

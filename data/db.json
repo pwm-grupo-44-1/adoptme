@@ -86,19 +86,19 @@
       "name": "Alejandro C. Hernández",
       "role": "Voluntario principal",
       "description": "Lleva 5 años dedicando su tiempo libre al cuidado y socialización de los animales en acogida.",
-      "image": "https://randomuser.me/api/portraits/men/16.jpg"
+      "image": "/img/about_us/Alejandro.jpg"
     },
     {
       "name": "Esther Viera",
       "role": "Fundadora",
       "description": "Veterinaria con más de 10 años de experiencia. Creó AdoptMe! con el sueño de encontrar un hogar para cada animal abandonado.",
-      "image": "https://randomuser.me/api/portraits/women/68.jpg"
+      "image": "/img/about_us/Esther.jpg"
     },
     {
       "name": "Nestor J. Henríquez",
       "role": "Coordinador de adopciones",
       "description": "Se encarga de gestionar el proceso de adopción y asegurarse de que cada mascota encuentre la familia perfecta.",
-      "image": "https://randomuser.me/api/portraits/men/32.jpg"
+      "image": "/img/about_us/Nestor.jpg"
     }
   ],
   "faq": [
