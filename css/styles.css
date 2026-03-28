@@ -34,7 +34,7 @@ body {
     display: flex;
     flex-direction: column;
     height: 100%;
-    width: 100%;
+    /* width: 100%; */
     min-height: 100vh;
     margin: 0;
     /*background-color: #90c984;*/
@@ -44,7 +44,7 @@ body {
 }
 
 body.page {
-    min-height: 100vh;
+    /* min-height: 5vh; */
     display: flex;
     flex-direction: column;
     background-image: url("../img/header-background.png");
@@ -52,199 +52,22 @@ body.page {
     background-position: center center;
     background-size: cover;
     background-attachment: fixed;
-    backdrop-filter: blur(6px);
+    backdrop-filter: blur(16px);
 }
 
-/* el contenido crece y empuja el footer */
 main {
     flex: 1 1 auto;
     display: flex;
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    .header-inner {
+    align-items: center;
+    justify-content: center;
+}
+
+.header-inner {
     width: 100%;
     display: flex;
     justify-content: space-between;
     backdrop-filter: blur(8px);
     /* gap: 40px; */
-};
-    .header-inner {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    backdrop-filter: blur(8px);
-    /* gap: 40px; */
-};
-    .header-inner {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    backdrop-filter: blur(8px);
-    /* gap: 40px; */
-};
-    .header-inner {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    backdrop-filter: blur(8px);
-    /* gap: 40px; */
-};
-    .header-inner {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    backdrop-filter: blur(8px);
-    /* gap: 40px; */
-};
-    .header-inner {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    backdrop-filter: blur(8px);
-    /* gap: 40px; */
-};
-    
-    .header-inner {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    backdrop-filter: blur(8px);
-    /* gap: 40px; */
-};
 }
 
 .btn {
@@ -257,7 +80,7 @@ main {
     font-size: xx-large;
     font-weight: normal;
     text-decoration: none;
-    border: solid 1px #90c98433;
+    /* border: solid 0px #90c98433; */
     transition: background-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
 }
 
@@ -269,6 +92,7 @@ main {
 
 button {
     color: var(--color-text);
+    font-size: 2vh;
 }
 
 /* Estado general al hacer scroll */
@@ -277,11 +101,6 @@ body.scrolled footer {
     backdrop-filter: blur(10px);
 }
 
-
-
-
-
-/* Flecha flotante de scroll */
 /* Flecha flotante de scroll: solo para adoption_list */
 .scroll-down-indicator {
     position: fixed;
@@ -328,16 +147,20 @@ body.scrolled footer {
 }
 
 @keyframes scrollArrowBounceCentered {
+
     0%,
     100% {
         transform: translateX(-50%) translateY(0);
     }
+
     25% {
         transform: translateX(-50%) translateY(4px);
     }
+
     50% {
         transform: translateX(-50%) translateY(10px);
     }
+
     70% {
         transform: translateX(-50%) translateY(5px);
     }

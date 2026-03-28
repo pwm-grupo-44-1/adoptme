@@ -1,11 +1,3 @@
-/* ─── Login ───────────────────────────────────────────────────────── */
-main {
-    flex: 1 1 auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 .login-box {
     background-color: #ddc781;
     height: 38rem;
@@ -159,17 +151,18 @@ main {
 
 .btn.user-nav-stack {
     flex-direction: column;
-    height: auto;
+    /* height: auto; */
     padding: 5px 10px;
     gap: 2px;
+    border: 0;
 }
 
 .user-nav-name {
-    font-size: 0.75rem;
+    font-size: 2;
     line-height: 1;
 }
 
 .btn-logout-nav {
-    font-size: 0.65rem;
+    font-size: large;
     color: #ff6b6b;
 }

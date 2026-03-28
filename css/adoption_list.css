@@ -60,6 +60,7 @@
     grid-template-columns: 14rem 1fr;
     align-items: start;
     min-height: 100%;
+    width: stretch;
 }
 
 .sidebar {

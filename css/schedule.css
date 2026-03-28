@@ -1,18 +1,14 @@
-main {
-    flex: 1 1 auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem 0;
-    /* background-color: #f3f5c7; */
-}
-
 .calendar {
-    width: 52rem;
-    background: #fefefe;
+    /* flex: 1 1 auto; */
+    /* display: flex; */
+    /* justify-content: center; */
+    align-items: center;
+    /* background: #fefefe; */
     border-radius: 1rem;
     padding: 2rem;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    /* margin: 0 22rem; */
+    width: 60%;
 }
 
 /* ── Mensaje no logueado ── */
@@ -35,11 +31,10 @@ main {
     align-items: center;
     justify-content: space-between;
     margin-bottom: 1.5rem;
-    width: 52rem;
     background: #fefefe;
     border-radius: 1rem;
     padding: 2rem;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
 
 /* ── Mensaje no logueado ── */
@@ -82,21 +77,31 @@ main {
     font-weight: 800;
 }
 
-.cal-nav:hover { background: #10946d; color: #fff; }
+.cal-nav:hover {
+    background: #10946d;
+    color: #fff;
+}
 
 /* ── Días de la semana ── */
 .cal-weekdays {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     text-align: center;
-    font-weight: 800;
-    font-size: 0.85rem;
+    /* font-weight: 800; */
+    font-size: 2rem;
     color: #10946d;
     margin-bottom: 0.5rem;
 }
 
 /* ── Grid de días ── */
 .cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    justify-items: center;
+    margin: 1rem 0 3rem 0;
+    gap: 0.5rem;
+}
+
 .cal-month-title {
     font-size: 1.4rem;
     font-weight: 800;
@@ -115,7 +120,10 @@ main {
     font-weight: 800;
 }
 
-.cal-nav:hover { background: #10946d; color: #fff; }
+.cal-nav:hover {
+    background: #10946d;
+    color: #fff;
+}
 
 /* ── Días de la semana ── */
 .cal-weekdays {
@@ -148,7 +156,9 @@ main {
     transition: all 0.15s;
 }
 
-.cal-day.empty { cursor: default; }
+.cal-day.empty {
+    cursor: default;
+}
 
 .cal-day.past {
     color: #bbb;
@@ -182,7 +192,7 @@ main {
     margin-bottom: 1.5rem;
 }
 
-.cal-slots h3 {
+.cal-slotsh3 {
     font-size: 1rem;
     color: #555;
     margin-bottom: 0.8rem;
@@ -192,20 +202,24 @@ main {
 
 .cal-day {
     aspect-ratio: 1;
-    display: flex;
+    display: grid;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
     font-size: 0.95rem;
-    cursor: pointer;
-    border: 2px solid transparent;
+    /* cursor: pointer; */
+    border: 2px solid #b8bb96;
     transition: all 0.15s;
+    font-size: 3rem;
+    background-color: #fefefe;
 }
 
-.cal-day.empty { cursor: default; }
+.cal-day.empty {
+    cursor: default;
+}
 
 .cal-day.past {
-    color: #bbb;
+    color: #e1dede;
     cursor: not-allowed;
 }
 
@@ -229,6 +243,7 @@ main {
 .cal-day.today {
     font-weight: 800;
     text-decoration: underline;
+    background-color: #f0f3c2;
 }
 
 /* ── Slots de horas ── */
@@ -236,7 +251,7 @@ main {
     margin-bottom: 1.5rem;
 }
 
-.cal-slots h3 {
+.cal-slotsh3 {
     font-size: 1rem;
     color: #555;
     margin-bottom: 0.8rem;
@@ -261,7 +276,10 @@ main {
     transition: all 0.15s;
 }
 
-.slot-btn:hover { background: #10946d; color: #fff; }
+.slot-btn:hover {
+    background: #10946d;
+    color: #fff;
+}
 
 .slot-btn.booked {
     background: #fddb72;
@@ -277,7 +295,7 @@ main {
 }
 
 /* ── Mis reservas ── */
-.cal-bookings h3 {
+.cal-bookingsh3 {
     font-size: 1rem;
     color: #10946d;
     font-weight: 800;
@@ -294,7 +312,7 @@ main {
     gap: 0.4rem;
 }
 
-#bookings-list li {
+#bookings-listli {
     background: #f0faf5;
     border-radius: 0.4rem;
     padding: 0.5rem 1rem;
@@ -314,7 +332,10 @@ main {
     font-family: inherit;
 }
 
-.cancel-btn:hover { text-decoration: underline; }
+.cancel-btn:hover {
+    text-decoration: underline;
+}
+
 .cal-slots-grid {
     display: flex;
     flex-wrap: wrap;
@@ -334,7 +355,10 @@ main {
     transition: all 0.15s;
 }
 
-.slot-btn:hover { background: #10946d; color: #fff; }
+.slot-btn:hover {
+    background: #10946d;
+    color: #fff;
+}
 
 .slot-btn.booked {
     background: #fddb72;
@@ -350,7 +374,7 @@ main {
 }
 
 /* ── Mis reservas ── */
-.cal-bookings h3 {
+.cal-bookingsh3 {
     font-size: 1rem;
     color: #10946d;
     font-weight: 800;
@@ -367,7 +391,7 @@ main {
     gap: 0.4rem;
 }
 
-#bookings-list li {
+#bookings-listli {
     background: #f0faf5;
     border-radius: 0.4rem;
     padding: 0.5rem 1rem;
@@ -387,4 +411,7 @@ main {
     font-family: inherit;
 }
 
-.cancel-btn:hover { text-decoration: underline; }
+.cancel-btn:hover {
+    text-decoration: underline;
+    grid-auto-columns: 1;
+}

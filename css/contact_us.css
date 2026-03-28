@@ -1,10 +1,3 @@
-main {
-    flex: 1 1 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 .contact {
     display: flex;
     gap: 4rem;
@@ -22,9 +15,9 @@ main {
 }
 
 .contact-title {
-    font-size: 1.8rem;
+    font-size: 2rem;
     font-weight: 800;
-    color: #fddb72;
+    color: #4a7477;
     line-height: 1.3;
 }
 
@@ -49,16 +42,16 @@ main {
 }
 
 .contact-reason-text h3 {
-    font-size: 1rem;
+    font-size: 1.6rem;
     font-weight: 800;
     margin-bottom: 0.2rem;
-    color: #fddb72;
+    color: #10946d;
 }
 
 .contact-reason-text p {
-    font-size: 0.9rem;
+    font-size: 1.5rem;
     line-height: 1.5;
-    color: #f0f0f0;
+    color: #4a7477;
 }
 
 /* ── Columna derecha ── */
@@ -83,8 +76,8 @@ main {
     display: flex;
     flex-direction: column;
     gap: 0.6rem;
-    font-size: 1.1rem;
-    color: #f0f0f0;
+    font-size: 2rem;
+    color: #515151;
     line-height: 1.6;
 }
 
