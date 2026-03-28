@@ -32,7 +32,14 @@ function saveStoredAnimals(animals) {
 }
 
 function getAllAnimals(dbAnimals) {
-    return [...dbAnimals, ...getStoredAnimals()];
+    // 1. Obtenemos los IDs de los animales que hemos eliminado previamente
+    const deletedIds = JSON.parse(localStorage.getItem('adoptme_deleted_animals') || '[]');
+
+    // 2. Filtramos los animales del JSON para que NO incluyan los eliminados
+    const activeDbAnimals = dbAnimals.filter(a => !deletedIds.includes(a.id));
+
+    // 3. Juntamos los del JSON (filtrados) con los creados en localStorage
+    return [...activeDbAnimals, ...getStoredAnimals()];
 }
 
 // Devuelve la imagen principal (compatible con formato antiguo y nuevo)
@@ -136,6 +143,46 @@ async function init() {
 
     await router(db);
     window.addEventListener('hashchange', () => router(db));
+
+    // ─── DETECTOR DE CAMBIOS MANUALES EN LOCALSTORAGE ────────────────────────
+    // El evento 'storage' solo dispara en otras pestañas, no en la misma.
+    // Por eso usamos polling para detectar cambios hechos manualmente (ej: DevTools).
+
+    let _deletedSnapshot     = localStorage.getItem('adoptme_deleted_animals') || '[]';
+    let _extraAnimalsSnapshot = localStorage.getItem('adoptme_extra_animals')   || '[]';
+
+    function _isOnListPage() {
+        const hash = window.location.hash.slice(1).split('?')[0] || 'home';
+        return hash === 'adoption_list';
+    }
+
+    // Polling cada 500 ms — prácticamente imperceptible para el rendimiento
+    setInterval(() => {
+        const deletedNow     = localStorage.getItem('adoptme_deleted_animals') || '[]';
+        const extraNow       = localStorage.getItem('adoptme_extra_animals')   || '[]';
+
+        const deletedChanged = deletedNow     !== _deletedSnapshot;
+        const extraChanged   = extraNow       !== _extraAnimalsSnapshot;
+
+        if ((deletedChanged || extraChanged) && _isOnListPage()) {
+            _deletedSnapshot      = deletedNow;
+            _extraAnimalsSnapshot = extraNow;
+            router(db); // re-renderiza la lista con el estado actualizado del localStorage
+        } else {
+            // Actualizamos snapshots aunque no estemos en la lista, para no acumular "deuda"
+            _deletedSnapshot      = deletedNow;
+            _extraAnimalsSnapshot = extraNow;
+        }
+    }, 500);
+
+    // Detección entre pestañas (esto sí lo cubre el evento nativo)
+    window.addEventListener('storage', (e) => {
+        if ((e.key === 'adoptme_deleted_animals' || e.key === 'adoptme_extra_animals') && _isOnListPage()) {
+            _deletedSnapshot      = localStorage.getItem('adoptme_deleted_animals') || '[]';
+            _extraAnimalsSnapshot = localStorage.getItem('adoptme_extra_animals')   || '[]';
+            router(db);
+        }
+    });
 }
 
 // ─── RENDER HEADER (Versión Avanzada V2) ──────────────────────────────────────
@@ -453,7 +500,7 @@ function renderContactUs(data) {
 // ─── RENDER ADOPTION LIST (Versión Avanzada Filtros V1) ───────────────────────
 function renderAdoptionList(dbAnimals) {
 
-    // Mezclamos los animales del db.json con los guardados en localStorage
+    // Mezclamos los animales del db.json con los guardados en localStorage y quitamos los eliminados
     const animals = getAllAnimals(dbAnimals);
 
     // ── Panel de administrador ──
@@ -732,6 +779,13 @@ function renderAnimalCards(animals) {
             card.querySelector('.btn-delete-animal').addEventListener('click', () => {
                 if (!confirm(`¿Seguro que quieres eliminar a ${animal.name}?`)) return;
 
+                // NUEVO: Guardar el ID en la lista de eliminados en localStorage
+                const deletedIds = JSON.parse(localStorage.getItem('adoptme_deleted_animals') || '[]');
+                if (!deletedIds.includes(animal.id)) {
+                    deletedIds.push(animal.id);
+                    localStorage.setItem('adoptme_deleted_animals', JSON.stringify(deletedIds));
+                }
+
                 // Si es un animal de localStorage, lo borramos de allí
                 const stored = getStoredAnimals();
                 const storedIdx = stored.findIndex(a => a.id === animal.id);
@@ -873,6 +927,7 @@ function initLogin(users) {
         btnRegister.classList.add('secondary');
         btnLogin.type = "submit";
     });
+    btnLogin.click();
 
     btnLogin.click();
 
