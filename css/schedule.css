@@ -213,6 +213,183 @@
     text-decoration: underline;
 }
 
+.cal-slots-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+}
+
+.slot-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 0.4rem;
+    border: 2px solid #10946d;
+    background: #fff;
+    color: #10946d;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.9rem;
+    transition: all 0.15s;
+}
+
+.slot-btn:hover {
+    background: #10946d;
+    color: #fff;
+}
+
+.slot-btn.booked {
+    background: #fddb72;
+    border-color: #fddb72;
+    color: #333;
+    cursor: default;
+}
+
+.slot-btn.mine {
+    background: #10946d;
+    border-color: #10946d;
+    color: #fff;
+}
+
+/* ── Mis reservas ── */
+.cal-bookingsh3 {
+    font-size: 1rem;
+    color: #10946d;
+    font-weight: 800;
+    margin-bottom: 0.6rem;
+    border-top: 1px solid #eee;
+    padding-top: 1rem;
+}
+
+#bookings-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+#bookings-listli {
+    background: #f0faf5;
+    border-radius: 0.4rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cancel-btn {
+    background: none;
+    border: none;
+    color: #e44;
+    font-weight: 800;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-family: inherit;
+}
+
+.cancel-btn:hover {
+    text-decoration: underline;
+    grid-auto-columns: 1;
+}
+
+.bi-arrow-left,
+.bi-arrow-right {
+    color: #4a7477;
+    font-size: 1.3rem;
+}
+
+.cal-nav:hover .bi-arrow-left,
+.cal-nav:hover .bi-arrow-right {
+    color: rgba(242, 245, 197, 0.92);
+}
+
+/* ══════════════════════════════════════════════
+   TABLET APAISADA  —  768px ↔ 1024px
+══════════════════════════════════════════════ */
+@media (min-width: 600px) and (max-width: 900px) {
+
+    /* Contenedor: más ancho y sin padding excesivo */
+    .calendar {
+        width: 80%;
+        padding: 2rem;
+    }
+
+    /* Cabecera mes */
+    .schedule-header {
+        margin-bottom: 0.6rem;
+        padding: 1rem;
+    }
+
+    .cal-month-title {
+        font-size: 1rem;
+    }
+
+    .cal-nav {
+        width: 1.6rem;
+        height: 1.6rem;
+        font-size: 0.85rem;
+    }
+
+    /* Días de la semana */
+    .cal-weekdays {
+        font-size: 0.7rem;
+        margin-bottom: 0.3rem;
+    }
+
+    /* Grid de días: reducimos márgenes y gap */
+    .cal-grid {
+        gap: 0.35rem;
+        margin: 0.4rem 0 0 0; /* era 1rem 0 3rem 0 */
+    }
+
+    /* Celda del día: el tamaño viene del ancho del grid (aspect-ratio:1)
+       Solo ajustamos la fuente para que no desborde */
+    .cal-day {
+        font-size: 1rem;  /* sobreescribe el 3rem duplicado del CSS base */
+        border-width: 1px;
+    }
+
+    /* Slots de horas */
+    .cal-slots {
+        margin-bottom: 0.8rem;
+    }
+
+    .cal-slots-grid {
+        gap: 0.4rem;
+    }
+
+    .slot-btn {
+        padding: 0.3rem 0.7rem;
+        font-size: 0.78rem;
+    }
+
+    /* Mis reservas */
+    .cal-bookingsh3 {
+        font-size: 0.85rem;
+        margin-bottom: 0.4rem;
+        padding-top: 0.6rem;
+    }
+
+    #bookings-list {
+        gap: 0.3rem;
+    }
+
+    .cancel-btn {
+        font-size: 0.75rem;
+    }
+
+    .cal-nav:active {
+        background: #10946d;
+        color: #fff;
+    }
+
+
+    .cal-nav:active .bi-arrow-left,
+    .cal-nav:active .bi-arrow-right {
+        color: rgba(242, 245, 197, 0.92);
+    }
+}
 @media (max-width: 768px) {
     .schedule-header {
         padding: 1rem;

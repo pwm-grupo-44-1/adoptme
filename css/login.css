@@ -69,6 +69,7 @@
 
 .btn-small {
     padding: 10px 22px;
+    /* El verde de tu paleta */
     border-radius: 8px;
     font-family: "Rum Raisin", system-ui;
     font-size: clamp(1rem, 1vw + 0.6rem, 1.25rem);
@@ -166,5 +167,17 @@
     #login-submit {
         width: 100%;
         align-self: stretch;
+    }
+}
+
+/* ── Tablet apaisada ── */
+@media (min-width: 600px) and (max-width: 900px) {
+    .login-box {
+        width: 30rem;
+    }
+
+    .login-inputs {
+        width: 25rem;
+        gap: 1.5em;
     }
 }

@@ -54,3 +54,28 @@
     background: #10946d;
     color: #fff;
 }
+/* ── Tablet apaisada ── */
+@media (min-width: 600px) and (max-width: 900px) {
+    .dog-profile {
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+    }
+
+    .photo-card-profile {
+        height: 22rem;
+        width: 14rem;
+        margin: 0;
+    }
+
+    .column-data {
+        width: 100%;
+        align-items: center;
+        gap: 1.5rem;
+    }
+
+    .box-text {
+        width: 90%;
+    }
+}

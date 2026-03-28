@@ -40,3 +40,14 @@
     max-height: 300px;
     padding: 1rem;
 }
+
+/* ── Tablet apaisada ── */
+@media (min-width: 600px) and (max-width: 900px) {
+    .box-faq {
+        padding: 0 2rem;
+    }
+
+    .faq-group {
+        margin: 0.6rem 0;
+    }
+}

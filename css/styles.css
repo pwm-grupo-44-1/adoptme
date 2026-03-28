@@ -34,6 +34,9 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    /* height: 100% eliminado — causaba que el scroll ocurriera dentro de main
+       en lugar de en la ventana, rompiendo position: sticky del header */
+    min-height: 100vh;
     margin: 0;
     overflow-x: hidden;
     background-color: #90c984;
@@ -104,7 +107,78 @@ iframe {
 
 button {
     color: var(--color-text);
-    font-size: clamp(0.95rem, 1vw + 0.5rem, 1.125rem);
+    font-size: 2vh;
+}
+
+/* Estado general al hacer scroll */
+body.scrolled header,
+body.scrolled footer {
+    backdrop-filter: blur(10px);
+}
+
+/* Flecha flotante de scroll: solo para adoption_list */
+.scroll-down-indicator {
+    position: fixed;
+    left: 50%;
+    bottom: 2rem;
+    transform: translateX(-50%);
+    width: var(--scroll-arrow-size);
+    height: var(--scroll-arrow-size);
+    border-radius: 999px;
+    border: 1px solid rgba(144, 201, 132, 0.35);
+    background: var(--scroll-arrow-bg);
+    color: var(--scroll-arrow-color);
+    box-shadow: var(--scroll-arrow-shadow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 300;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+            opacity 0.25s ease,
+            visibility 0.25s ease,
+            box-shadow 0.25s ease,
+            background-color 0.25s ease;
+}
+
+.scroll-down-indicator.is-visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    animation: scrollArrowBounceCentered 1.35s ease-in-out infinite;
+}
+
+.scroll-down-indicator:hover {
+    background-color: #e2e9a9;
+    box-shadow: 0 10px 26px rgba(74, 116, 119, 0.24);
+}
+
+.scroll-down-indicator svg {
+    width: 28px;
+    height: 28px;
+}
+
+@keyframes scrollArrowBounceCentered {
+
+    0%,
+    100% {
+        transform: translateX(-50%) translateY(0);
+    }
+
+    25% {
+        transform: translateX(-50%) translateY(4px);
+    }
+
+    50% {
+        transform: translateX(-50%) translateY(10px);
+    }
+
+    70% {
+        transform: translateX(-50%) translateY(5px);
+    }
 }
 
 @media (max-width: 768px) {
