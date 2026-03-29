@@ -307,110 +307,85 @@
 /* ══════════════════════════════════════════════
    TABLET APAISADA  —  768px ↔ 1024px
 ══════════════════════════════════════════════ */
-@media (min-width: 768px) and (max-width: 1024px) {
+@media (min-width: 600px) and (max-width: 900px) {
 
-    /* Contenedor ajustado al ancho disponible con poco padding */
+    /* 🔥 CONTENEDOR AJUSTADO */
     .calendar {
-        width: 75%;
-        padding: 0.75rem 1rem;
+        width: 76%;
+        margin: 0 auto;
+        padding: 0.5rem;
     }
 
-    /* Cabecera mes compacta */
+    /* 🔥 HEADER MUY COMPACTO */
     .schedule-header {
-        padding: 0.6rem 0.8rem;
-        margin-bottom: 0.5rem;
-        border-radius: 0.6rem;
+        padding: 0.4rem 0.6rem;
+        margin-bottom: 0.3rem;
     }
 
     .cal-month-title {
-        /* sobreescribe el clamp base que da valores demasiado grandes */
-        font-size: 0.95rem;
+        font-size: 1.1rem;
     }
 
     .cal-nav {
-        /* sobreescribe el clamp base */
-        width: 1.8rem;
-        height: 1.8rem;
-        font-size: 0.85rem;
+        width: 1.6rem;
+        height: 1.6rem;
+        font-size: 0.75rem;
     }
 
-    /* Días de la semana */
-    .cal-weekdays {
-        /* sobreescribe clamp(1.75rem, ...) — mínimo demasiado grande */
-        font-size: 0.68rem;
-        margin-bottom: 0.25rem;
-        gap: 0.2rem;
-    }
-
-    /* Grid de días */
+    /* 🔥 GRID */
+    .cal-weekdays,
     .cal-grid {
-        gap: 0.2rem;
-        margin-bottom: 0.6rem;
+        grid-template-columns: repeat(7, 1fr);
     }
 
-    /* Celdas: sobreescribe clamp(3.9rem, ...) que es el culpable principal */
+    .cal-weekdays {
+        font-size: 0.7rem;
+        margin-bottom: 0.15rem;
+        gap: 0.15rem;
+    }
+
+    .cal-grid {
+        gap: 0.15rem;
+    }
+
+    /* 🔥 CLAVE ABSOLUTA (altura perfecta) */
     .cal-day {
+        aspect-ratio: 1 / 0.4;   /* 👈 aplasta verticalmente */
         font-size: 0.75rem;
         border-width: 1px;
-        border-radius: 15%;
+        border-radius: 6px;
+        padding: 0;
     }
 
-    /* Slots de horas */
+    /* 🔥 ESPACIOS MÍNIMOS */
     .cal-slots {
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.3rem;
     }
 
     .cal-slotsh3,
     .cal-bookingsh3 {
-        font-size: 0.8rem;
-        margin-bottom: 0.4rem;
+        font-size: 0.65rem;
+        margin-bottom: 0.2rem;
     }
 
-    .cal-bookingsh3 {
-        padding-top: 0.5rem;
+    /* 🔥 BOTONES MINI */
+    .slot-btn {
+        padding: 0.2rem 0.4rem;
+        font-size: 0.65rem;
     }
 
     .cal-slots-grid {
-        gap: 0.35rem;
+        gap: 0.2rem;
     }
 
-    .slot-btn {
-        padding: 0.25rem 0.6rem;
-        font-size: 0.75rem;
-        border-width: 1px;
-    }
-
-    /* Mis reservas */
-    #bookings-list {
-        gap: 0.25rem;
-    }
-
+    /* 🔥 RESERVAS */
     #bookings-list li {
-        padding: 0.35rem 0.6rem;
-        font-size: 0.78rem;
+        padding: 0.25rem 0.4rem;
+        font-size: 0.65rem;
     }
 
     .cancel-btn {
-        font-size: 0.72rem;
-    }
-
-    .cal-nav:active {
-        background: #10946d;
-        color: #fff;
-    }
-
-    .cal-nav:active .bi-arrow-left,
-    .cal-nav:active .bi-arrow-right {
-        color: rgba(242, 245, 197, 0.92);
-    }
-}
-@media (max-width: 768px) {
-    .schedule-header {
-        padding: 1rem;
-    }
-
-    .cal-day {
-        border-width: 1px;
+        font-size: 0.6rem;
     }
 }
 

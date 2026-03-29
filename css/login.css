@@ -176,6 +176,11 @@
         width: 30rem;
     }
 
+    .user-nav-name,
+    .btn-logout-nav {
+        font-size: clamp(0.85rem, 1.8vw, 1.1rem);
+    }
+
     .login-inputs {
         width: 25rem;
         gap: 1.5em;

@@ -1,21 +1,75 @@
 .dog-profile {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
+    justify-content: center;
     gap: clamp(1.5rem, 3vw, 3rem);
-    margin-top: 2rem;
     flex-wrap: wrap;
+
+    /* Mantenemos tu centrado limpio a lo ancho */
+    width: fit-content !important;
+    margin: 0 auto;
+
+    /* El min-height HA DESAPARECIDO, dejamos que el main lo centre */
+    padding: 2rem;
 }
 
-.photo-card-profile {
-    width: min(100%, 18rem);
+/* ── Carrusel de fotos del perfil ── */
+.profile-carousel {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+    flex-shrink: 0;
+}
+
+.profile-carousel-track-wrapper {
+    width: 18rem;
     aspect-ratio: 9 / 16;
-    height: auto;
-    border: 2px solid #000000;
-    margin: 0;
+    overflow: hidden;
+    border: 1px solid #4a7477;
+    border-radius: 2rem;
+    flex-shrink: 0;
+}
+
+.profile-carousel-track {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.4s ease;
+}
+
+.profile-carousel-slide {
+    min-width: 100%;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     object-position: center;
     display: block;
     flex-shrink: 0;
+}
+
+.profile-carousel-btn {
+    background: #fddb72;
+    border: none;
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.2s;
+    color: #4a7477;
+    font-family: inherit;
+
+    /* ¡AÑADE ESTAS 3 LÍNEAS PARA EL CENTRADO PERFECTO! */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-carousel-btn:hover {
+    background: #10946d;
+    color: #fff;
 }
 
 .column-data {
@@ -34,6 +88,7 @@
     width: min(100%, 40rem);
     padding: 0.75rem;
     text-align: justify;
+    /* En PC hereda el tamaño grande normal de tu web */
 }
 
 .btn-back {
@@ -43,39 +98,69 @@
     border-radius: 0.4rem;
     padding: 0.5rem 1.2rem;
     font-family: inherit;
-    font-size: 1rem;
+    font-size: 1rem; /* Tamaño normal en PC */
     font-weight: 800;
     cursor: pointer;
     transition: background 0.2s;
     margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
 }
 
 .btn-back:hover {
     background: #10946d;
     color: #fff;
 }
-/* ── Tablet apaisada ── */
+
+/* ── Tablet apaisada (Texto al lado de la imagen) ── */
 @media (min-width: 600px) and (max-width: 900px) {
     .dog-profile {
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: nowrap; /* ¡LA CLAVE! Obliga a que no se salten de línea */
         align-items: center;
         gap: 1.5rem;
-        margin-top: 1.5rem;
+        padding: 1.5rem; /* Reducimos un pelín el borde para que respire */
+
+        /* Dejamos que ocupe todo el ancho de la tablet si lo necesita */
+        width: 100% !important;
     }
 
-    .photo-card-profile {
-        height: 22rem;
-        width: 14rem;
-        margin: 0;
+    /* Protegemos el carrusel para que no se aplaste si el texto es muy largo */
+    .profile-carousel {
+        flex-shrink: 0;
+    }
+
+    .profile-carousel-track-wrapper {
+        width: clamp(12rem, 25vw, 16rem);
+        height: clamp(12rem, 35vw, 16rem);
+    }
+
+    .profile-carousel-btn {
+        width: clamp(1.4rem, 3vw, 1.8rem);
+        height: clamp(1.4rem, 3vw, 1.8rem);
+        font-size: clamp(0.7rem, 1.5vw, 0.9rem);
     }
 
     .column-data {
-        width: 100%;
-        align-items: center;
-        gap: 1.5rem;
+        flex: 1; /* Le decimos: "Ocupa todo el espacio sobrante a la derecha" */
+        min-width: 0; /* Truco ninja de Flexbox para que el texto no desborde la pantalla */
+        align-items: flex-start; /* Alineamos el texto a la izquierda para que se lea mejor */
+        gap: 1rem;
     }
 
     .box-text {
-        width: 90%;
+        width: 100%; /* La caja llenará perfectamente su columna derecha */
+        border: 1px solid #4a7477;
+
+        /* ¡MAGIA AQUÍ! El texto se hace pequeño SOLO en tablets */
+        font-size: 0.85rem;
+        line-height: 1.4;
+    }
+
+    .btn-back {
+        margin-bottom: 0; /* Ajuste visual limpio */
+        font-size: 0.9rem; /* El botón también se hace un poquito más pequeño aquí */
     }
 }

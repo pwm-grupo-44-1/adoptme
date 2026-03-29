@@ -83,28 +83,41 @@
 /* ── Tablet apaisada ── */
 @media (min-width: 600px) and (max-width: 900px) {
     .contact {
-        flex-direction: column;
+        flex-direction: row;
         gap: 2rem;
         margin: 2rem 3rem;
     }
 
+    .contact-left {
+        gap: 0.5rem;
+    }
+
+    .contact-reasons {
+        gap: 0.5rem;
+    }
+
     .contact-title {
-        font-size: 1.6rem;
-    }
-
-    .contact-reason-text h3 {
-        font-size: 1.3rem;
-    }
-
-    .contact-reason-text p {
         font-size: 1.2rem;
     }
 
+    .contact-reason-text h3 {
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .contact-reason-text p {
+        font-size: 0.8rem;
+    }
+
     .contact-map {
-        height: 16rem;
+        height: 14rem;
     }
 
     .contact-text {
         font-size: 1.5rem;
+    }
+
+    .contact-right li {
+        font-size: 1.2rem;
     }
 }
