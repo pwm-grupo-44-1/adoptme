@@ -1,10 +1,10 @@
 #about_us {
-    width: min(100%, 72rem);
+    width: min(100%, 80rem);
     margin: 0 auto;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
     justify-content: center;
-    gap: clamp(1rem, 2vw, 2rem);
+    gap: clamp(5rem, 2vw, 2rem);
 }
 
 .about_us>section {
@@ -27,11 +27,27 @@
     object-position: center;
     display: block;
     margin: 0 auto;
+    border-radius: 1rem;
+    border: 1px solid;
 }
 
 .text-card-about_us {
     text-align: center;
+    font-size: x-large;
+    text-align: justify;
 }
+
+
+@media (max-width: 576px) {
+    #about_us {
+        grid-template-columns: repeat(1, 1fr);
+        padding: 0 2rem;
+        font-size: 1.5rem;
+        gap: 4rem;
+        margin: 2rem 0 0 0;
+    }
+}
+
 /* ── Tablet apaisada ── */
 @media (min-width: 600px) and (max-width: 900px) {
     #about_us {
@@ -53,7 +69,7 @@
         font-size: 1rem;
     }
 
-    .text-card-about_us{
+    .text-card-about_us {
         font-size: 0.8rem;
     }
 }

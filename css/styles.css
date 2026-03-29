@@ -34,8 +34,6 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    /* height: 100% eliminado — causaba que el scroll ocurriera dentro de main
-       en lugar de en la ventana, rompiendo position: sticky del header */
     min-height: 100vh;
     margin: 0;
     overflow-x: hidden;
@@ -63,11 +61,7 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: clamp(1rem, 2vw, 2rem) var(--site-gutter);
-}
-
-main > * {
-    width: min(100%, var(--site-max-width));
+    /* padding: clamp(1rem, 2vw, 2rem) var(--site-gutter); */
 }
 
 img,
@@ -89,8 +83,8 @@ iframe {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: clamp(7rem, 10vw, 8rem);
-    min-height: clamp(3rem, 4vw, 4.5rem);
+    min-width: clamp(12rem, 10vw, 8rem);
+    /* min-height: clamp(0rem, 3vw, -0.5rem); */
     padding: 0.75rem 1rem;
     color: var(--color-text);
     font-size: clamp(2.3rem, 1.2vw + 0.6rem, 1.8rem);
@@ -181,17 +175,4 @@ body.scrolled footer {
     }
 }
 
-@media (max-width: 768px) {
-    body.page {
-        background-attachment: scroll;
-    }
 
-    main {
-        padding-inline: 1rem;
-    }
-
-    .btn {
-        min-width: auto;
-        width: auto;
-    }
-}

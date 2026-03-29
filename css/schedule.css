@@ -1,9 +1,10 @@
 .calendar {
-    width: min(100%, 62rem);
+    width: min(100%, 42rem);
     margin: 0 auto;
     align-items: center;
     border-radius: 1rem;
-    padding: clamp(1rem, 2.5vw, 2rem);
+    padding: clamp(1rem, 2.5vw, 1rem);
+    margin: clamp(1rem, 1.5vw, 1rem);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
     background: rgba(255, 255, 255, 0.25);
 }
@@ -26,10 +27,10 @@
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     background: #ebefb7;
     border-radius: 1rem;
-    padding: clamp(1rem, 2vw, 2rem);
+    padding: clamp(1rem, 2vw, 1rem);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
 
@@ -48,13 +49,13 @@
     border-radius: 50%;
     width: clamp(3.2rem, 4vw, 2.8rem);
     height: clamp(3.2rem, 4vw, 2.8rem);
-    font-size: clamp(1rem, 1vw + 0.5rem, 1.25rem);
+    font-size: clamp(2.5rem, 1vw + 0.5rem, 1.25rem);
     cursor: pointer;
     font-weight: 800;
 }
 
 .cal-nav:hover {
-    background: #10946d;
+    /* background: #10946d; */
     color: #fff;
 }
 
@@ -125,6 +126,7 @@
 }
 
 .cal-slots {
+    display: contents;
     margin-bottom: 1.5rem;
 }
 
@@ -215,7 +217,7 @@
 
 .cal-slots-grid {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 0.6rem;
 }
 
@@ -296,7 +298,7 @@
 .bi-arrow-left,
 .bi-arrow-right {
     color: #4a7477;
-    font-size: 1.3rem;
+    font-size: 3rem;
 }
 
 .cal-nav:hover .bi-arrow-left,
@@ -305,7 +307,7 @@
 }
 
 /* ══════════════════════════════════════════════
-   TABLET APAISADA  —  768px ↔ 1024px
+   TABLET APAISADA  —  600px ↔ 900px
 ══════════════════════════════════════════════ */
 @media (min-width: 600px) and (max-width: 900px) {
 

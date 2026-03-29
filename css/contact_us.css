@@ -121,3 +121,13 @@
         font-size: 1.2rem;
     }
 }
+
+@media (max-width: 576px) {
+    .contact-left {
+        padding: 0 0 0 1rem;
+    }
+
+    .contact-right {
+        padding: 0 1rem 0 0;
+    }
+}
