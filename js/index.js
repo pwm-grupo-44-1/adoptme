@@ -657,16 +657,20 @@ function renderAdoptionList(dbAnimals) {
         return 'Senior (7+ años)';
     }
 
-    // NUEVO: Función para rellenar checkboxes dinámicos
+    // NUEVO: Función para rellenar checkboxes dinámicos de forma segura
     function fillCheckboxes(id, values) {
         const container = document.getElementById(id);
         if (!container) return;
+
         const unique = [...new Set(values)].sort();
 
         unique.forEach(v => {
-            // Solo lo añade si no existe ya
-            if (!container.querySelector(`input[value="${v}"]`)) {
-                container.innerHTML += `<label><input type="checkbox" value="${v}"> ${v}</label>`;
+            // Buscamos si ya existe la casilla (escapando comillas por seguridad)
+            const exists = container.querySelector(`input[value="${v.replace(/"/g, '\\"')}"]`);
+            if (!exists) {
+                // Usamos insertAdjacentHTML en vez de innerHTML += para NO borrar
+                // el estado (marcado/desmarcado) de los filtros que el usuario ya estaba usando
+                container.insertAdjacentHTML('beforeend', `<label><input type="checkbox" value="${v}"> ${v}</label>`);
             }
         });
     }
