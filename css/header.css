@@ -48,17 +48,6 @@ a {
     background-size: 250%;
 }
 
-.logo::before,
-.logo::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 6em;
-    height: 0.1em;
-    transform-origin: center;
-}
-
 .brand-title {
     font-size: clamp(1.2rem, 1.5vw + 0.6rem, 2.2rem);
     line-height: 1.1;

@@ -190,4 +190,8 @@
         padding: 0.75rem;
         text-align: justify;
     }
+
+    .profile-carousel-btn i {
+        font-size: 1.5rem; /* Ajusta este número a tu gusto */
+    }
 }

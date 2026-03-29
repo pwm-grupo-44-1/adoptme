@@ -295,8 +295,7 @@
     grid-auto-columns: 1;
 }
 
-.bi-arrow-left,
-.bi-arrow-right {
+.schedule-header button.cal-nav i.bi {
     color: #4a7477;
     font-size: 3rem;
 }
@@ -388,6 +387,13 @@
 
     .cancel-btn {
         font-size: 0.6rem;
+    }
+
+    /* ── Flechas del calendario (SELECTOR MÁS FUERTE) ── */
+    .schedule-header button.cal-nav i.bi {
+        /* He subido el valor a 1.2rem para que veas que CAMBIA.
+           Luego bájalo a 0.7rem si lo quieres así de pequeño. */
+        font-size: 1.2rem;
     }
 }
 
