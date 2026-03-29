@@ -106,7 +106,7 @@ Cada animal cuenta con una página detallada que incluye:
 ## Mockups de móvil y tablet 
 Los nuevos mockups de las tablet(~/mockups/tablet) y móvil (~/mockups/movil) se encuentran dentro de la carpeta de mockups. Los nombres de los mockups son los mismos en ambas capetas, que serían los siguientes: 
 
-* abouts_us.png
+* about_us.png
 * adoption_list.png
 * adoption_list(admin).png
 * contact_us.png
