@@ -103,7 +103,20 @@ Cada animal cuenta con una página detallada que incluye:
 * template_schedule.html
 * template_stories.html
 
-## Nombre y ubicacion de los mockups para móvil y tablet 
+## Mockups de móvil y tablet 
+Los nuevos mockups de las tablet(~/mockups/tablet) y móvil (~/mockups/movil) se encuentran dentro de la carpeta de mockups. Los nombres de los mockups son los mismos en ambas capetas, que serían los siguientes: 
+
+* abouts_us.png
+* adoption_list.png
+* adoption_list(admin).png
+* contact_us.png
+* faq.png
+* home.png
+* legal.png
+* login.png
+* schedule.png
+* stories.png
+
 
 ## Página de inicio 
 La página de inicio de la aplicación web es `index.html`, que se encuentra en: /html/templates/index.html.
@@ -115,6 +128,9 @@ Desde este archivo central se gestiona:
 * La navegación entre las distintas secciones (Mascotas, Nosotros, Login, etc.).
 * La persistencia de la sesión del usuario a través de `localStorage`.
 ## Aspectos responsive implementados 
+
+
+
 
 ## Carga de templates y contenido JSON
 
