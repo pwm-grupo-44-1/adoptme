@@ -135,6 +135,7 @@ a {
 
     .brand-title {
         font-size: clamp(1.3rem, 3vw, 2rem);
+        margin: 0;
     }
 
     .social-ico {
