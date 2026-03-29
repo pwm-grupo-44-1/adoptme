@@ -7,7 +7,7 @@
 * Esther Viera Rivero
 * Néstor Jesús Henríquez Medina
 
-Este repositorio contiene un **prototipo estático** --de momento-- del sitio web **AdoptMe!**, un refugio de adopción donde el usuario puede **explorar mascotas** (perros y gatos) y **solicitar una cita presencial** para conocerlas y poder adoptarlas, así como entregar en adopción.
+Este repositorio ahora contiene un **prototipo dinámico** del sitio web **AdoptMe!**, un refugio de adopción donde el usuario puede **explorar mascotas** (perros y gatos) y **solicitar una cita presencial** para conocerlas y poder adoptarlas, así como entregar en adopción.
 
 ## Descripción del proyecto:
 
@@ -92,16 +92,16 @@ Cada animal cuenta con una página detallada que incluye:
 * template_adoption_item.html
 * template_adoption_list.html
 * template_card.html
-*  template_contact_us.html
-*  template_faq.html
-*  template_footer.html
-*  template_header.html
-*  template_home.html
-*  template_legal.html
-*  template_login.html
-*  template_pet.html
-*  template_schedule.html
-*  template_stories.html
+* template_contact_us.html
+* template_faq.html
+* template_footer.html
+* template_header.html
+* template_home.html
+* template_legal.html
+* template_login.html
+* template_pet.html
+* template_schedule.html
+* template_stories.html
 
 ## Nombre y ubicacion de los mockups para móvil y tablet 
 
@@ -158,7 +158,7 @@ Para el correcto funcionamiento de la aplicación, se han implementado validacio
 
 ## Usuario y contraseña de prueba
 * **Usuario:**  `[ernestina@adoptme.es]` 
-* **Contraseña:** `[Ernestina]`
+* **Contraseña:** `[Ernestina&01]`
 
 
 ## Otros Aspectos a Considerar
