@@ -242,7 +242,6 @@ function renderHeader(headerData, footerData) {
             e.preventDefault();
             localStorage.removeItem('userActive');
             currentUser = null;
-            alert('Has cerrado sesión. ¡Vuelve pronto!');
             location.reload();
         });
 
@@ -995,7 +994,6 @@ function initLogin(users) {
             if (encontrado) {
                 localStorage.setItem('userActive', JSON.stringify(encontrado));
                 currentUser = encontrado;
-                alert(`¡Bienvenido de nuevo, ${encontrado.name}!`);
                 window.location.hash = '#home';
                 location.reload();
             } else {
