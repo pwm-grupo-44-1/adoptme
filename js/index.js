@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', init);
 let currentUser = JSON.parse(localStorage.getItem('userActive') || 'null');
 
 const DB_PATH = '../data/db.json';
-const TMPL    = '../html/templates/';
+const TMPL = '../html/templates/';
 
 // ─── UTILIDADES DE VISITAS ────────────────────────────────────────────────────
 function getVisits(animalId) {
@@ -136,61 +136,54 @@ async function init() {
     if (!db) return;
 
     await loadTemplate(TMPL + 'template_header.html', 'header');
-    renderHeader(db.header);
-
     await loadTemplate(TMPL + 'template_footer.html', 'footer');
+
     renderFooter(db.footer);
+    renderHeader(db.header, db.footer);
 
     await router(db);
     window.addEventListener('hashchange', () => router(db));
 
-    // ─── DETECTOR DE CAMBIOS MANUALES EN LOCALSTORAGE ────────────────────────
-    // El evento 'storage' solo dispara en otras pestañas, no en la misma.
-    // Por eso usamos polling para detectar cambios hechos manualmente (ej: DevTools).
-
-    let _deletedSnapshot     = localStorage.getItem('adoptme_deleted_animals') || '[]';
-    let _extraAnimalsSnapshot = localStorage.getItem('adoptme_extra_animals')   || '[]';
+    let _deletedSnapshot = localStorage.getItem('adoptme_deleted_animals') || '[]';
+    let _extraAnimalsSnapshot = localStorage.getItem('adoptme_extra_animals') || '[]';
 
     function _isOnListPage() {
         const hash = window.location.hash.slice(1).split('?')[0] || 'home';
         return hash === 'adoption_list';
     }
 
-    // Polling cada 500 ms — prácticamente imperceptible para el rendimiento
     setInterval(() => {
-        const deletedNow     = localStorage.getItem('adoptme_deleted_animals') || '[]';
-        const extraNow       = localStorage.getItem('adoptme_extra_animals')   || '[]';
+        const deletedNow = localStorage.getItem('adoptme_deleted_animals') || '[]';
+        const extraNow = localStorage.getItem('adoptme_extra_animals') || '[]';
 
-        const deletedChanged = deletedNow     !== _deletedSnapshot;
-        const extraChanged   = extraNow       !== _extraAnimalsSnapshot;
+        const deletedChanged = deletedNow !== _deletedSnapshot;
+        const extraChanged = extraNow !== _extraAnimalsSnapshot;
 
         if ((deletedChanged || extraChanged) && _isOnListPage()) {
-            _deletedSnapshot      = deletedNow;
+            _deletedSnapshot = deletedNow;
             _extraAnimalsSnapshot = extraNow;
-            router(db); // re-renderiza la lista con el estado actualizado del localStorage
+            router(db);
         } else {
-            // Actualizamos snapshots aunque no estemos en la lista, para no acumular "deuda"
-            _deletedSnapshot      = deletedNow;
+            _deletedSnapshot = deletedNow;
             _extraAnimalsSnapshot = extraNow;
         }
     }, 500);
 
-    // Detección entre pestañas (esto sí lo cubre el evento nativo)
     window.addEventListener('storage', (e) => {
         if ((e.key === 'adoptme_deleted_animals' || e.key === 'adoptme_extra_animals') && _isOnListPage()) {
-            _deletedSnapshot      = localStorage.getItem('adoptme_deleted_animals') || '[]';
-            _extraAnimalsSnapshot = localStorage.getItem('adoptme_extra_animals')   || '[]';
+            _deletedSnapshot = localStorage.getItem('adoptme_deleted_animals') || '[]';
+            _extraAnimalsSnapshot = localStorage.getItem('adoptme_extra_animals') || '[]';
             router(db);
         }
     });
 }
 
 // ─── RENDER HEADER (Versión Avanzada V2) ──────────────────────────────────────
-function renderHeader(headerData) {
+function renderHeader(headerData, footerData) {
     const logo = document.querySelector('.logo');
     if (logo) {
         logo.style.backgroundImage = `url('${headerData.logo}')`;
-        logo.style.backgroundSize  = 'cover';
+        logo.style.backgroundSize = 'cover';
     }
 
     const brandTitle = document.querySelector('.brand-title');
@@ -208,42 +201,78 @@ function renderHeader(headerData) {
         });
     }
 
-    const nav = document.querySelector('nav');
-    if (nav) {
-        nav.innerHTML = '';
-        headerData.navLinks.forEach(link => {
-            if (link.name === "Acceder" && currentUser) {
-                const container = document.createElement('div');
-                container.className = 'btn user-nav-stack';
+    const nav = document.querySelector('.main-nav');
+    if (!nav) return;
 
-                const nameLabel = document.createElement('span');
-                nameLabel.className = 'user-nav-name';
-                nameLabel.textContent = ` ${currentUser.name}`;
+    nav.innerHTML = '';
 
-                const logoutBtn = document.createElement('a');
-                logoutBtn.className = 'btn-logout-nav';
-                logoutBtn.textContent = 'Cerrar Sesión';
-                logoutBtn.href = "#home";
+    const addedUrls = new Set();
 
-                logoutBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    localStorage.removeItem('userActive');
-                    currentUser = null;
-                    alert("Has cerrado sesión. ¡Vuelve pronto!");
-                    location.reload();
-                });
+    function appendLink(link, extraClass = '') {
+        if (!link || !link.url || addedUrls.has(link.url)) return;
 
-                container.appendChild(nameLabel);
-                container.appendChild(logoutBtn);
-                nav.appendChild(container);
-            } else {
-                const a = document.createElement('a');
-                a.className = 'btn';
-                a.textContent = link.name;
-                a.href = link.url;
-                nav.appendChild(a);
-            }
+        const a = document.createElement('a');
+        a.className = `btn ${extraClass}`.trim();
+
+        if (link.url === '#login' || link.name === 'Acceder') {
+            a.classList.add('login-link');
+        }
+
+        a.textContent = link.name;
+        a.href = link.url;
+
+        nav.appendChild(a);
+        addedUrls.add(link.url);
+    }
+
+    function appendUserBlock() {
+        const container = document.createElement('div');
+        container.className = 'btn user-nav-stack login-link';
+
+        const nameLabel = document.createElement('span');
+        nameLabel.className = 'user-nav-name';
+        nameLabel.textContent = `${currentUser.name}`;
+
+        const logoutBtn = document.createElement('a');
+        logoutBtn.className = 'btn-logout-nav';
+        logoutBtn.textContent = 'Cerrar Sesión';
+        logoutBtn.href = '#home';
+
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('userActive');
+            currentUser = null;
+            alert('Has cerrado sesión. ¡Vuelve pronto!');
+            location.reload();
         });
+
+        container.appendChild(nameLabel);
+        container.appendChild(logoutBtn);
+        nav.appendChild(container);
+    }
+
+    const headerLinks = Array.isArray(headerData.navLinks) ? headerData.navLinks : [];
+    const footerLinks = Array.isArray(footerData?.navLinks) ? footerData.navLinks : [];
+
+    const normalHeaderLinks = headerLinks.filter(
+        link => link.url !== '#login' && link.name !== 'Acceder'
+    );
+
+    const loginHeaderLink = headerLinks.find(
+        link => link.url === '#login' || link.name === 'Acceder'
+    );
+
+    // 1. Enlaces normales del header: visibles siempre
+    normalHeaderLinks.forEach(link => appendLink(link));
+
+    // 2. Enlaces del footer: solo para drawer móvil
+    footerLinks.forEach(link => appendLink(link, 'drawer-only-link'));
+
+    // 3. Login / usuario siempre al final
+    if (currentUser) {
+        appendUserBlock();
+    } else if (loginHeaderLink) {
+        appendLink(loginHeaderLink);
     }
 }
 
@@ -289,7 +318,7 @@ function renderHome(data) {
     if (!images.length) return;
 
     const track = document.getElementById('carousel-track');
-    const dots  = document.getElementById('carousel-dots');
+    const dots = document.getElementById('carousel-dots');
     if (!track) return;
 
     // Si solo hay 1 imagen, simplemente la mostramos y cancelamos el carrusel
@@ -508,9 +537,9 @@ function renderAdoptionList(dbAnimals) {
     if (adminPanel && isAdmin()) {
         adminPanel.style.display = 'block';
 
-        const toggleBtn  = document.getElementById('admin-toggle-btn');
-        const form       = document.getElementById('admin-add-form');
-        const cancelBtn  = document.getElementById('admin-cancel-btn');
+        const toggleBtn = document.getElementById('admin-toggle-btn');
+        const form = document.getElementById('admin-add-form');
+        const cancelBtn = document.getElementById('admin-cancel-btn');
 
         toggleBtn.addEventListener('click', () => {
             const open = form.style.display !== 'none';
@@ -526,9 +555,9 @@ function renderAdoptionList(dbAnimals) {
         });
 
         // ── Botón personalizado de imagen ──
-        const fileBtn   = document.getElementById('admin-file-btn');
+        const fileBtn = document.getElementById('admin-file-btn');
         const fileInput = document.getElementById('admin-image');
-        const fileName  = document.getElementById('admin-file-name');
+        const fileName = document.getElementById('admin-file-name');
 
         fileBtn.addEventListener('click', () => fileInput.click());
         fileInput.addEventListener('change', () => {
@@ -543,16 +572,16 @@ function renderAdoptionList(dbAnimals) {
         form.addEventListener('submit', e => {
             e.preventDefault();
 
-            const name        = document.getElementById('admin-name').value.trim();
-            const breed       = document.getElementById('admin-breed').value.trim();
-            const gender      = document.getElementById('admin-gender').value;
-            const age         = parseInt(document.getElementById('admin-age').value);
-            const weight      = document.getElementById('admin-weight').value.trim();
-            const hair        = document.getElementById('admin-hair').value.trim();
-            const mood        = document.getElementById('admin-mood').value.trim();
-            const imageInput  = document.getElementById('admin-image');
+            const name = document.getElementById('admin-name').value.trim();
+            const breed = document.getElementById('admin-breed').value.trim();
+            const gender = document.getElementById('admin-gender').value;
+            const age = parseInt(document.getElementById('admin-age').value);
+            const weight = document.getElementById('admin-weight').value.trim();
+            const hair = document.getElementById('admin-hair').value.trim();
+            const mood = document.getElementById('admin-mood').value.trim();
+            const imageInput = document.getElementById('admin-image');
             const description = document.getElementById('admin-description').value.trim();
-            const files       = Array.from(imageInput.files);
+            const files = Array.from(imageInput.files);
 
             if (!name || !breed || !gender || isNaN(age) || !weight || !hair || !mood || files.length === 0 || !description) {
                 alert('Por favor, rellena todos los campos obligatorios.');
@@ -570,7 +599,7 @@ function renderAdoptionList(dbAnimals) {
             // Convertimos todos los archivos a base64 en paralelo
             const readFile = f => new Promise((resolve, reject) => {
                 const reader = new FileReader();
-                reader.onload  = ev => resolve(ev.target.result);
+                reader.onload = ev => resolve(ev.target.result);
                 reader.onerror = () => reject(new Error(`Error leyendo ${f.name}`));
                 reader.readAsDataURL(f);
             });
@@ -578,7 +607,7 @@ function renderAdoptionList(dbAnimals) {
             Promise.all(files.map(readFile))
                 .then(images => {
                     const allIds = animals.map(a => a.id);
-                    const newId  = allIds.length > 0 ? Math.max(...allIds) + 1 : 1;
+                    const newId = allIds.length > 0 ? Math.max(...allIds) + 1 : 1;
 
                     const newAnimal = {
                         id: newId,
@@ -600,8 +629,8 @@ function renderAdoptionList(dbAnimals) {
                     animals.push(newAnimal);
 
                     fillSelect('filter-breed', animals.map(a => a.breed));
-                    fillSelect('filter-hair',  animals.map(a => a['hair type']));
-                    fillSelect('filter-mood',  animals.map(a => a.mood));
+                    fillSelect('filter-hair', animals.map(a => a['hair type']));
+                    fillSelect('filter-mood', animals.map(a => a.mood));
 
                     form.reset();
                     document.getElementById('admin-file-name').textContent = 'Ningún archivo seleccionado';
@@ -618,7 +647,7 @@ function renderAdoptionList(dbAnimals) {
     function parseWeight(w) { return parseFloat(w) || 0; }
     function weightRange(w) {
         const kg = parseWeight(w);
-        if (kg <= 5)  return 'Pequeño (≤5kg)';
+        if (kg <= 5) return 'Pequeño (≤5kg)';
         if (kg <= 15) return 'Mediano (6-15kg)';
         return 'Grande (>15kg)';
     }
@@ -643,12 +672,12 @@ function renderAdoptionList(dbAnimals) {
     }
 
     fillCheckboxes('filter-breed', animals.map(a => a.breed));
-    fillCheckboxes('filter-hair',  animals.map(a => a['hair type']));
-    fillCheckboxes('filter-mood',  animals.map(a => a.mood));
+    fillCheckboxes('filter-hair', animals.map(a => a['hair type']));
+    fillCheckboxes('filter-mood', animals.map(a => a.mood));
 
     // NUEVO: Función para recuperar sesión
     function restoreSession() {
-        ['filter-gender','filter-breed','filter-age','filter-weight','filter-hair','filter-mood'].forEach(id => {
+        ['filter-gender', 'filter-breed', 'filter-age', 'filter-weight', 'filter-hair', 'filter-mood'].forEach(id => {
             let saved = [];
             try {
                 // Intentamos leerlo con el nuevo formato (Array)
@@ -662,7 +691,7 @@ function renderAdoptionList(dbAnimals) {
             }
 
             const container = document.getElementById(id);
-            if(container) {
+            if (container) {
                 container.querySelectorAll('input[type="checkbox"]').forEach(cb => {
                     cb.checked = saved.includes(cb.value);
                 });
@@ -682,36 +711,36 @@ function renderAdoptionList(dbAnimals) {
 
     function applyFilters() {
         const genders = getCheckedValues('filter-gender');
-        const breeds  = getCheckedValues('filter-breed');
-        const ages    = getCheckedValues('filter-age');
+        const breeds = getCheckedValues('filter-breed');
+        const ages = getCheckedValues('filter-age');
         const weights = getCheckedValues('filter-weight');
-        const hairs   = getCheckedValues('filter-hair');
-        const moods   = getCheckedValues('filter-mood');
-        const sort    = document.getElementById('sort-select')?.value || '';
+        const hairs = getCheckedValues('filter-hair');
+        const moods = getCheckedValues('filter-mood');
+        const sort = document.getElementById('sort-select')?.value || '';
 
         // Guardar sesión (ahora guardamos arrays)
         sessionStorage.setItem('filter_filter-gender', JSON.stringify(genders));
-        sessionStorage.setItem('filter_filter-breed',  JSON.stringify(breeds));
-        sessionStorage.setItem('filter_filter-age',    JSON.stringify(ages));
+        sessionStorage.setItem('filter_filter-breed', JSON.stringify(breeds));
+        sessionStorage.setItem('filter_filter-age', JSON.stringify(ages));
         sessionStorage.setItem('filter_filter-weight', JSON.stringify(weights));
-        sessionStorage.setItem('filter_filter-hair',   JSON.stringify(hairs));
-        sessionStorage.setItem('filter_filter-mood',   JSON.stringify(moods));
-        sessionStorage.setItem('filter_sort-select',   sort);
+        sessionStorage.setItem('filter_filter-hair', JSON.stringify(hairs));
+        sessionStorage.setItem('filter_filter-mood', JSON.stringify(moods));
+        sessionStorage.setItem('filter_sort-select', sort);
 
         let result = animals.filter(a => {
             // Si el array tiene algo (usuario marcó opciones), filtramos. Si está vacío (longitud 0), pasan todos.
             if (genders.length > 0 && !genders.includes(a.gender)) return false;
-            if (breeds.length > 0  && !breeds.includes(a.breed))   return false;
-            if (ages.length > 0    && !ages.includes(ageRange(a.age))) return false;
+            if (breeds.length > 0 && !breeds.includes(a.breed)) return false;
+            if (ages.length > 0 && !ages.includes(ageRange(a.age))) return false;
             if (weights.length > 0 && !weights.includes(weightRange(a.weight))) return false;
-            if (hairs.length > 0   && !hairs.includes(a["hair type"])) return false;
-            if (moods.length > 0   && !moods.includes(a.mood))     return false;
+            if (hairs.length > 0 && !hairs.includes(a["hair type"])) return false;
+            if (moods.length > 0 && !moods.includes(a.mood)) return false;
             return true;
         });
 
-        if (sort === 'age-asc')     result.sort((a, b) => a.age - b.age);
-        if (sort === 'age-desc')    result.sort((a, b) => b.age - a.age);
-        if (sort === 'weight-asc')  result.sort((a, b) => parseWeight(a.weight) - parseWeight(b.weight));
+        if (sort === 'age-asc') result.sort((a, b) => a.age - b.age);
+        if (sort === 'age-desc') result.sort((a, b) => b.age - a.age);
+        if (sort === 'weight-asc') result.sort((a, b) => parseWeight(a.weight) - parseWeight(b.weight));
         if (sort === 'weight-desc') result.sort((a, b) => parseWeight(b.weight) - parseWeight(a.weight));
 
         const count = document.getElementById('results-count');
@@ -730,7 +759,7 @@ function renderAdoptionList(dbAnimals) {
         const sortSelect = document.getElementById('sort-select');
         if (sortSelect) sortSelect.value = "";
 
-        ['filter-gender','filter-breed','filter-age','filter-weight','filter-hair','filter-mood','sort-select'].forEach(id => {
+        ['filter-gender', 'filter-breed', 'filter-age', 'filter-weight', 'filter-hair', 'filter-mood', 'sort-select'].forEach(id => {
             sessionStorage.removeItem('filter_' + id);
         });
         applyFilters();
@@ -813,10 +842,10 @@ function renderAnimalCards(animals) {
 
 // ─── RENDER PET PROFILE ───────────────────────────────────────────────────────
 function renderPetProfile(dbAnimals) {
-    const animals    = getAllAnimals(dbAnimals);
+    const animals = getAllAnimals(dbAnimals);
     const hashParams = window.location.hash.split('?')[1] || '';
-    const params     = new URLSearchParams(hashParams);
-    const id         = parseInt(params.get('id'));
+    const params = new URLSearchParams(hashParams);
+    const id = parseInt(params.get('id'));
 
     const animal = animals.find(a => a.id === id) || animals[0];
     if (!animal) return;
@@ -842,7 +871,7 @@ function renderPetProfile(dbAnimals) {
             photo.alt = `Foto de ${animal.name}`;
         } else {
             photo.style.backgroundImage = `url('${mainSrc}')`;
-            photo.style.backgroundSize  = 'cover';
+            photo.style.backgroundSize = 'cover';
         }
     }
 
@@ -878,7 +907,7 @@ function initLogin(users) {
     const btnRegister = document.getElementById('btn-register');
 
     document.querySelectorAll('.toggle-password').forEach(ojo => {
-        ojo.addEventListener('click', function() {
+        ojo.addEventListener('click', function () {
             const input = this.previousElementSibling;
             if (input.type === "password") {
                 input.type = "text";
@@ -966,23 +995,23 @@ function initLogin(users) {
 
 // ─── RENDER SCHEDULE (Versión Calendario V1 Adaptada) ─────────────────────────
 function renderSchedule(scheduleData) {
-    const loginMsg  = document.getElementById('schedule-login-msg');
-    const app       = document.getElementById('schedule-app');
+    const loginMsg = document.getElementById('schedule-login-msg');
+    const app = document.getElementById('schedule-app');
 
     if (!currentUser) {
         if (loginMsg) loginMsg.style.display = 'block';
-        if (app)      app.style.display      = 'none';
+        if (app) app.style.display = 'none';
         return;
     }
 
     if (loginMsg) loginMsg.style.display = 'none';
-    if (app)      app.style.display      = 'block';
+    if (app) app.style.display = 'block';
 
     initCalendar(scheduleData);
 }
 
 function initCalendar(scheduleData) {
-    const slots    = scheduleData ? scheduleData.slots : ['10:00','11:00','12:00','13:00','16:00','17:00','18:00'];
+    const slots = scheduleData ? scheduleData.slots : ['10:00', '11:00', '12:00', '13:00', '16:00', '17:00', '18:00'];
     const bookings = JSON.parse(sessionStorage.getItem('adoptme_bookings') || '[]');
 
     let current = new Date();
@@ -993,12 +1022,12 @@ function initCalendar(scheduleData) {
     }
 
     function renderCalendar() {
-        const title   = document.getElementById('cal-month-title');
-        const grid    = document.getElementById('cal-grid');
+        const title = document.getElementById('cal-month-title');
+        const grid = document.getElementById('cal-grid');
         const slotsEl = document.getElementById('cal-slots');
         if (!grid) return;
 
-        const year  = current.getFullYear();
+        const year = current.getFullYear();
         const month = current.getMonth();
 
         title.textContent = new Date(year, month, 1)
@@ -1020,18 +1049,18 @@ function initCalendar(scheduleData) {
         const userId = currentUser.user || currentUser.email;
 
         for (let d = 1; d <= daysInMonth; d++) {
-            const dayEl  = document.createElement('div');
-            const date   = new Date(year, month, d);
+            const dayEl = document.createElement('div');
+            const date = new Date(year, month, d);
             const isPast = date < new Date(today.getFullYear(), today.getMonth(), today.getDate());
             const isToday = date.toDateString() === today.toDateString();
-            const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+            const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
             const hasBooking = bookings.some(b => b.date === dateStr && b.userId === userId);
 
             dayEl.textContent = d;
-            dayEl.className   = 'cal-day' +
-                (isPast        ? ' past'        : ' available') +
-                (isToday       ? ' today'       : '') +
-                (hasBooking    ? ' has-booking' : '');
+            dayEl.className = 'cal-day' +
+                (isPast ? ' past' : ' available') +
+                (isToday ? ' today' : '') +
+                (hasBooking ? ' has-booking' : '');
 
             if (!isPast) {
                 dayEl.addEventListener('click', () => {
@@ -1048,7 +1077,7 @@ function initCalendar(scheduleData) {
     }
 
     function renderSlots(dateStr, slots, bookings, saveBookings, renderCalendar, renderBookings, userId) {
-        const slotsEl   = document.getElementById('cal-slots');
+        const slotsEl = document.getElementById('cal-slots');
         const slotsGrid = document.getElementById('cal-slots-grid');
         const slotsTitle = document.getElementById('cal-slots-title');
 
@@ -1058,12 +1087,12 @@ function initCalendar(scheduleData) {
         slotsEl.style.display = 'block';
 
         slots.forEach(hour => {
-            const btn      = document.createElement('button');
+            const btn = document.createElement('button');
             const existing = bookings.find(b => b.date === dateStr && b.hour === hour);
-            const isMine   = existing && existing.userId === userId;
+            const isMine = existing && existing.userId === userId;
 
             btn.textContent = hour;
-            btn.className   = 'slot-btn' + (isMine ? ' mine' : existing ? ' booked' : '');
+            btn.className = 'slot-btn' + (isMine ? ' mine' : existing ? ' booked' : '');
 
             if (!existing) {
                 btn.addEventListener('click', () => {
@@ -1091,8 +1120,8 @@ function initCalendar(scheduleData) {
             .filter(b => b.userId === userId)
             .sort((a, b) => a.date.localeCompare(b.date) || a.hour.localeCompare(b.hour));
 
-        const container  = document.getElementById('cal-bookings');
-        const list       = document.getElementById('bookings-list');
+        const container = document.getElementById('cal-bookings');
+        const list = document.getElementById('bookings-list');
         if (!container || !list) return;
 
         if (myBookings.length === 0) {
@@ -1109,7 +1138,7 @@ function initCalendar(scheduleData) {
             li.innerHTML = `<span>📅 ${d}/${m}/${y} a las ${b.hour}</span>`;
 
             const cancelBtn = document.createElement('button');
-            cancelBtn.className   = 'cancel-btn';
+            cancelBtn.className = 'cancel-btn';
             cancelBtn.textContent = 'Cancelar';
             cancelBtn.addEventListener('click', () => {
                 const idx = bookings.findIndex(bk => bk.date === b.date && bk.hour === b.hour && bk.userId === userId);
@@ -1141,3 +1170,42 @@ function initCalendar(scheduleData) {
 
     renderCalendar();
 }
+
+//--En modo responsive móvil, cierra menú lateral cuando se pulsa uno de los enlaces o fuera de dicho menú--//
+(() => {
+    const MOBILE_BREAKPOINT = 576;
+
+    function getNavToggle() {
+        return document.getElementById("nav-toggle");
+    }
+
+    function closeMobileMenu() {
+        const navToggle = getNavToggle();
+        if (navToggle) {
+            navToggle.checked = false;
+        }
+    }
+
+    document.addEventListener("click", (event) => {
+        const clickedLink = event.target.closest(".main-nav a");
+
+        if (clickedLink && window.innerWidth <= MOBILE_BREAKPOINT) {
+            // dejamos que el enlace dispare primero la navegación
+            requestAnimationFrame(() => {
+                closeMobileMenu();
+            });
+        }
+    });
+
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+            closeMobileMenu();
+        }
+    });
+
+    window.addEventListener("resize", () => {
+        if (window.innerWidth > MOBILE_BREAKPOINT) {
+            closeMobileMenu();
+        }
+    });
+})();

@@ -32,6 +32,17 @@
 .text-card-about_us {
     text-align: center;
 }
+
+@media (max-width: 576px) and (max-height: 1024px) {
+    #about_us {
+        grid-template-columns: repeat(1, 1fr);
+        padding: 0 2rem;
+        font-size: 1.5rem;
+        gap: 1.5rem;
+        margin: 2rem 0 0 0;
+    }
+}
+
 /* ── Tablet apaisada ── */
 @media (min-width: 600px) and (max-width: 900px) {
     #about_us {
@@ -53,7 +64,7 @@
         font-size: 1rem;
     }
 
-    .text-card-about_us{
+    .text-card-about_us {
         font-size: 0.8rem;
     }
 }

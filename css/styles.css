@@ -89,8 +89,8 @@ iframe {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: clamp(7rem, 10vw, 8rem);
-    min-height: clamp(3rem, 4vw, 4.5rem);
+    min-width: clamp(12rem, 10vw, 8rem);
+    min-height: clamp(13rem, 4vw, 4.5rem);
     padding: 0.75rem 1rem;
     color: var(--color-text);
     font-size: clamp(2.3rem, 1.2vw + 0.6rem, 1.8rem);

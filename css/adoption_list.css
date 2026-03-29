@@ -69,7 +69,7 @@
 
 .layout {
     display: grid;
-    grid-template-columns: minmax(14rem, 18rem) minmax(0, 1fr);
+    grid-template-columns: minmax(14rem, 0rem) minmax(0, 1fr);
     align-items: start;
     min-height: 100%;
     width: 100%;
@@ -238,7 +238,7 @@ details[open] .filter-label::after {
 
 .results-count {
     padding: 0.5rem clamp(1rem, 2.5vw, 3rem);
-    font-size: 0.9rem;
+    font-size: 1.5rem;
     font-weight: 700;
 }
 
@@ -246,7 +246,7 @@ details[open] .filter-label::after {
     display: flex;
     flex-direction: column;
     width: 100%;
-    gap: 2rem;
+    gap: 1rem;
 }
 
 .admin-panel {
@@ -255,7 +255,9 @@ details[open] .filter-label::after {
     border-radius: 0.8rem;
     overflow: hidden;
     box-shadow: 0 2px 12px rgba(74, 116, 119, 0.12);
-    margin: 1rem;
+    /* margin: 1rem; */
+    position: sticky;
+    top: 0;
 }
 
 .admin-panel-header {
@@ -266,7 +268,6 @@ details[open] .filter-label::after {
     padding: 0.75rem 1.2rem;
     background: #e8edaa;
     border-bottom: 1px solid #c8d87a;
-    position: sticky;
 }
 
 .admin-panel-title {
@@ -701,7 +702,8 @@ details[open] .filter-label::after {
     }
 
     .sidebar {
-        top: 6.5rem;           /* altura real del header en tablet */
+        top: 6.5rem;
+        /* altura real del header en tablet */
         padding: 0.4rem 0.5rem;
         margin: 0 0.3rem;
         border-radius: 0.6rem;
@@ -854,4 +856,32 @@ details[open] .filter-label::after {
     .pet-profile-text {
         width: 100%;
     }
+
+    .sidebar {
+        width: min-content;
+    }
+
+    .layout {
+        display: grid;
+        grid-template-columns: minmax(11rem, 0rem) minmax(0, 1fr);
+        align-items: start;
+        min-height: 100%;
+        width: 100%;
+        gap: clamp(1rem, 2vw, 2rem);
+    }
+}
+
+.sidebar,
+.admin-panel {
+    position: sticky;
+    top: var(--sticky-panels-top);
+    align-self: start;
+    max-height: calc(100vh - var(--sticky-panels-top) - 1rem);
+    overflow-y: auto;
+    width: stretch;
+}
+
+.layout,
+.adoption-page-wrapper {
+    align-items: start;
 }

@@ -57,6 +57,8 @@ footer {
     white-space: nowrap;
     height: 6rem;
 }
+
+
 /* ── Tablet apaisada ── */
 @media (min-width: 600px) and (max-width: 900px) {
     .footer-left .btn,
@@ -67,5 +69,11 @@ footer {
 
     .footer-legal {
         font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 576px) and (max-height: 1024px){
+    .footer{
+        display: none;
     }
 }

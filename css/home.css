@@ -90,11 +90,11 @@
 
 .hero-text {
     color: #4a7477;
-    width: 100%;
-    font-size: clamp(1rem, 1vw + 0.7rem, 1.3rem);
-    line-height: 1.5;
+    width: 80%;
+    font-size: clamp(1.4rem, 1vw + 0.7rem, 1.3rem);
+    line-height: 1.8;
     text-align: justify;
-    margin-bottom: 2rem;
+    /* margin-bottom: 2rem; */
 }
 
 .hero-text p + p {
