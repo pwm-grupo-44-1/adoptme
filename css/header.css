@@ -47,8 +47,6 @@ a {
     background-size: 250%;
 }
 
-
-
 .brand-title {
     font-size: clamp(1.6rem, 2vw + 0.8rem, 3rem);
     line-height: 1.1;

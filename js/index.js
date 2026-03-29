@@ -657,16 +657,20 @@ function renderAdoptionList(dbAnimals) {
         return 'Senior (7+ años)';
     }
 
-    // NUEVO: Función para rellenar checkboxes dinámicos
+    // NUEVO: Función para rellenar checkboxes dinámicos de forma segura
     function fillCheckboxes(id, values) {
         const container = document.getElementById(id);
         if (!container) return;
+
         const unique = [...new Set(values)].sort();
 
         unique.forEach(v => {
-            // Solo lo añade si no existe ya
-            if (!container.querySelector(`input[value="${v}"]`)) {
-                container.innerHTML += `<label><input type="checkbox" value="${v}"> ${v}</label>`;
+            // Buscamos si ya existe la casilla (escapando comillas por seguridad)
+            const exists = container.querySelector(`input[value="${v.replace(/"/g, '\\"')}"]`);
+            if (!exists) {
+                // Usamos insertAdjacentHTML en vez de innerHTML += para NO borrar
+                // el estado (marcado/desmarcado) de los filtros que el usuario ya estaba usando
+                container.insertAdjacentHTML('beforeend', `<label><input type="checkbox" value="${v}"> ${v}</label>`);
             }
         });
     }
@@ -899,16 +903,16 @@ function renderPetProfile(dbAnimals) {
     if (existingGallery) existingGallery.remove();
 }
 
-// ─── LOGIN (Versión Avanzada V2) ──────────────────────────────────────────────
+// ─── LOGIN (Versión Directa) ──────────────────────────────────────────────
 function initLogin(users) {
     const form = document.getElementById('auth-form');
     if (!form) return;
 
     const regFields = document.querySelectorAll('.reg-only');
-    const btnVerify = document.getElementById('btn-verify');
     const btnLogin = document.getElementById('btn-login');
     const btnRegister = document.getElementById('btn-register');
 
+    // Funcionalidad del ojito para ver la contraseña
     document.querySelectorAll('.toggle-password').forEach(ojo => {
         ojo.addEventListener('click', function () {
             const input = this.previousElementSibling;
@@ -928,70 +932,89 @@ function initLogin(users) {
         const reglas = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/;
         return reglas.test(pass);
     };
-    btnLogin.click();
 
-    btnVerify.addEventListener('click', () => {
-        const email = document.getElementById('register-email').value;
-        const pass = document.getElementById('register-password').value;
-        const isLoginMode = regFields[0].classList.contains('hidden');
-
-        if (!esEmailValido(email)) return alert("El correo no parece un correo real.");
-        if (!esPasswordSegura(pass)) return alert("La contraseña es muy débil. Necesitas 8 caracteres, una mayúscula, un número y un símbolo.");
-
-        if (!isLoginMode) {
-            const tel = document.getElementById('register-phone').value;
-            const repass = document.getElementById('register-repassword').value;
-
-            if (!esTelefonoValido(tel)) return alert("El teléfono debe tener 9 números y empezar por 6,7,8,9.");
-            if (pass !== repass) return alert("¡Las contraseñas no son iguales!");
-        }
-
-        alert("✅ ¡Todo perfecto! Ya puedes darle al botón de abajo.");
-        btnLogin.style.boxShadow = "0 0 15px #6bffb5";
-    });
-
-    btnLogin.addEventListener('click', () => {
+    // ── MODO INICIAR SESIÓN (Por defecto) ──
+    function setLoginMode() {
         regFields.forEach(field => {
             field.classList.add('hidden');
             field.removeAttribute('required');
         });
         btnLogin.classList.remove('secondary');
         btnRegister.classList.add('secondary');
+        btnLogin.textContent = "Iniciar Sesión";
         btnLogin.type = "submit";
-    });
-    btnLogin.click();
+    }
 
-    btnLogin.click();
-
-    btnRegister.addEventListener('click', () => {
+    // ── MODO REGISTRO ──
+    function setRegisterMode() {
         regFields.forEach(field => {
             field.classList.remove('hidden');
             field.setAttribute('required', '');
         });
         btnRegister.classList.remove('secondary');
         btnLogin.classList.add('secondary');
-        btnLogin.type = "button";
+        btnLogin.textContent = "Iniciar Sesión"; // Cambiamos el texto para que pueda volver
+        btnLogin.type = "button"; // Evita que envíe el formulario al cambiar de modo
+    }
+
+    // Inicializamos en modo Login al entrar a la página
+    setLoginMode();
+
+    // Eventos de los botones para cambiar entre modos
+    btnRegister.addEventListener('click', (e) => {
+        if (btnRegister.classList.contains('secondary')) {
+            e.preventDefault(); // Evita que recargue si estuviera en submit
+            setRegisterMode();
+        } else {
+            // Si ya estamos en modo registro, este botón actúa como submit para registrar
+            form.dispatchEvent(new Event('submit'));
+        }
     });
 
+    btnLogin.addEventListener('click', (e) => {
+        if (btnLogin.classList.contains('secondary')) {
+            e.preventDefault(); // Evita envío
+            setLoginMode();     // Vuelve al modo login
+        }
+    });
+
+    // ── MANEJO DEL ENVÍO DEL FORMULARIO ──
     form.addEventListener('submit', e => {
         e.preventDefault();
+
         const email = document.getElementById('register-email').value;
         const pass = document.getElementById('register-password').value;
         const isLoginMode = regFields[0].classList.contains('hidden');
 
+        // Validaciones comunes
+        if (!esEmailValido(email)) return alert("El correo no parece válido.");
+
         if (isLoginMode) {
+            // LÓGICA DE INICIO DE SESIÓN
             const encontrado = users.find(u => u.email === email && u.password === pass);
             if (encontrado) {
                 localStorage.setItem('userActive', JSON.stringify(encontrado));
                 currentUser = encontrado;
-                alert(`¡Bienvenido, ${encontrado.name}!`);
+                alert(`¡Bienvenido de nuevo, ${encontrado.name}!`);
                 window.location.hash = '#home';
                 location.reload();
             } else {
                 alert('Correo o contraseña incorrectos.');
             }
         } else {
-            alert('¡Te has registrado correctamente!');
+            // LÓGICA DE REGISTRO
+            const tel = document.getElementById('register-phone').value;
+            const repass = document.getElementById('register-repassword').value;
+
+            if (!esPasswordSegura(pass)) return alert("La contraseña es muy débil. Necesitas 8 caracteres, una mayúscula, un número y un símbolo.");
+            if (!esTelefonoValido(tel)) return alert("El teléfono debe tener 9 números y empezar por 6,7,8,9.");
+            if (pass !== repass) return alert("¡Las contraseñas no coinciden!");
+
+            // (Aquí podrías guardar el nuevo usuario en un array o LocalStorage si quisieras)
+            alert('¡Te has registrado correctamente! Ahora puedes iniciar sesión.');
+            setLoginMode(); // Le devolvemos a la pantalla de login
+            document.getElementById('register-password').value = '';
+            document.getElementById('register-repassword').value = '';
         }
     });
 }

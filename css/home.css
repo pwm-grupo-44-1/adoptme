@@ -103,24 +103,46 @@
 /* ── Tablet apaisada ── */
 @media (min-width: 600px) and (max-width: 900px) {
     .hero {
-        width: 92%;
+        /* Usamos 100% de ancho pero con padding interno para evitar desbordes laterales */
+        width: 100%;
+        padding: 0 1.5rem;
+        box-sizing: border-box;
+
+        /* Le damos un margen más seguro al header/footer (200px en vez de 160px) */
+        max-height: calc(100vh - 200px);
+        justify-content: center;
+
+        /* El seguro de vida definitivo contra los temblores */
+        overflow: hidden;
     }
 
     .carousel {
-        width: 90%;
-        gap: 1rem;
+        width: 100%;
+        gap: 0.5rem;
+        margin: 0.5rem 0;
+        box-sizing: border-box;
     }
 
     .carousel-track-wrapper {
-        height: 16rem;
+        /* Altura controlada para que nunca empuje el texto hacia abajo */
+        height: clamp(8rem, 25vh, 15rem);
     }
 
     .carousel-btn {
         font-size: 2rem;
+        /* Le damos su propio espacio para que al crecer no empuje al resto */
+        padding: 0.5rem;
+    }
+
+    .carousel-dots {
+        margin-bottom: 0.5rem;
     }
 
     .hero-text {
-        font-size: 1.1em;
-        width: 85%
+        font-size: 1.05rem;
+        width: 100%;
+        padding: 0 1rem; /* El texto respira hacia adentro, no hacia afuera */
+        box-sizing: border-box;
+        line-height: 1.3;
     }
 }

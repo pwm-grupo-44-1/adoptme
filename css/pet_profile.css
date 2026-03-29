@@ -195,4 +195,8 @@
     color: #4a7477;
     font-size: 1.2rem;
 }
+
+    .profile-carousel-btn i {
+        font-size: 1.5rem; /* Ajusta este número a tu gusto */
+    }
 }
