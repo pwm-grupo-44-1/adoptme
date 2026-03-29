@@ -220,7 +220,7 @@
     {
       "id": 2,
       "name": "Brody",
-      "breed": "Mezcla de Retriver",
+      "breed": "Golden Retriever",
       "gender": "Male",
       "description": "Perro leal y protector. Necesita espacio y ejercicio diario.",
       "age": 3,
@@ -237,7 +237,7 @@
     {
       "id": 3,
       "name": "Bubbles",
-      "breed": "Gato común",
+      "breed": "Gato Persa",
       "gender": "Female",
       "description": "Gato independiente pero muy cariñoso cuando quiere. Le encanta el sol.",
       "age": 2,
@@ -252,9 +252,9 @@
     {
       "id": 4,
       "name": "Buck",
-      "breed": "Mezcla de Pit Bull Terrier",
+      "breed": "Pit Bull Terrier",
       "gender": "Male",
-      "description": "Perra muy sociable y activa. Ideal para familias con jardín.",
+      "description": "Perro muy sociable y activa. Ideal para familias con jardín.",
       "age": 6,
       "mood": "Enérgica y sociable",
       "weight": "25 kg",
@@ -267,7 +267,7 @@
     {
       "id": 5,
       "name": "Carolina",
-      "breed": "Mezcla de Bulldog",
+      "breed": "Bulldog Inglés",
       "gender": "Female",
       "description": "Pequeño pero con mucha personalidad. Le encanta el sofá.",
       "age": 6,
@@ -284,9 +284,9 @@
     {
       "id": 6,
       "name": "Cedar",
-      "breed": "Mezcla de Husky Siberiano y Pit Bull Terrier",
+      "breed": "Husky Siberiano",
       "gender": "Male",
-      "description": "Gato elegante y tranquilo. Necesita cepillado diario.",
+      "description": "Perro elegante y tranquilo. Necesita cepillado diario.",
       "age": 3,
       "mood": "Calmado y curioso",
       "weight": "15 kg",
@@ -301,9 +301,9 @@
     {
       "id": 7,
       "name": "Costa",
-      "breed": "Mezcla de Atigrado y Pelo corto doméstico",
+      "breed": "Gato Bengalí",
       "gender": "Male",
-      "description": "Perrita muy cariñosa y juguetona, perfecta para familias con niños.",
+      "description": "Gatito muy cariñoso y juguetón, perfecto para familias con niños.",
       "age": 8,
       "mood": "Alegre y juguetona",
       "weight": "5 kg",
@@ -333,7 +333,7 @@
     {
       "id": 9,
       "name": "Elsa",
-      "breed": "Mezcla de Atigrado y Pelo corto doméstico",
+      "breed": "Gato Siamés",
       "gender": "Female",
       "description": "Gato independiente pero muy cariñoso cuando quiere. Le encanta el sol.",
       "age": 2,
@@ -349,9 +349,9 @@
     {
       "id": 10,
       "name": "Felix",
-      "breed": "Mezcla de Esmoquin y Pelo corto doméstico",
+      "breed": "Gato Bosque de Noruega",
       "gender": "Male",
-      "description": "Gatito muy sociable y activa.",
+      "description": "Gatito muy sociable y activo.",
       "age": 0,
       "mood": "Enérgica y sociable",
       "weight": "2 kg",
@@ -364,7 +364,7 @@
     {
       "id": 11,
       "name": "Feta",
-      "breed": "Mezcla de Bulldog Americano",
+      "breed": "Bulldog Americano",
       "gender": "Male",
       "description": "Pequeño pero con mucha personalidad. Le encanta el sofá.",
       "age": 6,
@@ -382,9 +382,9 @@
     {
       "id": 12,
       "name": "Happy",
-      "breed": "Mezcla de Labrador Retriever",
+      "breed": "Labrador Retriever",
       "gender": "Female",
-      "description": "Gato elegante y tranquilo. Necesita cepillado diario.",
+      "description": "Perro elegante y tranquilo. Necesita cepillado diario.",
       "age": 3,
       "mood": "Calmado y curioso",
       "weight": "15 kg",
@@ -397,7 +397,7 @@
     {
       "id": 13,
       "name": "Ida",
-      "breed": "Pelo corto doméstico",
+      "breed": "Gato Azul Ruso",
       "gender": "Female",
       "description": "Gatita muy cariñosa y juguetona, perfecta para familias con niños.",
       "age": 2,
@@ -413,9 +413,9 @@
     {
       "id": 14,
       "name": "Josie",
-      "breed": "Mezcla de Pastor Alemán",
+      "breed": "Pastor Alemán",
       "gender": "Female",
-      "description": "Perro leal y protector. Necesita espacio y ejercicio diario.",
+      "description": "Perra leal y protectora. Necesita espacio y ejercicio diario.",
       "age": 5,
       "mood": "Tranquilo y obediente",
       "weight": "20 kg",
@@ -431,7 +431,7 @@
     {
       "id": 15,
       "name": "Lisa",
-      "breed": "Gato común",
+      "breed": "Gato Maine Coon",
       "gender": "Female",
       "description": "Gato independiente pero muy cariñoso cuando quiere. Le encanta el sol.",
       "age": 2,
@@ -447,7 +447,7 @@
     {
       "id": 16,
       "name": "Lucas",
-      "breed": "Mecla de Labrador Retriever",
+      "breed": "Labrador Retriever",
       "gender": "Male",
       "description": "Perro muy sociable y activa. Ideal para familias con jardín.",
       "age": 0,
@@ -484,7 +484,7 @@
     {
       "id": 18,
       "name": "Noble",
-      "breed": "American Bulldog",
+      "breed": "Bulldog Americano",
       "gender": "Male",
       "description": "Perro elegante y tranquilo. Necesita cepillado diario.",
       "age": 10,
@@ -502,9 +502,9 @@
     {
       "id": 19,
       "name": "Noha",
-      "breed": "Gato común",
+      "breed": "Gato Persa",
       "gender": "Male",
-      "description": "Gatita muy cariñosa y juguetona, perfecta para familias con niños.",
+      "description": "Gatito muy cariñoso y juguetón, perfecto para familias con niños.",
       "age": 0,
       "mood": "Alegre y juguetona",
       "weight": "2 kg",
@@ -517,7 +517,7 @@
     {
       "id": 20,
       "name": "Nora",
-      "breed": "Mezcla de Labrador Retriever y American Bulldog",
+      "breed": "Golden Retriever",
       "gender": "Female",
       "description": "Perro leal y protector. Necesita espacio y ejercicio diario.",
       "age": 5,

@@ -537,13 +537,19 @@ details[open] .filter-label::after {
     transform: translateY(-1px);
 }
 
-.sidebar,
-.admin-panel {
+.sidebar {
     position: sticky;
-    top: var(--sticky-panels-top);
+    /* Le damos unos 8.5rem para que libre la cabecera de PC sin pisarla */
+    top: 12rem;
     align-self: start;
-    max-height: calc(100vh - var(--sticky-panels-top) - 1rem);
+
+    /* Calculamos el alto máximo para que no se salga de la pantalla y cree scroll interno si hay muchos filtros */
+    max-height: calc(100vh - 9.5rem);
     overflow-y: auto;
+    width: stretch;
+}
+
+.admin-panel {
     width: stretch;
 }
 
