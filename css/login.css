@@ -1,120 +1,49 @@
 .login-box {
-    background-color: #ddc781;
-    width: min(100%, 38rem);
+    /* Mismos colores y sombras que tu panel de filtros/admin */
+    background: #f4f5c9;
+    border: 1px solid #c8d87a;
+    border-radius: 0.8rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+
+    width: min(100%, 28rem);
     min-height: 25rem;
     height: auto;
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
-    gap: 1rem;
-    padding: clamp(1.5rem, 2vw, 2rem);
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    justify-content: center;
+    gap: 1.5rem;
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    margin: 3rem auto; /* Lo centra en la pantalla y le da aire */
 }
 
 .login-inputs {
     display: flex;
     flex-direction: column;
     width: 100%;
-    gap: 1.25rem;
+    gap: 1rem;
 }
 
+/* ── Estilos de Inputs calcados de tu admin-form ── */
 .login-inputs input {
     width: 100%;
-    padding: 1rem;
-    font-size: 1rem;
-    background-color: #bbdcbf;
-    border-radius: 8px;
-    border-width: 0;
-    transition: border-color 0.1s, background-color 0.1s;
+    padding: 0.8rem 1rem;
+    font-size: 0.95rem;
+    background-color: #fffdf0;
+    border: 1px solid #a8c084;
+    color: #4a7477;
+    border-radius: 5px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .login-inputs input:focus {
-    background-color: #e4e4e4;
-}
-
-#login-submit {
-    margin-top: 1rem;
-    width: min(100%, 12rem);
-    align-self: flex-end;
-    padding: 15px;
-    background-color: #90c984;
-    color: #000000;
-    border: none;
-    border-radius: 8px;
-    font-size: clamp(1rem, 1vw + 0.7rem, 1.2rem);
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-#login-submit:hover {
-    background-color: #6bffb5;
-    color: white;
+    border-color: #10946d;
+    box-shadow: 0 0 0 2px rgba(16, 148, 109, 0.15);
 }
 
 .login-inputs input::placeholder {
-    color: #ffffff;
-}
-
-.login-actions {
-    margin-top: 1.5rem;
-    display: flex;
-    justify-content: flex-end;
-    flex-wrap: wrap;
-    gap: 1rem;
-    width: 100%;
-}
-
-.btn-small {
-    padding: 10px 22px;
-    /* El verde de tu paleta */
-    border-radius: 8px;
-    font-family: "Rum Raisin", system-ui;
-    font-size: clamp(1rem, 1vw + 0.6rem, 1.25rem);
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.btn-small:hover {
-    background-color: #6bffb5;
-    border-color: #6bffb5;
-    color: white;
-}
-
-.btn-small.secondary {
-    background-color: transparent;
-    color: #10946d;
-    border: 1px solid #90c984;
-}
-
-.btn-small.secondary:hover {
-    background-color: #f0fdf4;
-    border-color: #10946d;
-}
-
-.hidden {
-    display: none !important;
-}
-
-.btn-confirm {
-    margin-top: 0.5rem;
-    padding: 12px;
-    background-color: #fddb72;
-    color: #10946d;
-    border: 2px solid #10946d;
-    border-radius: 8px;
-    font-family: "Rum Raisin", system-ui;
-    font-size: clamp(1rem, 1vw + 0.6rem, 1.25rem);
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.btn-confirm:hover {
-    background-color: #10946d;
-    color: white;
-    transform: scale(1.02);
+    color: #a0b8a0;
 }
 
 .password-wrapper {
@@ -124,56 +53,111 @@
 
 .password-wrapper input {
     width: 100% !important;
-    padding-right: 45px !important;
+    padding-right: 2.5rem !important;
 }
 
 .toggle-password {
     position: absolute;
-    right: 15px;
+    right: 0.8rem;
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
     font-size: 1.2rem;
-    color: #10946d;
+    color: #4a7477;
     user-select: none;
 }
 
+/* ── Botones adaptados a tu estilo corporativo ── */
+.login-actions {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column; /* Apilados queda mucho más limpio */
+    gap: 0.8rem;
+    width: 100%;
+}
+
+.btn-small {
+    width: 100%;
+    padding: 0.8rem 1.2rem;
+    border-radius: 5px;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 1.05rem;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, transform 0.1s;
+    text-align: center;
+}
+
+/* Botón Principal (Iniciar Sesión / amarillo) */
+.btn-small:not(.secondary) {
+    background-color: #fddb72;
+    color: #4a7477;
+    border: none;
+}
+
+.btn-small:not(.secondary):hover {
+    background-color: #f5ca40;
+    transform: translateY(-1px);
+}
+
+/* Botón Secundario (Registrarse / transparente con borde) */
+.btn-small.secondary {
+    background-color: transparent;
+    color: #4a7477;
+    border: 1px solid #a8c084;
+}
+
+.btn-small.secondary:hover {
+    background-color: #e8edaa;
+    border-color: #4a7477;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* ── Menú de usuario en el Header (Al loguearse) ── */
 .btn.user-nav-stack {
     flex-direction: column;
     padding: 5px 10px;
     gap: 2px;
     border: 0;
+    background: transparent;
 }
 
 .user-nav-name {
-    /* font-size: 1.5rem; */
-    /* line-height: 1; */
+    font-weight: 800;
+    color: #4a7477;
+    font-size: 1rem;
 }
 
 .btn-logout-nav {
-    font-size: large;
-    color: #ff6b6b;
+    font-size: 0.85rem;
+    color: #c0392b; /* Mismo rojo que tu botón de eliminar animal */
+    font-weight: 700;
 }
 
+.btn-logout-nav:hover {
+    color: #e07a7a;
+}
+
+/* ── Responsive ── */
 @media (max-width: 576px) {
-    .login-actions {
-        justify-content: stretch;
-    }
-
-    .login-actions > * {
-        width: 100%;
-    }
-
-    #login-submit {
-        width: 100%;
-        align-self: stretch;
+    .login-box {
+        /* En móvil quitamos la caja y lo integramos en el fondo blanco/crema */
+        border: none;
+        box-shadow: none;
+        background-color: transparent;
+        padding: 1rem;
+        margin: 1rem auto;
     }
 }
 
 /* ── Tablet apaisada ── */
 @media (min-width: 600px) and (max-width: 900px) {
     .login-box {
-        width: 30rem;
+        width: min(100%, 26rem);
+        min-height: 0;
     }
 
     .user-nav-name,
@@ -181,8 +165,7 @@
         font-size: clamp(0.85rem, 1.8vw, 1.1rem);
     }
 
-    .login-inputs {
-        width: 25rem;
-        gap: 1.5em;
+    .login-inputs input {
+        padding: 0.5rem 1rem;
     }
 }
