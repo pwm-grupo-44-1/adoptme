@@ -60,11 +60,15 @@
 /* ── Tablet apaisada ── */
 @media (min-width: 600px) and (max-width: 900px) {
     #review {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
         grid-template-rows: auto;
         max-height: none;
         padding: 1.5rem 2rem;
         gap: 1.5rem;
+    }
+
+    .card-stories {
+        min-height: 11rem;
     }
 
     .photo-card-stories {

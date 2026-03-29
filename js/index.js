@@ -862,38 +862,41 @@ function renderPetProfile(dbAnimals) {
         boxes[4].textContent = animal.description;
     }
 
-    // ── Imagen principal ──
-    const mainSrc = getMainImage(animal);
-    const photo = document.querySelector('.dog-profile .photo-card-profile, .dog-profile .photo-card');
-    if (photo) {
-        if (photo.tagName === 'IMG') {
-            photo.src = mainSrc;
-            photo.alt = `Foto de ${animal.name}`;
-        } else {
-            photo.style.backgroundImage = `url('${mainSrc}')`;
-            photo.style.backgroundSize = 'cover';
+    // ── Carrusel de fotos ──
+    const allImages = [getMainImage(animal), ...getExtraImages(animal)].filter(Boolean);
+    const track = document.querySelector('.profile-carousel-track');
+
+    if (track) {
+        track.innerHTML = '';
+        allImages.forEach(src => {
+            const img = document.createElement('img');
+            img.className = 'profile-carousel-slide';
+            img.src = src;
+            img.alt = `Foto de ${animal.name}`;
+            track.appendChild(img);
+        });
+
+        let current = 0;
+        const total = allImages.length;
+
+        const goTo = (index) => {
+            current = (index + total) % total;
+            track.style.transform = `translateX(-${current * 100}%)`;
+        };
+
+        document.querySelector('.profile-carousel-prev')?.addEventListener('click', () => goTo(current - 1));
+        document.querySelector('.profile-carousel-next')?.addEventListener('click', () => goTo(current + 1));
+
+        // Ocultar botones si solo hay una foto
+        if (total <= 1) {
+            document.querySelector('.profile-carousel-prev').style.visibility = 'hidden';
+            document.querySelector('.profile-carousel-next').style.visibility = 'hidden';
         }
     }
 
-    // ── Galería de fotos extra ──
-    const extras = getExtraImages(animal);
-    const dogProfile = document.querySelector('.dog-profile');
+    // Eliminar galería separada si existiera de antes
     const existingGallery = document.getElementById('pet-gallery');
     if (existingGallery) existingGallery.remove();
-
-    if (extras.length > 0 && dogProfile) {
-        const gallery = document.createElement('div');
-        gallery.id = 'pet-gallery';
-        gallery.className = 'pet-gallery';
-        gallery.innerHTML = `<h3 class="pet-gallery-title">📷 Más fotos</h3>
-            <div class="pet-gallery-grid">
-                ${extras.map(src => `
-                    <a href="${src}" target="_blank" class="pet-gallery-item">
-                        <img src="${src}" alt="Foto extra de ${animal.name}">
-                    </a>`).join('')}
-            </div>`;
-        dogProfile.after(gallery);
-    }
 }
 
 // ─── LOGIN (Versión Avanzada V2) ──────────────────────────────────────────────

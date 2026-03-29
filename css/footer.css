@@ -51,23 +51,35 @@ footer {
 .footer-left .btn,
 .footer-right .btn {
     width: auto;
-    min-height: clamp(3rem, 5vw, 6rem);
+    min-height: clamp(2rem, 3vw, 4rem);
     padding: 0.3rem 1rem;
     white-space: nowrap;
-    height: 6rem;
+    height: 4rem;
 }
 
 
 /* ── Tablet apaisada ── */
 @media (min-width: 600px) and (max-width: 900px) {
+    .footer {
+        transition: none;
+        gap: clamp(0.4rem, 1vw, 1rem);
+        padding-inline: clamp(0.5rem, 1.5vw, 1.5rem);
+    }
+
     .footer-left .btn,
     .footer-right .btn {
-        height: 4rem;
-        font-size: large;
+        height: clamp(1.8rem, 4vw, 3rem);
+        font-size: clamp(0.75rem, 1.5vw, 1rem);
+        padding: 0.2rem clamp(0.4rem, 1vw, 0.8rem);
+    }
+
+    .footer-center {
+        font-size: clamp(0.7rem, 1.4vw, 0.95rem);
     }
 
     .footer-legal {
-        font-size: 0.7rem;
+        font-size: clamp(0.6rem, 1.2vw, 0.8rem);
+        padding: 0;
     }
 }
 
