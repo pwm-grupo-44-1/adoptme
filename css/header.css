@@ -22,8 +22,7 @@ a {
 .header-inner {
     width: min(100%, var(--site-max-width));
     margin: 0 auto;
-    padding: 0.5rem var(--site-gutter);
-    padding-bottom: 0;
+    /* padding: 0.5rem var(--site-gutter); */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -39,8 +38,8 @@ a {
 }
 
 .logo {
-    width: clamp(3.5rem, 7vw, 7rem);
-    height: clamp(3.5rem, 7vw, 7rem);
+    width: clamp(4.75rem, 10vw, 10rem);
+    height: clamp(4.75rem, 10vw, 10rem);
     border-radius: 24%;
     position: relative;
     flex: 0 0 auto;
@@ -48,19 +47,10 @@ a {
     background-size: 250%;
 }
 
-.logo::before,
-.logo::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 6em;
-    height: 0.1em;
-    transform-origin: center;
-}
+
 
 .brand-title {
-    font-size: clamp(1.2rem, 1.5vw + 0.6rem, 2.2rem);
+    font-size: clamp(1.6rem, 2vw + 0.8rem, 3rem);
     line-height: 1.1;
     margin: 4rem 0 0 0;
 }
@@ -68,9 +58,9 @@ a {
 .social-ico {
     height: auto;
     width: auto;
-    font-size: clamp(1rem, 1vw + 0.4rem, 1.5rem);
+    font-size: clamp(1.25rem, 1.4vw + 0.5rem, 2rem);
     color: #10946d;
-    padding: 0.2rem 0 0 0;
+    padding: 0.4rem 0 0 0;
 }
 
 .social-ico:hover {
@@ -123,31 +113,24 @@ a {
 ══════════════════════════════════════════════ */
 @media (min-width: 600px) and (max-width: 900px) {
 
-    .header-inner {
-        transition: none;
-    }
-
     .logo {
-        width: clamp(3.5rem, 7vw, 5.5rem);
-        height: clamp(3.5rem, 7vw, 5.5rem);
-        margin: clamp(0.3rem, 0.8vw, 0.6rem);
+        width: 5rem;
+        height: 5rem;
+        margin: 0.5rem;
     }
 
     .brand-title {
-        font-size: clamp(1.3rem, 3vw, 2rem);
-        margin: 0;
+        font-size: 1.8rem;
     }
 
     .social-ico {
-        font-size: clamp(1rem, 2vw, 1.4rem);
-        padding: 0.2rem 0 0 0;
+        font-size: 1.2rem;
+        padding: 0.3rem 0 0 0;
     }
 
     .btn {
-        font-size: clamp(0.85rem, 1.8vw, 1.1rem);
-        min-width: 0;
-        width: auto;
-        padding: 0.5rem clamp(0.4rem, 1vw, 0.8rem);
+        font-size: large;
+        width: 6rem;
     }
 
     nav {
@@ -294,8 +277,7 @@ a {
         border-radius: 0.75rem;
     }
 
-    .main-nav .user-nav-name {
-    }
+    .main-nav .user-nav-name {}
 
     .nav-overlay {
         display: block;

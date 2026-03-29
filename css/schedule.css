@@ -298,7 +298,7 @@
 .bi-arrow-left,
 .bi-arrow-right {
     color: #4a7477;
-    font-size: 3rem;
+    font-size: 1rem;
 }
 
 .cal-nav:hover .bi-arrow-left,
@@ -352,7 +352,8 @@
 
     /* 🔥 CLAVE ABSOLUTA (altura perfecta) */
     .cal-day {
-        aspect-ratio: 1 / 0.4;   /* 👈 aplasta verticalmente */
+        aspect-ratio: 1 / 0.4;
+        /* 👈 aplasta verticalmente */
         font-size: 0.75rem;
         border-width: 1px;
         border-radius: 6px;
