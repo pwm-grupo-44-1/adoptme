@@ -1,16 +1,21 @@
 .dog-profile {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     gap: clamp(1.5rem, 3vw, 3rem);
     flex-wrap: wrap;
-
-    /* Mantenemos tu centrado limpio a lo ancho */
     width: fit-content !important;
     margin: 0 auto;
-
-    /* El min-height HA DESAPARECIDO, dejamos que el main lo centre */
     padding: 2rem;
+}
+
+.column-data {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 1.5rem;
+    width: 28rem;
+    height: auto;
 }
 
 /* ── Carrusel de fotos del perfil ── */
@@ -60,8 +65,6 @@
     transition: background 0.2s;
     color: #4a7477;
     font-family: inherit;
-
-    /* ¡AÑADE ESTAS 3 LÍNEAS PARA EL CENTRADO PERFECTO! */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -72,15 +75,6 @@
     color: #fff;
 }
 
-.column-data {
-    flex: 1 1 22rem;
-    min-width: min(100%, 18rem);
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    justify-content: center;
-}
-
 .box-text {
     background-color: #ece59c !important;
     border-radius: 0.5rem;
@@ -88,7 +82,6 @@
     width: min(100%, 40rem);
     padding: 0.75rem;
     text-align: justify;
-    /* En PC hereda el tamaño grande normal de tu web */
 }
 
 .btn-back {
@@ -98,7 +91,7 @@
     border-radius: 0.4rem;
     padding: 0.5rem 1.2rem;
     font-family: inherit;
-    font-size: 1rem; /* Tamaño normal en PC */
+    font-size: 1rem;
     font-weight: 800;
     cursor: pointer;
     transition: background 0.2s;
@@ -114,20 +107,16 @@
     color: #fff;
 }
 
-/* ── Tablet apaisada (Texto al lado de la imagen) ── */
 @media (min-width: 600px) and (max-width: 900px) {
     .dog-profile {
         flex-direction: row;
-        flex-wrap: nowrap; /* ¡LA CLAVE! Obliga a que no se salten de línea */
+        flex-wrap: nowrap;
         align-items: center;
         gap: 1.5rem;
-        padding: 1.5rem; /* Reducimos un pelín el borde para que respire */
-
-        /* Dejamos que ocupe todo el ancho de la tablet si lo necesita */
+        padding: 1.5rem;/
         width: 100% !important;
     }
 
-    /* Protegemos el carrusel para que no se aplaste si el texto es muy largo */
     .profile-carousel {
         flex-shrink: 0;
     }
@@ -144,24 +133,22 @@
     }
 
     .column-data {
-        flex: 1; /* Le decimos: "Ocupa todo el espacio sobrante a la derecha" */
-        min-width: 0; /* Truco ninja de Flexbox para que el texto no desborde la pantalla */
-        align-items: flex-start; /* Alineamos el texto a la izquierda para que se lea mejor */
+        flex: 1;
+        min-width: 0;
+        align-items: flex-start;
         gap: 1rem;
     }
 
     .box-text {
-        width: 100%; /* La caja llenará perfectamente su columna derecha */
+        width: 100%;
         border: 1px solid #4a7477;
-
-        /* ¡MAGIA AQUÍ! El texto se hace pequeño SOLO en tablets */
         font-size: 0.85rem;
         line-height: 1.4;
     }
 
     .btn-back {
-        margin-bottom: 0; /* Ajuste visual limpio */
-        font-size: 0.9rem; /* El botón también se hace un poquito más pequeño aquí */
+        margin-bottom: 0;
+        font-size: 0.9rem;
     }
 }
 
@@ -197,6 +184,6 @@
 }
 
     .profile-carousel-btn i {
-        font-size: 1.5rem; /* Ajusta este número a tu gusto */
+        font-size: 1.5rem;
     }
 }

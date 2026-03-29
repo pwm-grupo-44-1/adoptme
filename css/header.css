@@ -50,7 +50,7 @@ a {
 .brand-title {
     font-size: clamp(1.6rem, 2vw + 0.8rem, 3rem);
     line-height: 1.1;
-    margin: 4rem 0 0 0;
+    margin: 2.5rem 0 0 0;
 }
 
 .social-ico {
@@ -111,24 +111,31 @@ a {
 ══════════════════════════════════════════════ */
 @media (min-width: 600px) and (max-width: 900px) {
 
+    .header-inner {
+        transition: none;
+    }
+
     .logo {
-        width: 5rem;
-        height: 5rem;
-        margin: 0.5rem;
+        width: clamp(3.5rem, 7vw, 5.5rem);
+        height: clamp(3.5rem, 7vw, 5.5rem);
+        margin: clamp(0.3rem, 0.8vw, 0.6rem);
     }
 
     .brand-title {
-        font-size: 1.8rem;
+        font-size: clamp(1.3rem, 3vw, 2rem);
+        margin: 0;
     }
 
     .social-ico {
-        font-size: 1.2rem;
-        padding: 0.3rem 0 0 0;
+        font-size: clamp(1rem, 2vw, 1.4rem);
+        padding: 0.2rem 0 0 0;
     }
 
     .btn {
-        font-size: large;
-        width: 6rem;
+        font-size: clamp(0.85rem, 1.8vw, 1.1rem);
+        min-width: 0;
+        width: auto;
+        padding: 0.5rem clamp(0.4rem, 1vw, 0.8rem);
     }
 
     nav {
