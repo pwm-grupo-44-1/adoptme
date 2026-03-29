@@ -1,9 +1,10 @@
 .calendar {
-    width: min(100%, 62rem);
+    width: min(100%, 42rem);
     margin: 0 auto;
     align-items: center;
     border-radius: 1rem;
-    padding: clamp(1rem, 2.5vw, 2rem);
+    padding: clamp(1rem, 2.5vw, 1rem);
+    margin: clamp(1rem, 1.5vw, 1rem);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
     background: rgba(255, 255, 255, 0.25);
 }
@@ -26,10 +27,10 @@
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     background: #ebefb7;
     border-radius: 1rem;
-    padding: clamp(1rem, 2vw, 2rem);
+    padding: clamp(1rem, 2vw, 1rem);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
 
@@ -48,13 +49,13 @@
     border-radius: 50%;
     width: clamp(3.2rem, 4vw, 2.8rem);
     height: clamp(3.2rem, 4vw, 2.8rem);
-    font-size: clamp(1rem, 1vw + 0.5rem, 1.25rem);
+    font-size: clamp(2.5rem, 1vw + 0.5rem, 1.25rem);
     cursor: pointer;
     font-weight: 800;
 }
 
 .cal-nav:hover {
-    background: #10946d;
+    /* background: #10946d; */
     color: #fff;
 }
 
@@ -127,7 +128,6 @@
 .cal-slots {
     display: contents;
     margin-bottom: 1.5rem;
-    width: 15%;
 }
 
 .cal-slotsh3,
@@ -298,7 +298,7 @@
 .bi-arrow-left,
 .bi-arrow-right {
     color: #4a7477;
-    font-size: 1.3rem;
+    font-size: 3rem;
 }
 
 .cal-nav:hover .bi-arrow-left,
@@ -307,9 +307,9 @@
 }
 
 /* ══════════════════════════════════════════════
-   TABLET APAISADA  —  768px ↔ 1024px
+   TABLET APAISADA  —  600px ↔ 900px
 ══════════════════════════════════════════════ */
-@media (min-width: 768px) and (max-width: 1024px) {
+@media (min-width: 600px) and (max-width: 900px) {
 
     /* Contenedor ajustado al ancho disponible con poco padding */
     .calendar {
@@ -317,75 +317,81 @@
         padding: 0.75rem 1rem;
     }
 
-    /* Cabecera mes compacta */
-    .schedule-header {
-        padding: 0.6rem 0.8rem;
-        margin-bottom: 0.5rem;
-        border-radius: 0.6rem;
-    }
+    .bi-arrow-left, .bi-arrow-right {  /*Flechas cambio de mes a tamaño para tablet*/
+color: #4a7477;
+font-size: 1.5rem;
 
-    .cal-month-title {
-        /* sobreescribe el clamp base que da valores demasiado grandes */
-        font-size: 0.95rem;
-    }
+}
 
-    .cal-nav {
-        /* sobreescribe el clamp base */
-        width: 1.8rem;
-        height: 1.8rem;
-        font-size: 0.85rem;
-    }
+/* Cabecera mes compacta */
+.schedule-header {
+    padding: 0.6rem 0.8rem;
+    margin-bottom: 0.5rem;
+    border-radius: 0.6rem;
+}
 
-    /* Días de la semana */
-    .cal-weekdays {
-        /* sobreescribe clamp(1.75rem, ...) — mínimo demasiado grande */
-        font-size: 0.68rem;
-        margin-bottom: 0.25rem;
-        gap: 0.2rem;
-    }
+.cal-month-title {
+    /* sobreescribe el clamp base que da valores demasiado grandes */
+    font-size: 0.95rem;
+}
 
-    /* Grid de días */
-    .cal-grid {
-        gap: 0.2rem;
-        margin-bottom: 0.6rem;
-    }
+.cal-nav {
+    /* sobreescribe el clamp base */
+    width: 1.8rem;
+    height: 1.8rem;
+    font-size: 0.85rem;
+}
 
-    /* Celdas: sobreescribe clamp(3.9rem, ...) que es el culpable principal */
-    .cal-day {
-        font-size: 2.75rem;
-        border-width: 1px;
-        border-radius: 15%;
-    }
+/* Días de la semana */
+.cal-weekdays {
+    /* sobreescribe clamp(1.75rem, ...) — mínimo demasiado grande */
+    font-size: 0.68rem;
+    margin-bottom: 0.25rem;
+    gap: 0.2rem;
+}
 
-    /* Slots de horas */
-    .cal-slots {
-        margin-bottom: 0.5rem;
-    }
+/* Grid de días */
+.cal-grid {
+    gap: 0.2rem;
+    margin-bottom: 0.6rem;
+}
 
-    .cal-slotsh3,
-    .cal-bookingsh3 {
-        font-size: 0.8rem;
-        margin-bottom: 0.4rem;
-    }
+/* Celdas: sobreescribe clamp(3.9rem, ...) que es el culpable principal */
+.cal-day {
+    font-size: 2.75rem;
+    border-width: 1px;
+    border-radius: 15%;
+}
 
-    .cal-bookingsh3 {
-        padding-top: 0.5rem;
-    }
+/* Slots de horas */
+.cal-slots {
+    margin-bottom: 0.5rem;
+}
 
-    .cal-slots-grid {
-        gap: 0.35rem;
-    }
+.cal-slotsh3,
+.cal-bookingsh3 {
+    font-size: 0.8rem;
+    margin-bottom: 0.4rem;
+}
 
-    .slot-btn {
-        padding: 0.25rem 0.6rem;
-        font-size: 0.75rem;
-        border-width: 1px;
-    }
+.cal-bookingsh3 {
+    padding-top: 0.5rem;
+}
 
-    /* Mis reservas */
-    #bookings-list {
-        gap: 0.25rem;
-    }
+.cal-slots-grid {
+    gap: 0.35rem;
+}
+
+.slot-btn {
+    padding: 0.25rem 0.6rem;
+    font-size: 0.75rem;
+    border-width: 1px;
+}
+
+/* Mis reservas */
+#bookings-list {
+    gap: 0.25rem;
+}
 
     #bookings-list li {
         padding: 0.35rem 0.6rem;
@@ -406,15 +412,7 @@
         color: rgba(242, 245, 197, 0.92);
     }
 }
-@media (max-width: 768px) {
-    .schedule-header {
-        padding: 1rem;
-    }
 
-    .cal-day {
-        border-width: 1px;
-    }
-}
 
 @media (max-width: 576px) {
     .calendar {

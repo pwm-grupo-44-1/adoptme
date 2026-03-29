@@ -448,7 +448,7 @@ function renderAboutUs(data) {
 }
 
 function renderFaq(faqData) {
-    const container = document.getElementById('faq_item');
+    const container = document.getElementById('faq-item');
     if (!container) return;
     container.innerHTML = '';
     faqData.forEach(item => {
@@ -464,7 +464,7 @@ function renderFaq(faqData) {
 }
 
 function renderLegal(legalData) {
-    const container = document.getElementById('faq_item');
+    const container = document.getElementById('faq-item');
     if (!container) return;
     container.innerHTML = '';
     legalData.forEach(item => {

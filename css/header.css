@@ -61,6 +61,7 @@ a {
 .brand-title {
     font-size: clamp(1.6rem, 2vw + 0.8rem, 3rem);
     line-height: 1.1;
+    margin: 4rem 0 0 0;
 }
 
 .social-ico {
@@ -281,12 +282,11 @@ a {
         min-height: 3.2rem;
         justify-content: flex-start;
         padding: 0.85rem 1rem;
-        font-size: 1.35rem;
+        font-size: 2rem;
         border-radius: 0.75rem;
     }
 
     .main-nav .user-nav-name {
-        font-size: 1.15rem;
     }
 
     .nav-overlay {
