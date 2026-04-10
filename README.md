@@ -1,4 +1,4 @@
-# 🐾 AdoptMe! — Plataforma Dinámica de Adopción de Mascotas
+# 🐾 AdoptMe! — Plataforma Dinámica de Adopción de Mascotas (Versión Angular)
 
 ## 👥 Integrantes del Grupo 44.1
 * **Alejandro Celis Hernández Delgado**
