@@ -1,0 +1,267 @@
+/* ==========================================================================
+   1. ESTILOS DE LA TARJETA (BASE / ESCRITORIO)
+   ========================================================================== */
+/* 🚀 IMPORTANTE: Esto le dice a Angular que el componente ocupe todo el hueco */
+:host {
+  display: block;
+  width: 100%;
+}
+
+.item-list {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: clamp(1rem, 2vw, 1.5rem);
+  width: 100%;
+}
+
+.photo-btn-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 0;
+  gap: 1rem;
+  width: clamp(12rem, 16vw, 16rem);
+  flex-shrink: 0;
+}
+
+.photo-card-list {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  height: auto;
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+
+.btn-pet-detail {
+  width: 100%;
+  max-width: 14rem;
+  font-size: clamp(1rem, 1.2vw, 1.2rem);
+  font-weight: bold;
+  margin: 0;
+  background-color: #fddb72;
+  color: #000000;
+  text-align: center;
+  padding: 0.75rem 1rem;
+  text-decoration: none;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.pet-profile-text {
+  flex: 1;
+  width: 100%;
+  font-size: clamp(0.95rem, 1.2vw, 1.125rem);
+  text-align: justify;
+  align-content: baseline;
+  margin: 0;
+  padding: 1rem 0 0;
+  color: #4a7477;
+}
+
+.pet-profile-text ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.6rem, 1vw, 1rem);
+  width: 100%;
+}
+
+/* --- Acciones de Administrador (Visitas y Eliminar) --- */
+.admin-card-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.visit-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 0.5rem;
+  background: #f4f5c9;
+  color: #4a7477;
+  font-size: 1rem;
+  font-weight: 600;
+  border: 1px solid #c8d87a;
+  width: fit-content;
+  white-space: nowrap; /* Evita que se rompa la palabra */
+}
+
+.btn-delete-animal {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 0.5rem;
+  border: 1px solid #e07a7a;
+  background: #f4f5c9;
+  color: #c0392b;
+  font-size: 1rem;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  width: fit-content;
+  white-space: nowrap; /* Evita que se rompa la palabra */
+}
+
+.btn-delete-animal:hover {
+  background: #c0392b;
+  color: #fff;
+  border-color: #c0392b;
+  transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   2. ESTILOS DEL MODAL (Pestaña de confirmación)
+   ========================================================================== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+}
+
+.modal-box {
+  background: #fffdf0;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  border-radius: 1.5rem;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  max-width: 450px;
+  width: 90%;
+  text-align: center;
+  border: 2px solid #e8edaa;
+  animation: modalAppear 0.3s ease-out;
+}
+
+@keyframes modalAppear {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.modal-icon {
+  font-size: 3.5rem;
+  color: #c0392b;
+  margin-bottom: 1rem;
+}
+
+.modal-box h3 {
+  color: #4a7477;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  margin-bottom: 1rem;
+  font-family: 'Rum Raisin', sans-serif;
+}
+
+.modal-box p {
+  color: #555;
+  margin-bottom: 2rem;
+  font-size: clamp(1rem, 1.5vw, 1.1rem);
+  line-height: 1.4;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 1.2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-confirm {
+  background: #c0392b;
+  color: white;
+  padding: 0.8rem 1.8rem;
+  border-radius: 0.8rem;
+  font-weight: bold;
+  font-family: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+  transition: transform 0.2s;
+}
+
+.btn-cancel {
+  background: #e8edaa;
+  color: #4a7477;
+  padding: 0.8rem 1.8rem;
+  border-radius: 0.8rem;
+  font-weight: bold;
+  font-family: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+  border: 1px solid #c8d87a;
+  transition: transform 0.2s;
+}
+
+.btn-confirm:hover { transform: translateY(-2px); }
+.btn-cancel:hover { transform: translateY(-2px); }
+
+/* ==========================================================================
+   3. ADAPTACIÓN POR DIMENSIONES (Media Queries)
+   ========================================================================== */
+
+/* --- TABLET APAISADA (< 1200px) --- */
+@media (max-width: 1200px) {
+  .photo-btn-column {
+    width: clamp(10rem, 18vw, 12rem);
+  }
+}
+
+/* --- MÓVIL (< 700px) --- */
+@media (max-width: 700px) {
+  .item-list {
+    flex-direction: row;
+    align-items: center; /* Centrado vertical para que no se descompense */
+    justify-content: center;
+    gap: 1.2rem; /* Un pelín más de hueco */
+    width: 100%;
+    max-width: 480px; /* Limita el ancho para que no parezca deforme */
+    margin: 0 auto; /* ESTO ES LO QUE LO CENTRA EN LA PANTALLA */
+  }
+
+  .photo-btn-column {
+    /* Subimos de 7rem a 8.5rem (Un pelín más grande) */
+    width: clamp(8.5rem, 42vw, 11.5rem);
+    padding: 0;
+    gap: 0.8rem;
+  }
+
+  .btn-pet-detail {
+    padding: 0.6rem;
+    font-size: 1rem; /* Un pelín más grande */
+  }
+
+  .admin-card-actions {
+    flex-direction: column; /* Apilamos los botones debajo de la foto */
+    gap: 0.5rem;
+  }
+
+  .visit-badge, .btn-delete-animal {
+    width: 100%;
+    justify-content: center;
+    font-size: 0.9rem;
+  }
+
+  .pet-profile-text {
+    padding: 0;
+    font-size: 1rem; /* Letra un pelín más grande (antes 0.85) */
+    text-align: left;
+  }
+
+  .pet-profile-text ul {
+    gap: 0.5rem;
+  }
+}

@@ -1,0 +1,120 @@
+/* =========================================
+   ESTILO DEL COMPONENTE (HOST)
+   ========================================= */
+:host {
+  display: block;
+  position: sticky;   /* El componente entero se vuelve pegajoso */
+  top: 2rem;          /* Se queda a 2rem del borde superior de la pantalla */
+  align-self: start;  /* IMPORTANTE: Evita que el componente se estire hacia abajo */
+  z-index: 100;
+}
+
+@media (max-width: 768px) {
+  :host {
+    position: relative; /* Se comporta como un bloque normal */
+    top: 0;             /* Ya no necesita margen superior de pegado */
+    margin-bottom: 1.5rem; /* Separación con el contador de resultados */
+  }
+}
+
+.sidebar {
+  /* Ya no necesita ser sticky aquí dentro porque lo es el host */
+  width: 100%;
+  padding: 1.2rem;
+  background: #f4f5c9;
+  border-radius: 1rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  max-height: calc(100vh - 4rem); /* Evita que el filtro sea más alto que la pantalla */
+  overflow-y: auto;               /* Si hay muchas razas, permite hacer scroll interno */
+}
+
+/* --- Título y secciones --- */
+.sidebar-title {
+  margin: 0 0 1.25rem 0;
+  font-size: 1.5rem;
+  text-align: center;
+  color: #4a7477;
+}
+
+.filter-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.filter-section {
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(74, 116, 119, 0.2);
+  background: #fffdf0;
+}
+
+.filter-label {
+  list-style: none;
+  padding: 0.8rem 1rem;
+  font-weight: 700;
+  color: #4a7477;
+  background: #fafbe6;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filter-label::after {
+  content: '▾';
+  transition: transform 0.3s;
+}
+
+details[open] .filter-label::after {
+  transform: rotate(-180deg);
+}
+
+.filter-options {
+  padding: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.filter-options label {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.filter-options input[type="checkbox"] {
+  accent-color: #4a7477;
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.filter-select {
+  width: 100%;
+  padding: 0.7rem;
+  border: 1px solid rgba(74, 116, 119, 0.2);
+  border-radius: 6px;
+  background: #fffdf0;
+  color: #4a7477;
+  font-family: inherit;
+}
+
+.filter-reset {
+  width: 100%;
+  padding: 0.8rem;
+  margin-top: 1rem;
+  border-radius: 8px;
+  border: 2px solid #4a7477;
+  background: transparent;
+  color: #4a7477;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filter-reset:hover {
+  background: #4a7477;
+  color: #fff;
+}

@@ -1,1 +1,83 @@
-<p>filter works!</p>
+<aside class="sidebar" aria-label="Filtros">
+  <h2 class="sidebar-title">Filtrar por</h2>
+
+  <div class="filter-accordion">
+
+    <details class="filter-section">
+      <summary class="filter-label">Género</summary>
+      <div class="filter-options" id="filter-gender">
+        <label>
+          <input type="checkbox" [checked]="criterios.generos.includes('Male')" (change)="toggleFiltro('generos', 'Male')"> Macho
+        </label>
+        <label>
+          <input type="checkbox" [checked]="criterios.generos.includes('Female')" (change)="toggleFiltro('generos', 'Female')"> Hembra
+        </label>
+      </div>
+    </details>
+
+    <details class="filter-section">
+      <summary class="filter-label">Raza</summary>
+      <div class="filter-options" id="filter-breed">
+        @for (raza of razas; track raza) {
+          <label>
+            <input type="checkbox" [checked]="criterios.razas.includes(raza)" (change)="toggleFiltro('razas', raza)"> {{ raza }}
+          </label>
+        }
+      </div>
+    </details>
+
+    <details class="filter-section">
+      <summary class="filter-label">Edad</summary>
+      <div class="filter-options" id="filter-age">
+        <label><input type="checkbox" [checked]="criterios.edades.includes('Cachorro (0-2 años)')" (change)="toggleFiltro('edades', 'Cachorro (0-2 años)')"> Cachorro (0-2 años)</label>
+        <label><input type="checkbox" [checked]="criterios.edades.includes('Adulto (3-6 años)')" (change)="toggleFiltro('edades', 'Adulto (3-6 años)')"> Adulto (3-6 años)</label>
+        <label><input type="checkbox" [checked]="criterios.edades.includes('Senior (7+ años)')" (change)="toggleFiltro('edades', 'Senior (7+ años)')"> Senior (7+ años)</label>
+      </div>
+    </details>
+
+    <details class="filter-section">
+      <summary class="filter-label">Peso</summary>
+      <div class="filter-options" id="filter-weight">
+        <label><input type="checkbox" [checked]="criterios.pesos.includes('Pequeño (≤5kg)')" (change)="toggleFiltro('pesos', 'Pequeño (≤5kg)')"> Pequeño (≤5kg)</label>
+        <label><input type="checkbox" [checked]="criterios.pesos.includes('Mediano (6-15kg)')" (change)="toggleFiltro('pesos', 'Mediano (6-15kg)')"> Mediano (6-15kg)</label>
+        <label><input type="checkbox" [checked]="criterios.pesos.includes('Grande (>15kg)')" (change)="toggleFiltro('pesos', 'Grande (>15kg)')"> Grande (>15kg)</label>
+      </div>
+    </details>
+
+    <details class="filter-section">
+      <summary class="filter-label">Tipo de pelo</summary>
+      <div class="filter-options" id="filter-hair">
+        @for (pelo of pelos; track pelo) {
+          <label>
+            <input type="checkbox" [checked]="criterios.pelos.includes(pelo)" (change)="toggleFiltro('pelos', pelo)"> {{ pelo }}
+          </label>
+        }
+      </div>
+    </details>
+
+    <details class="filter-section">
+      <summary class="filter-label">Comportamiento</summary>
+      <div class="filter-options" id="filter-mood">
+        @for (caracter of caracteres; track caracter) {
+          <label>
+            <input type="checkbox" [checked]="criterios.caracteres.includes(caracter)" (change)="toggleFiltro('caracteres', caracter)"> {{ caracter }}
+          </label>
+        }
+      </div>
+    </details>
+
+    <details class="filter-section">
+      <summary class="filter-label">Ordenar por</summary>
+      <select class="filter-select" id="sort-select" [value]="criterios.orden" (change)="cambiarOrden($event)">
+        <option value="">Sin orden</option>
+        <option value="age-asc">Edad ↑</option>
+        <option value="age-desc">Edad ↓</option>
+        <option value="weight-asc">Peso ↑</option>
+        <option value="weight-desc">Peso ↓</option>
+      </select>
+    </details>
+
+  </div>
+
+  <button class="filter-reset" (click)="limpiarFiltros()">Limpiar filtros</button>
+</aside>
