@@ -1,164 +1,45 @@
-/* ==========================================================================
-   1. IMPORTACIÓN DE FUENTES Y VARIABLES (ROOT)
-   ========================================================================== */
-@import url('https://fonts.googleapis.com/css2?family=Fira+Sans+Condensed:wght@300;400;700&family=Rum+Raisin&display=swap');
+/* src/styles.css */
+@import url('https://fonts.googleapis.com/css2?family=Rum+Raisin&family=Montserrat:wght@400;700&family=Fira+Sans+Condensed:wght@300;400;700&display=swap');
 
 :root {
-  /* Paleta de Colores Original */
   --color-text: #4a7477;
-  --color-primary: #fddb72;
-  --color-secondary: #ece59c;
-  --color-accent: #10946d;
-  --color-danger: #c0392b;
   --bg-fallback: #f2f5c5;
-  --bg-image: url("/header-background.png");
-
-  /* DISEÑO FLUIDO (3 DIMENSIONES) */
-  /* El padding lateral se ajusta solo entre 1rem (móvil) y 4rem (PC 4K) */
-  --site-padding: clamp(1rem, 5vw, 4rem);
-
-  /* TIPOGRAFÍA FLUIDA */
-  /* Los títulos y el cuerpo escalan sin saltos bruscos */
-  --fs-h1: clamp(2rem, 6vw, 4rem);
-  --fs-h2: clamp(1.5rem, 4vw, 2.5rem);
-  --fs-body: clamp(1rem, 1.2vw, 1.15rem);
-
-  /* Scroll Indicator y Efectos */
-  --scroll-arrow-size: 58px;
-  --scroll-arrow-bg: rgba(242, 245, 197, 0.92);
-  --scroll-arrow-color: #4a7477;
-  --scroll-arrow-shadow: 0 8px 24px rgba(74, 116, 119, 0.18);
+  /* El logo está en /public/img/, se accede así: */
+  --bg-image: url("/img/header-background.png");
+  --site-max-width: 1920px;
+  --site-gutter: clamp(1rem, 2.5vw, 2rem);
+  --border-light: rgba(0, 0, 0, 0.1);
+  --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-/* ==========================================================================
-   2. RESET Y BASES DEL CUERPO
-   ========================================================================== */
-*, *::before, *::after {
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-html {
-  width: 100%;
-  min-height: 100%;
-  scroll-behavior: smooth;
-}
-
 body {
   width: 100%;
   min-height: 100vh;
+  /* Forzamos la fuente del diseño original */
+  font-family: 'Rum Raisin', sans-serif !important;
+  color: var(--color-text);
+  background-color: var(--bg-fallback);
   display: flex;
   flex-direction: column;
-  font-family: 'Fira Sans Condensed', sans-serif;
-  color: var(--color-text);
   overflow-x: hidden;
-
-  /* --- CONFIGURACIÓN DE FONDO GLOBAL --- */
-  background-image: var(--bg-image);
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  background-attachment: fixed;
-  background-color: var(--bg-fallback);
 }
 
 main {
-  flex: 1;
+  flex: 1 1 auto;
   width: 100%;
-  display: flex;
-  flex-direction: column;
 }
 
-/* ==========================================================================
-   3. ELEMENTOS COMUNES (Botones, Enlaces, Utilidades)
-   ========================================================================== */
-a {
-  text-decoration: none;
-  color: inherit;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-button {
-  cursor: pointer;
-  border: none;
-  background: none;
-  font-family: inherit;
-  transition: transform 0.2s ease, background-color 0.2s ease;
-}
-
-button:active {
-  transform: translateY(2px);
-}
-
-/* Indicador de Scroll Original Mejorado */
-.scroll-down-indicator {
-  position: fixed;
-  left: 50%;
-  bottom: 2rem;
-  transform: translateX(-50%);
-  width: var(--scroll-arrow-size);
-  height: var(--scroll-arrow-size);
-  border-radius: 999px;
-  border: 1px solid rgba(144, 201, 132, 0.35);
-  background: var(--scroll-arrow-bg);
-  color: var(--scroll-arrow-color);
-  box-shadow: var(--scroll-arrow-shadow);
-  display: flex;
+.btn {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  z-index: 300;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
-}
-
-.scroll-down-indicator.is-visible {
-  opacity: 1;
-  visibility: visible;
-}
-
-.scroll-down-indicator:hover {
-  background-color: #fff;
-  transform: translateX(-50%) translateY(-5px);
-  box-shadow: 0 12px 32px rgba(74, 116, 119, 0.25);
-}
-
-/* Mensajes de "Sin resultados" */
-.no-results {
-  text-align: center;
-  padding: clamp(2rem, 5vw, 4rem);
-  font-size: var(--fs-body);
-  background: rgba(255, 255, 255, 0.4);
-  border-radius: 20px;
-  backdrop-filter: blur(8px);
-  margin: 2rem auto;
-  border: 1px solid rgba(74, 116, 119, 0.1);
-  max-width: 80%;
-}
-
-/* ==========================================================================
-   4. ADAPTACIÓN POR DIMENSIONES (Media Queries)
-   ========================================================================== */
-
-/* --- TABLET APAISADA (< 1200px) --- */
-@media (max-width: 1200px) {
-  :root {
-    --scroll-arrow-size: 50px;
-  }
-}
-
-/* --- MÓVIL (< 700px) --- */
-@media (max-width: 700px) {
-  body {
-    /* Fondo estático en móvil para mejorar el rendimiento */
-    background-attachment: scroll;
-  }
-
-  .scroll-down-indicator {
-    bottom: 1.5rem;
-    width: 45px;
-    height: 45px;
-  }
+  text-decoration: none;
+  font-family: 'Rum Raisin', sans-serif;
+  transition: all 0.2s ease;
 }

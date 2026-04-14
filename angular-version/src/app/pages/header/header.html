@@ -1,0 +1,48 @@
+<header class="header">
+  <div class="header-inner">
+    <div class="header-left">
+      <a class="brand-text" [routerLink]="['/']">
+        {{ brandTitle }}
+      </a>
+
+      <div class="socials">
+        <a
+          *ngFor="let social of socialLinks"
+          class="social-ico"
+          [href]="social.url"
+          target="_blank"
+          rel="noopener noreferrer"
+          [attr.aria-label]="social.name"
+        >
+          <i [class]="social.icon"></i>
+        </a>
+      </div>
+    </div>
+
+    <button
+      class="hamburger-btn"
+      type="button"
+      aria-label="Abrir menú"
+      [attr.aria-expanded]="menuOpen"
+      (click)="toggleMenu()"
+    >
+      <span [class.active-top]="menuOpen"></span>
+      <span [class.active-middle]="menuOpen"></span>
+      <span [class.active-bottom]="menuOpen"></span>
+    </button>
+
+    <nav class="main-nav" [class.open]="menuOpen">
+      <a
+        *ngFor="let link of navLinks"
+        class="nav-link"
+        [class.highlighted]="link.highlighted"
+        [routerLink]="link.url"
+        (click)="closeMenu()"
+      >
+        {{ link.name }}
+      </a>
+    </nav>
+  </div>
+
+  <div class="nav-overlay" [class.show]="menuOpen" (click)="closeMenu()"></div>
+</header>

@@ -1,0 +1,227 @@
+:host {
+  display: block;
+}
+
+.header {
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: #dfe5b1;
+}
+
+.header-inner {
+  width: min(100%, 1920px);
+  margin: 0 auto;
+  min-height: 132px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 1.2rem 2.2rem;
+  background-color: #dfe5b1;
+}
+
+.header-left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 1rem;
+  flex: 0 0 auto;
+}
+
+.brand-text {
+  text-decoration: none;
+  color: #4a7477;
+  font-family: "Rum Raisin", Arial, Helvetica, sans-serif;
+  font-size: clamp(2.2rem, 2.3vw, 3.2rem);
+  line-height: 1;
+}
+
+.socials {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.social-ico {
+  color: #10946d;
+  font-size: clamp(1.8rem, 1.5vw, 2.5rem);
+  text-decoration: none;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.social-ico:hover {
+  color: #f2c94c;
+  transform: translateY(-1px);
+}
+
+.main-nav {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: clamp(1rem, 1.8vw, 2.5rem);
+  flex: 1 1 auto;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #4a7477;
+  font-family: "Rum Raisin", Arial, Helvetica, sans-serif;
+  font-size: clamp(1.8rem, 1.8vw, 2.4rem);
+  line-height: 1;
+  padding: 0.8rem 1rem;
+  border-radius: 0.4rem;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  white-space: nowrap;
+}
+
+.nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.18);
+}
+
+.nav-link.highlighted {
+  background-color: #d7dc8f;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  padding: 1rem 1.2rem;
+}
+
+/* Botón hamburguesa */
+.hamburger-btn {
+  display: none;
+  border: none;
+  background: #f2c94c;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.3rem;
+  z-index: 1200;
+}
+
+.hamburger-btn span {
+  display: block;
+  width: 22px;
+  height: 3px;
+  background: #4a7477;
+  border-radius: 999px;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.hamburger-btn span.active-top {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.hamburger-btn span.active-middle {
+  opacity: 0;
+}
+
+.hamburger-btn span.active-bottom {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+.nav-overlay {
+  display: none;
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .header-inner {
+    padding: 1rem 1.4rem;
+    gap: 1rem;
+  }
+
+  .main-nav {
+    gap: 1rem;
+  }
+
+  .nav-link {
+    font-size: 1.6rem;
+  }
+}
+
+/* Móvil */
+@media (max-width: 768px) {
+  .header-inner {
+    min-height: auto;
+    padding: 1rem;
+    align-items: flex-start;
+  }
+
+  .header-left {
+    gap: 0.6rem;
+  }
+
+  .brand-text {
+    font-size: 2.2rem;
+  }
+
+  .socials {
+    gap: 0.75rem;
+  }
+
+  .social-ico {
+    font-size: 1.8rem;
+  }
+
+  .hamburger-btn {
+    display: inline-flex;
+    margin-left: auto;
+  }
+
+  .main-nav {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: min(82vw, 320px);
+    height: 100dvh;
+    background: #dfe5b1;
+    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15);
+    padding: 5.5rem 1rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 0.8rem;
+    transform: translateX(100%);
+    transition: transform 0.28s ease;
+    z-index: 1100;
+  }
+
+  .main-nav.open {
+    transform: translateX(0);
+  }
+
+  .nav-link {
+    width: 100%;
+    font-size: 1.5rem;
+    padding: 0.9rem 1rem;
+    border-radius: 0.75rem;
+  }
+
+  .nav-link.highlighted {
+    padding: 0.9rem 1rem;
+  }
+
+  .nav-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+    z-index: 1050;
+  }
+
+  .nav-overlay.show {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+}
