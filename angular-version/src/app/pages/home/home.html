@@ -1,1 +1,58 @@
-<p>home works!</p>
+<section class="hero" aria-label="Contenido principal">
+
+  @if (isLoading) {
+    <div class="loading-spinner">Cargando...</div>
+  }
+
+  @if (!isLoading && homeData) {
+
+    @if (carouselImages.length > 0) {
+      <div class="carousel">
+
+        @if (homeData.images.length > 1) {
+          <button class="carousel-btn carousel-prev" aria-label="Anterior" (click)="prev()">
+            <i class="bi bi-arrow-left-circle-fill"></i>
+          </button>
+        }
+
+        <div class="carousel-track-wrapper">
+          <div class="carousel-track"
+               [ngStyle]="{
+                 'transform': 'translateX(-' + (currentIndex * 100) + '%)',
+                 'transition': transitionStyle
+               }"
+               (transitionend)="onTransitionEnd()">
+
+            @for (img of carouselImages; track $index) {
+              <div class="carousel-slide" [ngStyle]="{'background-image': 'url(' + img + ')'}"></div>
+            }
+
+          </div>
+        </div>
+
+        @if (homeData.images.length > 1) {
+          <button class="carousel-btn carousel-next" aria-label="Siguiente" (click)="next()">
+            <i class="bi bi-arrow-right-circle-fill"></i>
+          </button>
+        }
+      </div>
+    }
+
+    @if (homeData.images.length > 1) {
+      <div class="carousel-dots">
+        @for (img of homeData.images; track $index; let i = $index) {
+          <button class="carousel-dot"
+                  [class.active]="activeDotIndex === i"
+                  (click)="goToDot(i)">
+          </button>
+        }
+      </div>
+    }
+
+    <div class="hero-text">
+      @for (paragraph of paragraphs; track paragraph) {
+        <p>{{ paragraph }}</p>
+      }
+    </div>
+
+  } </section>

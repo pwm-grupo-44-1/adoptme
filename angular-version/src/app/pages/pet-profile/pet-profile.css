@@ -4,6 +4,7 @@
 /* 🚀 Le dice a Angular que el componente ocupe todo el ancho para que se centre bien */
 :host {
   display: block;
+  flex: 1;
   width: 100%;
 }
 
@@ -11,12 +12,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: clamp(2rem, 6vw, 5rem);
+  gap: clamp(2rem, 6vw, 4rem);
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
-  padding: clamp(2rem, 8vh, 5rem) var(--site-padding);
-  min-height: 80vh;
+  padding: 1rem var(--site-padding);
+  height: 100%;
   box-sizing: border-box;
 }
 
@@ -38,8 +39,8 @@
 }
 
 .profile-carousel-track-wrapper {
-  /* Ancho fluido entre 18rem y 34rem */
-  width: clamp(18rem, 40vw, 34rem);
+  height: clamp(300px, 60vh, 600px);
+  width: auto;
   aspect-ratio: 3 / 4;
   overflow: hidden;
   border: 2px solid #4a7477;

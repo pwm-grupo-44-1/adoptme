@@ -58,8 +58,7 @@ footer {
 }
 
 
-/* ── Tablet apaisada ── */
-@media (min-width: 600px) and (max-width: 900px) {
+@media (max-width: 1200px) {
   .footer-left .btn,
   .footer-right .btn {
     height: 4rem;
@@ -71,7 +70,7 @@ footer {
   }
 }
 
-@media (max-width: 576px){
+@media (max-width: 700px){
   .footer{
     display: none;
   }

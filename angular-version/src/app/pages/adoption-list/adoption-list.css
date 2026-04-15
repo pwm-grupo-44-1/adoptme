@@ -1,3 +1,8 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
 /* ==========================================================================
    CONTENEDOR MAESTRO (Controla el ancho de toda la página)
    ========================================================================== */
@@ -78,6 +83,13 @@
   }
 }
 
+@media (max-width: 950px) {
+  #pets-list {
+    /* Quitamos las 2 columnas y dejamos 1 sola para que las tarjetas no rompan la pantalla */
+    grid-template-columns: 1fr;
+  }
+}
+
 /* --- MÓVIL (< 700px) --- */
 @media (max-width: 700px) {
   .layout {
@@ -91,5 +103,6 @@
 
   #pets-list {
     grid-template-columns: 1fr; /* 1 sola tarjeta por fila */
+    gap: 4rem;
   }
 }

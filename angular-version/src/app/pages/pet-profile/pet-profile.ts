@@ -73,6 +73,6 @@ export class PetProfile implements OnInit {
   }
 
   volver() {
-    this.router.navigate(['/']);
+    this.router.navigate(['/adoption-list']);
   }
 }

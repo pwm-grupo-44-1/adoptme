@@ -1,0 +1,169 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Esta es la clave: reservamos el 60% de la pantalla para evitar que el footer suba de golpe */
+  min-height: 60vh;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--color-text, #4a7477);
+}
+
+.hero {
+  width: min(100%, 80rem);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: clamp(1rem, 1vw + 0.7rem, 1.125rem);
+}
+
+.carousel {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 100%;
+  margin: 2rem 0 1rem;
+  gap: clamp(0.75rem, 2vw, 2rem);
+}
+
+.carousel-track-wrapper {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  border-radius: 1rem;
+  height: clamp(14rem, 38vw, 22rem);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+
+.carousel-track {
+  display: flex;
+  height: 100%;
+}
+
+.carousel-slide {
+  min-width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  flex-shrink: 0;
+}
+
+.carousel-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+  font-size: clamp(2rem, 3vw, 3rem);
+  color: #fddb72;
+  transition: color 0.2s, transform 0.15s;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-btn:hover {
+  color: #fff;
+  transform: scale(1.15);
+}
+
+.carousel-btn:active {
+  transform: scale(0.95);
+}
+
+.carousel-dots {
+  display: flex;
+  gap: 0.7rem;
+  margin-bottom: 1.4rem;
+}
+
+.carousel-dot {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.45);
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  padding: 0;
+}
+
+.carousel-dot:hover {
+  background: rgba(255, 255, 255, 0.75);
+}
+
+.carousel-dot.active {
+  background: #fddb72;
+  transform: scale(1.25);
+}
+
+.hero-text {
+  color: #4a7477;
+  width: 85%;
+  font-size: clamp(1.4rem, 1vw + 0.7rem, 1.3rem);
+  line-height: 1.5;
+  text-align: justify;
+}
+
+.hero-text p + p {
+  margin-top: 1rem;
+}
+/* ── Tablet apaisada ── */
+@media (max-width: 1200px) {
+  .hero {
+    width: 100%;
+    padding: 0 1.5rem;
+    box-sizing: border-box;
+    font-size: clamp(1.2rem, 1vw + 0.7rem, 1.4rem);
+    line-height: 1.6;
+  }
+
+  .carousel {
+    width: 100%;
+    gap: 1rem; /* Un poco más de separación para las flechas */
+    margin: 1.5rem 0;
+    box-sizing: border-box;
+  }
+
+  .carousel-btn {
+    font-size: 2.2rem;
+    padding: 0.5rem;
+  }
+
+  .carousel-dots {
+    margin-bottom: 1rem;
+  }
+
+  .hero-text {
+    width: 100%;
+    padding: 0 6.5rem;
+    box-sizing: border-box;
+    line-height: 1.4;
+  }
+}
+
+/* --- MÓVIL (< 700px) --- */
+@media (max-width: 700px) {
+  .carousel {
+    /* El padding empuja los botones hacia adentro para que no toquen los bordes */
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  .carousel-btn {
+    /* Opcional: Reducimos un pelín el tamaño de la flecha para que la foto no se aplaste tanto */
+    font-size: 1.8rem;
+    padding: 0;
+  }
+
+  .hero-text {
+    padding: 0 1.5rem;
+  }
+}

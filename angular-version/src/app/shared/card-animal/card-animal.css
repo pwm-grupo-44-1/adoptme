@@ -224,7 +224,7 @@
 @media (max-width: 700px) {
   .item-list {
     flex-direction: row;
-    align-items: center; /* Centrado vertical para que no se descompense */
+    align-items: flex-start; /* Centrado vertical para que no se descompense */
     justify-content: center;
     gap: 1.2rem; /* Un pelín más de hueco */
     width: 100%;

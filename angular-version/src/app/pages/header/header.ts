@@ -50,7 +50,7 @@ export class HeaderComponent {
 
   @HostListener('window:resize')
   onResize(): void {
-    if (window.innerWidth > 768) {
+    if (window.innerWidth > 700) {
       this.closeMenu();
     }
   }
