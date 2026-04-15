@@ -39,6 +39,7 @@
       <a
         *ngFor="let link of navLinks"
         class="nav-link"
+        [class.drawer-only-link]="link.mobileOnly"
         [routerLink]="link.url"
         (click)="closeMenu()"
       >

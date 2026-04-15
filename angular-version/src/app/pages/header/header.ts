@@ -5,6 +5,7 @@ import { RouterLink } from '@angular/router';
 interface NavLink {
   name: string;
   url: string;
+  mobileOnly?: boolean;
 }
 
 interface SocialLink {
@@ -30,7 +31,13 @@ export class HeaderComponent {
     { name: 'Nosotros', url: '/about-us' },
     { name: 'Mascotas', url: '/adoption-list' },
     { name: 'Reserva tu cita', url: '/pet-schedule' },
-    { name: 'Acceder', url: '/login' }
+    { name: 'Acceder', url: '/login' },
+
+    // Enlaces del footer: solo visibles dentro de la hamburguesa en móvil
+    { name: 'Historias', url: '/stories', mobileOnly: true },
+    { name: 'Términos legales', url: '/legal', mobileOnly: true },
+    { name: 'FAQ', url: '/faq', mobileOnly: true },
+    { name: 'Contacto', url: '/contact-us', mobileOnly: true }
   ];
 
   socialLinks: SocialLink[] = [

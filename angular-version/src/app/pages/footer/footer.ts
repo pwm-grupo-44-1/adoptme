@@ -1,13 +1,34 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterLink } from '@angular/router';
+
+interface FooterLink {
+  name: string;
+  url: string;
+}
 
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [RouterModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './footer.html',
-  styleUrls: ['./footer.css'],
-  host: { 'style': 'display: block; width: 100%;' }
+  styleUrl: './footer.css'
 })
-export class FooterComponent {}
+export class FooterComponent {
+  leftLinks: FooterLink[] = [
+    { name: 'Legal', url: '/legal' },
+    { name: 'Historias', url: '/stories' }
+  ];
 
+  centerLink: FooterLink = {
+    name: 'Reserva tu cita',
+    url: '/pet-schedule'
+  };
+
+  rightLinks: FooterLink[] = [
+    { name: 'FAQ', url: '/faq' },
+    { name: 'Contacto', url: '/contact-us' }
+  ];
+
+  legalText = '© AdoptMe! Todos los derechos reservados.';
+}

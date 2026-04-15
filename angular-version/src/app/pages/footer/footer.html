@@ -1,20 +1,36 @@
-<footer>
+<footer class="footer-wrapper">
   <div class="footer">
     <div class="footer-left">
-      <a class="btn" routerLink="/stories">Historias</a>
-      <a class="btn" routerLink="/legal">Términos legales</a>
+      <a
+        *ngFor="let link of leftLinks"
+        class="btn footer-btn"
+        [routerLink]="link.url"
+      >
+        {{ link.name }}
+      </a>
     </div>
 
     <div class="footer-center">
-      <a class="btn" id="book-appointment" routerLink="/pet-schedule">Reserva tu cita</a>
+      <a
+        class="btn footer-btn footer-btn-center"
+        [routerLink]="centerLink.url"
+      >
+        {{ centerLink.name }}
+      </a>
     </div>
 
     <div class="footer-right">
-      <a class="btn" routerLink="/faq">FAQ</a>
-      <a class="btn" routerLink="/contact-us">Contacto</a>
+      <a
+        *ngFor="let link of rightLinks"
+        class="btn footer-btn"
+        [routerLink]="link.url"
+      >
+        {{ link.name }}
+      </a>
     </div>
   </div>
+
   <div class="footer-legal">
-    <p>&copy; 2026 AdoptMe!!. Todos los derechos reservados.</p>
+    {{ legalText }}
   </div>
 </footer>

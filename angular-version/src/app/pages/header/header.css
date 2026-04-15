@@ -4,10 +4,12 @@
 
 .header {
   width: 100%;
-  position: sticky;
+  position: fixed;
   top: 0;
-  z-index: 1000;
+  left: 0;
+  z-index: 1400;
   background-color: #dfe5b1;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .header-inner {
@@ -95,6 +97,10 @@
   background-color: rgba(255, 255, 255, 0.18);
 }
 
+.drawer-only-link {
+  display: none;
+}
+
 .hamburger-btn {
   display: none;
   border: none;
@@ -107,7 +113,7 @@
   justify-content: center;
   flex-direction: column;
   gap: 0.3rem;
-  z-index: 1200;
+  z-index: 1500;
 }
 
 .hamburger-btn span {
@@ -233,7 +239,8 @@
     gap: 0.8rem;
     transform: translateX(100%);
     transition: transform 0.28s ease;
-    z-index: 1100;
+    z-index: 1450;
+    overflow-y: auto;
   }
 
   .main-nav.open {
@@ -247,6 +254,10 @@
     border-radius: 0.75rem;
   }
 
+  .drawer-only-link {
+    display: inline-flex;
+  }
+
   .nav-overlay {
     display: block;
     position: fixed;
@@ -256,7 +267,7 @@
     visibility: hidden;
     pointer-events: none;
     transition: opacity 0.25s ease, visibility 0.25s ease;
-    z-index: 1050;
+    z-index: 1420;
   }
 
   .nav-overlay.show {
