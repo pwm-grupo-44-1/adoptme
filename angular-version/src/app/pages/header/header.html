@@ -1,21 +1,25 @@
 <header class="header">
   <div class="header-inner">
     <div class="header-left">
-      <a class="brand-text" [routerLink]="['/']">
-        {{ brandTitle }}
-      </a>
+      <img src="/logo-adoptme.png" alt="Logo AdoptMe" class="logo-img">
 
-      <div class="socials">
-        <a
-          *ngFor="let social of socialLinks"
-          class="social-ico"
-          [href]="social.url"
-          target="_blank"
-          rel="noopener noreferrer"
-          [attr.aria-label]="social.name"
-        >
-          <i [class]="social.icon"></i>
+      <div class="brand-block">
+        <a class="brand-text" [routerLink]="['/']">
+          {{ brandTitle }}
         </a>
+
+        <div class="socials">
+          <a
+            *ngFor="let social of socialLinks"
+            class="social-ico"
+            [href]="social.url"
+            target="_blank"
+            rel="noopener noreferrer"
+            [attr.aria-label]="social.name"
+          >
+            <i [class]="social.icon"></i>
+          </a>
+        </div>
       </div>
     </div>
 
@@ -35,7 +39,6 @@
       <a
         *ngFor="let link of navLinks"
         class="nav-link"
-        [class.highlighted]="link.highlighted"
         [routerLink]="link.url"
         (click)="closeMenu()"
       >

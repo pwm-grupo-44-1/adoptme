@@ -10,3 +10,4 @@ import { RouterModule } from '@angular/router';
   host: { 'style': 'display: block; width: 100%;' }
 })
 export class FooterComponent {}
+

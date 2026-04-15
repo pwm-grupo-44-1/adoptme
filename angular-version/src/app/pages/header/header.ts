@@ -5,7 +5,6 @@ import { RouterLink } from '@angular/router';
 interface NavLink {
   name: string;
   url: string;
-  highlighted?: boolean;
 }
 
 interface SocialLink {
@@ -24,16 +23,13 @@ interface SocialLink {
 export class HeaderComponent {
   menuOpen = false;
 
-  // En tu captura se ve texto "AdoptMe!" y no el logo redondo grande.
-  // Por eso aquí lo dejamos como marca textual.
   brandTitle = 'AdoptMe!';
 
-  // SOLO los botones que aparecen en tu captura
   navLinks: NavLink[] = [
     { name: 'Inicio', url: '/' },
     { name: 'Nosotros', url: '/about-us' },
     { name: 'Mascotas', url: '/adoption-list' },
-    { name: 'Reserva tu cita', url: '/pet-schedule', highlighted: true },
+    { name: 'Reserva tu cita', url: '/pet-schedule' },
     { name: 'Acceder', url: '/login' }
   ];
 
