@@ -1,1 +1,13 @@
-<p>about-us works!</p>
+<div id="about_us">
+  <section class="card-about_us" *ngFor="let member of members">
+    <img
+      class="photo-card-about_us"
+      [src]="member.image"
+      [alt]="'Foto de ' + member.name"
+    >
+
+    <h2>{{ member.name }}</h2>
+    <h3>{{ member.role }}</h3>
+    <p class="text-card-about_us">{{ member.description }}</p>
+  </section>
+</div>

@@ -4,6 +4,7 @@ import { PetProfile } from './pages/pet-profile/pet-profile';
 import { Home } from './pages/home/home';
 import { Stories } from './pages/stories/stories';
 import { ContactUs } from './pages/contact-us/contact-us';
+import { AboutUs } from './pages/about-us/about-us';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -11,5 +12,6 @@ export const routes: Routes = [
   { path: 'pet-profile', component: PetProfile },
   { path: 'stories', component: Stories },
   { path: 'contact-us', component: ContactUs },
+  { path: 'about-us', component: AboutUs },
   { path: '**', redirectTo: '' }
 ];
