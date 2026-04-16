@@ -74,4 +74,23 @@ export class MascotasService {
 
     this.mascotasSubject.next(filtradas);
   }
+
+  // Función para sumar +1 a las visitas de una mascota
+  incrementarVisitas(id: number) {
+    // Obtenemos la lista actual de mascotas que tengas guardada
+    // IMPORTANTE: Cambia "this.mascotasSubject" por el nombre de tu BehaviorSubject o variable que uses.
+    const listaActual = this.mascotasSubject.getValue();
+
+    const listaActualizada = listaActual.map((mascota: any) => {
+      if (mascota.id === id) {
+        // Si no tiene clicks guardados, asume que es 0, y le suma 1
+        return { ...mascota, clicks: (mascota.clicks || 0) + 1 };
+      }
+      return mascota;
+    });
+
+    // Actualizamos la lista global para que Angular repinte las tarjetas
+    // IMPORTANTE: Cambia "this.mascotasSubject" por el nombre de tu variable
+    this.mascotasSubject.next(listaActualizada);
+  }
 }

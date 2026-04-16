@@ -25,12 +25,19 @@ export class PetProfile implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       const id = +params['id'];
+
+      // 🚀 MAGIA: Llamamos al servicio para sumar una visita a este ID
+      if (id) {
+        this.mascotasService.incrementarVisitas(id);
+      }
+
       this.mascotasService.mascotas$.subscribe(lista => {
         const encontrada = lista.find((m: any) => m.id === id);
         if (encontrada) {
           this.mascota.set(encontrada);
         } else {
-          this.router.navigate(['/']);
+          // Si no encuentra la mascota, lo devolvemos a la lista de adopción
+          this.router.navigate(['/adoption-list']);
         }
       });
     });

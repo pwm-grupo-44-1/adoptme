@@ -29,19 +29,18 @@ footer {
   display: flex;
   align-content: center;
   justify-content: center;
+  font-size: clamp(0.95rem, 1vw + 0.6rem, 2rem);
 }
 
 .footer-center {
   min-height: 0;
   text-align: center;
-  font-size: clamp(0.95rem, 1vw + 0.4rem, 1rem);
   color: var(--text-body);
 }
 
 .footer-legal {
   grid-column: 1 / -1;
   justify-content: center;
-  font-size: clamp(0.95rem, 1vw + 0.4rem, 1.3rem);
   font-size: 1.3em;
   color: var(--text-muted);
   background-color: aliceblue;
