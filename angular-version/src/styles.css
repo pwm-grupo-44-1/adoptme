@@ -43,9 +43,12 @@
   box-sizing: border-box;
 }
 
-html {
+/* 🔥 añadido */
+html,
+body {
   width: 100%;
   min-height: 100%;
+  height: 100%;
   scroll-behavior: smooth;
 }
 
@@ -60,7 +63,6 @@ body {
   background-color: var(--bg-fallback);
   position: relative;
 
-  /* IMPORTANTE */
   padding-top: var(--header-space-desktop);
   padding-bottom: var(--footer-space-desktop);
 }
@@ -80,14 +82,17 @@ body::before {
   z-index: -1;
 }
 
+/* 🔥 ajustado */
 main {
   flex: 1 1 auto;
   width: 100%;
+  min-height: calc(100vh - var(--header-space-desktop) - var(--footer-space-desktop));
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
+/* 🔥 añadido/ajustado */
 app-root {
   display: flex;
   flex-direction: column;
@@ -178,6 +183,10 @@ button:active {
     background-attachment: scroll;
     padding-top: var(--header-space-mobile);
     padding-bottom: 0;
+  }
+
+  main {
+    min-height: calc(100vh - var(--header-space-mobile));
   }
 
   .scroll-down-indicator {

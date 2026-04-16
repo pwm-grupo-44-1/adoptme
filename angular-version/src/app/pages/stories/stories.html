@@ -1,1 +1,14 @@
-<p>stories works!</p>
+<div id="review">
+  <div class="card-stories" *ngFor="let story of stories">
+    <img
+      class="photo-card-stories"
+      [src]="story.image"
+      [alt]="story.name"
+    />
+
+    <div class="text-card-stories">
+      <span class="story-name">{{ story.name }}</span>
+      <p>{{ story.text }}</p>
+    </div>
+  </div>
+</div>

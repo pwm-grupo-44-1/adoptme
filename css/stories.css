@@ -1,12 +1,12 @@
 #review {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(22rem, 22rem));
+    justify-content: center;
+    align-content: center;
+    min-height: calc(100vh - 200px);
     gap: clamp(1rem, 2vw, 2rem);
-    padding: clamp(1rem, 2vw, 2rem) clamp(1rem, 3vw, 4rem);
-    box-sizing: border-box;
+    padding: 2rem;
     width: 100%;
-    height: auto;
-    max-height: none;
 }
 
 .card-stories {
