@@ -1,1 +1,36 @@
-<p>contact-us works!</p>
+<div class="contact">
+  <div class="contact-left">
+    <h2 class="contact-title">
+      {{ title }}
+    </h2>
+
+    <div class="contact-reasons">
+      <div class="contact-reason" *ngFor="let reason of reasons">
+        <span class="contact-reason-icon">{{ reason.icon }}</span>
+
+        <div class="contact-reason-text">
+          <h3>{{ reason.title }}</h3>
+          <p>{{ reason.text }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-right">
+    <div class="contact-map">
+      <iframe
+        [src]="mapUrl"
+        width="100%"
+        height="100%"
+        style="border:0;"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+
+    <ul class="contact-text">
+      <li *ngFor="let item of contactInfo">{{ item }}</li>
+    </ul>
+  </div>
+</div>
