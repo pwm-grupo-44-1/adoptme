@@ -4,7 +4,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Rum+Raisin&family=Montserrat:wght@400;700&family=Fira+Sans+Condensed:wght@300;400;700&display=swap');
 
 :root {
-  /* Paleta de Colores */
   --color-text: #4a7477;
   --color-primary: #fddb72;
   --color-secondary: #ece59c;
@@ -12,35 +11,33 @@
   --color-danger: #c0392b;
   --bg-fallback: #f2f5c5;
 
-  /* El logo está en /public/img/, se accede así: */
   --bg-image: url("/header-background.png");
 
-  /* DISEÑO FLUIDO Y ESTRUCTURA */
   --site-max-width: 1920px;
-  /* El padding lateral se ajusta solo entre 1rem (móvil) y 4rem (PC 4K) */
   --site-padding: clamp(1rem, 5vw, 4rem);
   --site-gutter: clamp(1rem, 2.5vw, 2rem);
 
-  /* TIPOGRAFÍA FLUIDA */
   --fs-h1: clamp(2rem, 6vw, 4rem);
   --fs-h2: clamp(1.5rem, 4vw, 2.5rem);
   --fs-body: clamp(1rem, 1.2vw, 1.15rem);
 
-  /* Sombras y Bordes */
   --border-light: rgba(0, 0, 0, 0.1);
   --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
 
-  /* Scroll Indicator y Efectos */
   --scroll-arrow-size: 58px;
   --scroll-arrow-bg: rgba(242, 245, 197, 0.92);
   --scroll-arrow-color: #4a7477;
   --scroll-arrow-shadow: 0 8px 24px rgba(74, 116, 119, 0.18);
+
+  /* Espacios reservados para header y footer fijos */
+  --header-space-desktop: 132px;
+  --header-space-mobile: 104px;
+  --footer-space-desktop: 110px;
 }
 
-/* ==========================================================================
-   2. RESET Y BASES DEL CUERPO
-   ========================================================================== */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -62,6 +59,10 @@ body {
   color: var(--color-text);
   background-color: var(--bg-fallback);
   position: relative;
+
+  /* IMPORTANTE */
+  padding-top: var(--header-space-desktop);
+  padding-bottom: var(--footer-space-desktop);
 }
 
 body::before {
@@ -71,7 +72,6 @@ body::before {
   left: -20px;
   right: -20px;
   bottom: -20px;
-
   background-image: var(--bg-image);
   background-repeat: no-repeat;
   background-position: center center;
@@ -95,9 +95,6 @@ app-root {
   width: 100%;
 }
 
-/* ==========================================================================
-   3. ELEMENTOS COMUNES (Botones, Enlaces, Utilidades)
-   ========================================================================== */
 a {
   text-decoration: none;
   color: inherit;
@@ -116,7 +113,6 @@ button:active {
   transform: translateY(2px);
 }
 
-/* Botones genéricos */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -126,7 +122,6 @@ button:active {
   transition: all 0.2s ease;
 }
 
-/* Indicador de Scroll Original Mejorado */
 .scroll-down-indicator {
   position: fixed;
   left: 50%;
@@ -160,7 +155,6 @@ button:active {
   box-shadow: 0 12px 32px rgba(74, 116, 119, 0.25);
 }
 
-/* Mensajes de "Sin resultados" */
 .no-results {
   text-align: center;
   padding: clamp(2rem, 2vw, 4rem);
@@ -173,22 +167,17 @@ button:active {
   max-width: 80%;
 }
 
-/* ==========================================================================
-   4. ADAPTACIÓN POR DIMENSIONES (Media Queries)
-   ========================================================================== */
-
-/* --- TABLET APAISADA (< 1200px) --- */
 @media (max-width: 1200px) {
   :root {
     --scroll-arrow-size: 50px;
   }
 }
 
-/* --- MÓVIL (< 700px) --- */
 @media (max-width: 700px) {
   body {
-    /* Fondo estático en móvil para mejorar el rendimiento */
     background-attachment: scroll;
+    padding-top: var(--header-space-mobile);
+    padding-bottom: 0;
   }
 
   .scroll-down-indicator {
