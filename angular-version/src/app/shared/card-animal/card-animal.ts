@@ -1,37 +1,38 @@
 import { Component, Input } from '@angular/core';
-import { MascotasService } from '../../services/MascotasServices';
-import {RouterLink} from '@angular/router';
-import {CommonModule} from '@angular/common';
+import { CommonModule } from '@angular/common';
+import { Router, RouterModule } from '@angular/router';
+import { DataService } from '../../services/data';
+import { Animal } from '../../models/animal';
 
 @Component({
   selector: 'app-card-animal',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterModule],
   templateUrl: './card-animal.html',
   styleUrl: './card-animal.css'
 })
 export class CardAnimal {
-  @Input() datos: any;
+  @Input() mascota!: Animal;
   @Input() esAdmin: boolean = false;
 
-  // Variable para controlar el modal personalizado
   mostrarModalEliminar: boolean = false;
 
-  constructor(private mascotasService: MascotasService) {}
+  constructor(private router: Router, private dataService: DataService) {}
 
-  // Abrir el modal
+  verPerfil() {
+    this.router.navigate(['/pet-profile'], { queryParams: { id: this.mascota.id } });
+  }
+
   abrirConfirmacion() {
     this.mostrarModalEliminar = true;
   }
 
-  // Cerrar el modal sin hacer nada
   cancelarEliminacion() {
     this.mostrarModalEliminar = false;
   }
 
-  // Confirmar y borrar de verdad
   confirmarEliminacion() {
-    this.mascotasService.eliminarMascota(this.datos.id);
+    this.dataService.eliminarMascota(this.mascota.id);
     this.mostrarModalEliminar = false;
   }
 }

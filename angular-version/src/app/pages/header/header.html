@@ -9,16 +9,17 @@
         </a>
 
         <div class="socials">
-          <a
-            *ngFor="let social of socialLinks"
-            class="social-ico"
-            [href]="social.url"
-            target="_blank"
-            rel="noopener noreferrer"
-            [attr.aria-label]="social.name"
-          >
-            <i [class]="social.icon"></i>
-          </a>
+          @for (social of socialLinks; track social.name) {
+            <a
+              class="social-ico"
+              [href]="social.url"
+              target="_blank"
+              rel="noopener noreferrer"
+              [attr.aria-label]="social.name"
+            >
+              <i [class]="social.icon"></i>
+            </a>
+          }
         </div>
       </div>
     </div>
@@ -36,15 +37,16 @@
     </button>
 
     <nav class="main-nav" [class.open]="menuOpen">
-      <a
-        *ngFor="let link of navLinks"
-        class="nav-link"
-        [class.drawer-only-link]="link.mobileOnly"
-        [routerLink]="link.url"
-        (click)="closeMenu()"
-      >
-        {{ link.name }}
-      </a>
+      @for (link of navLinks; track link.name) {
+        <a
+          class="nav-link"
+          [class.drawer-only-link]="link.mobileOnly"
+          [routerLink]="link.url"
+          (click)="closeMenu()"
+        >
+          {{ link.name }}
+        </a>
+      }
     </nav>
   </div>
 

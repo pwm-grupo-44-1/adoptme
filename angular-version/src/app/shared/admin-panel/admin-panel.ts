@@ -1,77 +1,72 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { MascotasService } from '../../services/MascotasServices';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { DataService } from '../../services/data';
+import { Animal } from '../../models/animal';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-admin-panel',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './admin-panel.html',
-  styleUrl: './admin-panel.css',
+  styleUrl: './admin-panel.css'
 })
 export class AdminPanel implements OnInit {
-  mostrarFormulario: boolean = false;
+  animalForm: FormGroup;
+  mostrarPanel = false;
   nombreArchivoSeleccionado: string = '';
-  archivoFisico: File | null = null;
-  animalForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private mascotasService: MascotasService) {}
-
-  ngOnInit(): void {
+  constructor(private fb: FormBuilder, private dataService: DataService) {
     this.animalForm = this.fb.group({
-      nombre: ['', Validators.required],
-      genero: ['', Validators.required],
-      raza: ['', Validators.required],
-      edad: ['', [Validators.required, Validators.min(0)]],
-      peso: ['', Validators.required],
-      pelo: ['', Validators.required],
-      caracter: ['', Validators.required],
-      descripcion: ['', Validators.required]
+      name: ['', Validators.required],
+      breed: ['', Validators.required],
+      gender: ['Male', Validators.required],
+      description: ['', Validators.required],
+      age: [0, [Validators.required, Validators.min(0)]],
+      mood: ['', Validators.required],
+      weight: ['', Validators.required],
+      'hair type': ['', Validators.required],
+      images: ['', Validators.required]
     });
   }
 
-  toggleFormulario(): void {
-    this.mostrarFormulario = !this.mostrarFormulario;
-    if (!this.mostrarFormulario) {
-      this.animalForm.reset();
-      this.resetearArchivo();
+  ngOnInit(): void {}
+
+  togglePanel() {
+    this.mostrarPanel = !this.mostrarPanel;
+  }
+
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.nombreArchivoSeleccionado = file.name;
+      // Simulamos la ruta para que se vea en frontend sin backend real
+      this.animalForm.patchValue({ images: '/img/animals/placeholder.jpg' });
     }
   }
 
-  onFileSelected(event: any): void {
-    const archivo: File = event.target.files[0];
-    if (archivo) {
-      this.archivoFisico = archivo;
-      this.nombreArchivoSeleccionado = archivo.name;
-    }
-  }
-
-  resetearArchivo(): void {
-    this.archivoFisico = null;
-    this.nombreArchivoSeleccionado = '';
-  }
-
-  onSubmit(): void {
+  agregarMascota() {
     if (this.animalForm.valid) {
-      const formValues = this.animalForm.value;
+      const formValue = this.animalForm.value;
 
-      const nuevaMascota = {
+      const nuevaMascota: Animal = {
         id: Date.now(),
-        name: formValues.nombre,
-        gender: formValues.genero,
-        breed: formValues.raza,
-        age: Number(formValues.edad),
-        weight: formValues.peso + ' kg',
-        "hair type": formValues.pelo,
-        mood: formValues.caracter,
-        description: formValues.descripcion,
+        name: formValue.name,
+        breed: formValue.breed,
+        gender: formValue.gender,
+        description: formValue.description,
+        age: Number(formValue.age),
+        mood: formValue.mood,
+        weight: formValue.weight,
+        'hair type': formValue['hair type'],
         clicks: 0,
-        images: this.nombreArchivoSeleccionado
-          ? [`./img/animals/${formValues.nombre}/${this.nombreArchivoSeleccionado}`]
-          : ['./img/logo-adoptme.png']
+        images: formValue.images.split(',').map((img: string) => img.trim())
       };
-      this.mascotasService.agregarMascota(nuevaMascota);
-      this.toggleFormulario();
+
+      this.dataService.agregarMascota(nuevaMascota);
+      this.animalForm.reset({ gender: 'Male', age: 0 });
+      this.nombreArchivoSeleccionado = '';
+      this.mostrarPanel = false;
     }
   }
 }

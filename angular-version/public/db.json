@@ -27,23 +27,23 @@
     "navLinks": [
       {
         "name": "Inicio",
-        "url": "#home"
+        "url": "/"
       },
       {
         "name": "Nosotros",
-        "url": "#about_us"
+        "url": "/about-us"
       },
       {
         "name": "Mascotas",
-        "url": "#adoption_list"
+        "url": "/adoption-list"
       },
       {
         "name": "Reserva tu cita",
-        "url": "#schedule"
+        "url": "/pet-schedule"
       },
       {
         "name": "Acceder",
-        "url": "#login"
+        "url": "/login"
       }
     ]
   },
@@ -51,23 +51,23 @@
     "navLinks": [
       {
         "name": "Historias",
-        "url": "#stories"
+        "url": "/stories"
       },
       {
         "name": "Términos legales",
-        "url": "#legal"
+        "url": "/legal"
       },
       {
         "name": "Reserva tu cita",
-        "url": "#schedule"
+        "url": "/pet-schedule"
       },
       {
         "name": "FAQ",
-        "url": "#faq"
+        "url": "/faq"
       },
       {
         "name": "Contacto",
-        "url": "#contact_us"
+        "url": "/contact-us"
       }
     ],
     "copyright": "© 2026 AdoptMe!!. Todos los derechos reservados."

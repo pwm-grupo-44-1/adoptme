@@ -2,7 +2,8 @@ import { Component, OnInit, signal } from '@angular/core';
 import { AdminPanel } from '../../shared/admin-panel/admin-panel';
 import { Filter } from '../../shared/filter/filter';
 import { CardAnimal } from '../../shared/card-animal/card-animal';
-import { MascotasService } from '../../services/MascotasServices';
+import { DataService } from '../../services/data';
+import { Animal } from '../../models/animal';
 
 @Component({
   selector: 'app-adoption-list',
@@ -12,22 +13,22 @@ import { MascotasService } from '../../services/MascotasServices';
   styleUrl: './adoption-list.css',
 })
 export class AdoptionList implements OnInit {
-  esAdmin: boolean = true;
+  esAdmin: boolean = true; // Aquí en el futuro leerás el usuario logueado
 
-  listaCompleta = signal<any[]>([]);
-  listaFiltrada = signal<any[]>([]);
+  listaCompleta = signal<Animal[]>([]);
+  listaFiltrada = signal<Animal[]>([]);
 
-  constructor(private mascotasService: MascotasService) {}
+  constructor(private dataService: DataService) {}
 
   ngOnInit(): void {
-    this.mascotasService.mascotas$.subscribe(data => {
+    this.dataService.mascotas$.subscribe(data => {
       this.listaCompleta.set(data);
       this.listaFiltrada.set(data);
     });
   }
 
   aplicarFiltros(criterios: any) {
-    let filtrados = this.listaCompleta().filter(a => {
+    let filtrados = this.listaCompleta().filter((a: any) => {
       if (criterios.generos && criterios.generos.length > 0 && !criterios.generos.includes(a.gender)) return false;
       if (criterios.razas && criterios.razas.length > 0 && !criterios.razas.includes(a.breed)) return false;
       if (criterios.edades && criterios.edades.length > 0 && !criterios.edades.includes(this.ageRange(a.age))) return false;
@@ -58,7 +59,7 @@ export class AdoptionList implements OnInit {
     return 'Grande (>15kg)';
   }
 
-  private ordenarLista(lista: any[], orden: string): any[] {
+  private ordenarLista(lista: Animal[], orden: string): Animal[] {
     const copia = [...lista];
     if (orden === 'age-asc') copia.sort((a, b) => a.age - b.age);
     if (orden === 'age-desc') copia.sort((a, b) => b.age - a.age);

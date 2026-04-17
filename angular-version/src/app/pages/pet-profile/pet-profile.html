@@ -1,4 +1,4 @@
-@if (mascota()) {
+@if (mascota(); as pet) {
   <section class="dog-profile">
 
     <div class="profile-carousel">
@@ -11,11 +11,11 @@
              [style.transform]="'translateX(-' + (currentImageIndex() * 100) + '%)'"
              [style.transition]="isAnimating() ? 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)' : 'none'">
 
-          @for (img of mascota().images; track $index) {
-            <img [src]="img" class="profile-carousel-slide" alt="Foto de {{mascota().name}}">
+          @for (img of pet.images; track $index) {
+            <img [src]="img" class="profile-carousel-slide" alt="Foto de {{pet.name}}">
           }
 
-          <img [src]="mascota().images[0]" class="profile-carousel-slide" alt="Copia de seguridad">
+          <img [src]="pet.images[0]" class="profile-carousel-slide" alt="Copia de seguridad">
 
         </div>
       </div>
@@ -30,18 +30,18 @@
         <i class="bi bi-arrow-left"></i> Volver
       </button>
 
-      <div class="box-text"><strong>Nombre:</strong> {{mascota().name}}</div>
-      <div class="box-text"><strong>Raza:</strong> {{mascota().breed}}</div>
+      <div class="box-text"><strong>Nombre:</strong> {{pet.name}}</div>
+      <div class="box-text"><strong>Raza:</strong> {{pet.breed}}</div>
       <div class="box-text">
         <strong>Género:</strong>
-        {{mascota().gender === 'Male' ? 'Macho' : 'Hembra'}}
+        {{pet.gender === 'Male' ? 'Macho' : 'Hembra'}}
       </div>
-      <div class="box-text"><strong>Edad:</strong> {{mascota().age}} años</div>
-      <div class="box-text"><strong>Peso:</strong> {{mascota().weight}}</div>
+      <div class="box-text"><strong>Edad:</strong> {{pet.age}} años</div>
+      <div class="box-text"><strong>Peso:</strong> {{pet.weight}}</div>
 
       <div class="box-text description-box">
-        <strong>Sobre {{mascota().name}}:</strong><br>
-        {{mascota().description}}
+        <strong>Sobre {{pet.name}}:</strong><br>
+        {{pet.description}}
       </div>
     </div>
 

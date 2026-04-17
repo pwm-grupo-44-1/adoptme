@@ -1,11 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-
-interface ContactReason {
-  icon: string;
-  title: string;
-  text: string;
-}
+import { Component, OnInit } from '@angular/core';
+import { DataService } from '../../services/data';
+import { ContactReason } from '../../models/data';
 
 @Component({
   selector: 'app-contact-us',
@@ -14,35 +10,20 @@ interface ContactReason {
   templateUrl: './contact-us.html',
   styleUrl: './contact-us.css'
 })
-export class ContactUs {
-  title = '¿Necesitas ayuda? Estamos aquí para ti y para ellos.';
+export class ContactUs implements OnInit {
+  title = '';
+  reasons: ContactReason[] = [];
+  mapUrl = '';
+  contactInfo: string[] = [];
 
-  reasons: ContactReason[] = [
-    {
-      icon: '📍',
-      title: 'Ven a conocernos',
-      text: 'Puedes visitar nuestras instalaciones y conocer a los animales que buscan hogar.'
-    },
-    {
-      icon: '📞',
-      title: 'Resolvemos tus dudas',
-      text: 'Te ayudamos con información sobre adopciones, requisitos y cuidados.'
-    },
-    {
-      icon: '🤝',
-      title: 'Te acompañamos',
-      text: 'Nuestro equipo te acompaña durante todo el proceso para que encuentres a tu compañero ideal.'
-    }
-  ];
+  constructor(private dataService: DataService) {}
 
-  mapUrl =
-    'https://www.google.com/maps?q=Madrid&output=embed';
-
-  contactInfo: string[] = [
-    'AdoptMe! - Centro de adopción',
-    'Calle Ejemplo 123, Madrid',
-    'Teléfono: 600 123 456',
-    'Email: contacto@adoptme.es',
-    'Horario: Lunes a Viernes de 10:00 a 19:00'
-  ];
+  ngOnInit(): void {
+    this.dataService.getContactUs().subscribe(data => {
+      this.title = data.title;
+      this.reasons = data.reasons;
+      this.mapUrl = data.mapUrl;
+      this.contactInfo = data.info;
+    });
+  }
 }

@@ -1,17 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnInit, ChangeDetectorRef } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { DataService } from '../../services/data';
+import { SocialLink } from '../../models/data';
 
-interface NavLink {
+interface NavLinkExtended {
   name: string;
   url: string;
   mobileOnly?: boolean;
-}
-
-interface SocialLink {
-  name: string;
-  url: string;
-  icon: string;
 }
 
 @Component({
@@ -21,49 +17,45 @@ interface SocialLink {
   templateUrl: './header.html',
   styleUrl: './header.css'
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   menuOpen = false;
+  brandTitle = '';
+  logoUrl = '';
 
-  brandTitle = 'AdoptMe!';
+  navLinks: NavLinkExtended[] = [];
+  socialLinks: SocialLink[] = [];
 
-  navLinks: NavLink[] = [
-    { name: 'Inicio', url: '/' },
-    { name: 'Nosotros', url: '/about-us' },
-    { name: 'Mascotas', url: '/adoption-list' },
-    { name: 'Reserva tu cita', url: '/pet-schedule' },
-    { name: 'Acceder', url: '/login' },
+  // Inyectamos el ChangeDetectorRef
+  constructor(private dataService: DataService, private cdr: ChangeDetectorRef) {}
 
-    // Enlaces del footer: solo visibles dentro de la hamburguesa en móvil
-    { name: 'Historias', url: '/stories', mobileOnly: true },
-    { name: 'Términos legales', url: '/legal', mobileOnly: true },
-    { name: 'FAQ', url: '/faq', mobileOnly: true },
-    { name: 'Contacto', url: '/contact-us', mobileOnly: true }
-  ];
+  ngOnInit(): void {
+    this.dataService.getHeaderData().subscribe(data => {
+      this.brandTitle = data.title;
+      this.logoUrl = data.logo;
+      this.socialLinks = data.socialLinks;
 
-  socialLinks: SocialLink[] = [
-    { name: 'Instagram', url: 'https://instagram.com', icon: 'bi bi-instagram' },
-    { name: 'Twitter', url: 'https://x.com', icon: 'bi bi-twitter-x' },
-    { name: 'YouTube', url: 'https://youtube.com', icon: 'bi bi-youtube' },
-    { name: 'TikTok', url: 'https://tiktok.com', icon: 'bi bi-tiktok' }
-  ];
+      const mainLinks: NavLinkExtended[] = data.navLinks.map(link => ({ ...link }));
 
-  toggleMenu(): void {
-    this.menuOpen = !this.menuOpen;
+      this.dataService.getFooterData().subscribe(footerData => {
+        const mobileLinks: NavLinkExtended[] = footerData.navLinks.map(link => ({
+          ...link,
+          mobileOnly: true
+        }));
+
+        this.navLinks = [...mainLinks, ...mobileLinks];
+
+        // 🚀 Despertamos a Angular para que pinte la barra superior ya
+        this.cdr.detectChanges();
+      });
+    });
   }
 
-  closeMenu(): void {
-    this.menuOpen = false;
-  }
+  toggleMenu(): void { this.menuOpen = !this.menuOpen; }
+  closeMenu(): void { this.menuOpen = false; }
 
   @HostListener('window:resize')
-  onResize(): void {
-    if (window.innerWidth > 700) {
-      this.closeMenu();
-    }
-  }
+  onResize(): void { if (window.innerWidth > 700) this.closeMenu(); }
 
   @HostListener('document:keydown.escape')
-  onEscape(): void {
-    this.closeMenu();
-  }
+  onEscape(): void { this.closeMenu(); }
 }

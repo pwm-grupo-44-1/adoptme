@@ -5,14 +5,16 @@
     </h2>
 
     <div class="contact-reasons">
-      <div class="contact-reason" *ngFor="let reason of reasons">
-        <span class="contact-reason-icon">{{ reason.icon }}</span>
+      @for (reason of reasons; track reason.title) {
+        <div class="contact-reason">
+          <span class="contact-reason-icon">{{ reason.icon }}</span>
 
-        <div class="contact-reason-text">
-          <h3>{{ reason.title }}</h3>
-          <p>{{ reason.text }}</p>
+          <div class="contact-reason-text">
+            <h3>{{ reason.title }}</h3>
+            <p>{{ reason.text }}</p>
+          </div>
         </div>
-      </div>
+      }
     </div>
   </div>
 
@@ -30,7 +32,9 @@
     </div>
 
     <ul class="contact-text">
-      <li *ngFor="let item of contactInfo">{{ item }}</li>
+      @for (item of contactInfo; track item) {
+        <li>{{ item }}</li>
+      }
     </ul>
   </div>
 </div>

@@ -1,23 +1,24 @@
 /* ==========================================================================
    1. ESTILOS DEL PERFIL (BASE / ESCRITORIO)
    ========================================================================== */
-/* 🚀 Le dice a Angular que el componente ocupe todo el ancho para que se centre bien */
+/* 🚀 Cortamos el scroll limitando el componente a la altura de la ventana */
 :host {
-  display: block;
-  flex: 1;
+  display: flex;
   width: 100%;
+  height: calc(100vh - 245px); /* Restamos el header y footer para no hacer scroll */
+  overflow: hidden; /* Cortamos cualquier desbordamiento vertical */
 }
 
 .dog-profile {
   display: flex;
-  align-items: center;
+  align-items: center; /* Alinea verticalmente el carrusel y los datos en el centro del espacio */
   justify-content: center;
-  gap: clamp(2rem, 6vw, 4rem);
+  gap: clamp(2rem, 6vw, 5rem);
   width: 100%;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 1rem var(--site-padding);
-  height: 100%;
+  /* Reducimos el padding vertical a 0 para que no sume altura innecesaria */
+  padding: 0 var(--site-padding);
   box-sizing: border-box;
 }
 
@@ -27,9 +28,12 @@
   justify-content: flex-start;
   gap: 1.2rem;
   width: 100%;
-  max-width: 35rem;
+  max-width: 30rem;
 }
 
+/* ==========================================================================
+   TU CÓDIGO ORIGINAL (A partir de aquí, nada cambia)
+   ========================================================================== */
 /* ── Carrusel ── */
 .profile-carousel {
   display: flex;
@@ -39,12 +43,12 @@
 }
 
 .profile-carousel-track-wrapper {
-  height: clamp(300px, 60vh, 600px);
-  width: auto;
+  /* Ancho fluido entre 18rem y 34rem */
+  width: clamp(15rem, 30vw, 28rem);
   aspect-ratio: 3 / 4;
   overflow: hidden;
   border: 2px solid #4a7477;
-  border-radius: 2.5rem;
+  border-radius: 1rem;
   box-shadow: 0 15px 35px rgba(0,0,0,0.1);
   background: #eee;
   position: relative;
@@ -89,7 +93,7 @@
   border-radius: 1rem;
   border: 1px solid #000;
   width: 100%;
-  padding: clamp(1rem, 2vw, 1.5rem);
+  padding: clamp(0.5rem, 1vw, 1rem);
   text-align: justify;
   font-size: var(--fs-body);
   color: #4a7477;
@@ -154,6 +158,12 @@
 
 /* --- MÓVIL (< 700px) --- */
 @media (max-width: 700px) {
+  /* En móvil devolvemos el scroll porque el contenido se apila */
+  :host {
+    height: auto;
+    overflow: visible;
+  }
+
   .dog-profile {
     flex-direction: column;
     padding: 2rem 1rem; /* Reducimos el padding lateral en móvil para ganar espacio */

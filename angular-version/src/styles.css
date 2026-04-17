@@ -43,9 +43,7 @@
   box-sizing: border-box;
 }
 
-/* 🔥 añadido */
-html,
-body {
+html {
   width: 100%;
   min-height: 100%;
   height: 100%;
@@ -82,7 +80,6 @@ body::before {
   z-index: -1;
 }
 
-/* 🔥 ajustado */
 main {
   flex: 1 1 auto;
   width: 100%;
@@ -92,11 +89,9 @@ main {
   align-items: center;
 }
 
-/* 🔥 añadido/ajustado */
 app-root {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
   width: 100%;
 }
 

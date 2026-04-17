@@ -1,36 +1,31 @@
 <footer class="footer-wrapper">
   <div class="footer">
     <div class="footer-left">
-      <a
-        *ngFor="let link of leftLinks"
-        class="btn footer-btn"
-        [routerLink]="link.url"
-      >
-        {{ link.name }}
-      </a>
+      @for (link of leftLinks; track link.name) {
+        <a [routerLink]="link.url" class="btn secondary">
+          {{ link.name }}
+        </a>
+      }
     </div>
 
     <div class="footer-center">
-      <a
-        class="btn footer-btn footer-btn-center"
-        [routerLink]="centerLink.url"
-      >
-        {{ centerLink.name }}
-      </a>
+      @if (centerLink) {
+        <a [routerLink]="centerLink.url" class="btn primary">
+          {{ centerLink.name }}
+        </a>
+      }
     </div>
 
     <div class="footer-right">
-      <a
-        *ngFor="let link of rightLinks"
-        class="btn footer-btn"
-        [routerLink]="link.url"
-      >
-        {{ link.name }}
-      </a>
+      @for (link of rightLinks; track link.name) {
+        <a [routerLink]="link.url" class="btn secondary">
+          {{ link.name }}
+        </a>
+      }
     </div>
   </div>
 
   <div class="footer-legal">
-    {{ legalText }}
+    <p>{{ legalText }}</p>
   </div>
 </footer>

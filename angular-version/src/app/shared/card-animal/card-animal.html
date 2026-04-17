@@ -1,57 +1,52 @@
-<div class="item-list">
+<article class="item-list">
   <div class="photo-btn-column">
-    <a [routerLink]="['/pet-profile']" [queryParams]="{id: datos.id}">
-      <img class="photo-card-list" [src]="datos.images?.length ? datos.images[0] : (datos.image || '')" alt="Foto de {{datos.name}}">
+    <a [routerLink]="['/pet-profile']" [queryParams]="{id: mascota.id}">
+      <img class="photo-card-list" [src]="mascota.images?.length ? mascota.images[0] : ''" alt="Foto de {{mascota.name}}">
     </a>
 
-    <a class="btn-pet-detail" [routerLink]="['/pet-profile']" [queryParams]="{id: datos.id}">
+    <a class="btn-pet-detail" [routerLink]="['/pet-profile']" [queryParams]="{id: mascota.id}">
       Ver perfil
     </a>
 
-    @if (esAdmin) {
-      <div class="admin-card-actions">
-        <span class="visit-badge"><i class="bi bi-eye"></i> {{datos.clicks || 0}} visitas</span>
+    <div class="admin-card-actions">
+      <span class="visit-badge"><i class="bi bi-eye"></i> {{mascota.clicks || 0}} visitas</span>
 
-        <button
-          class="btn-delete-animal"
-          title="Eliminar animal"
-          (click)="abrirConfirmacion()">
-          <i class="bi bi-trash"></i> Eliminar
+      @if (esAdmin) {
+        <button class="btn-delete-animal" title="Eliminar animal" (click)="abrirConfirmacion()">
+          <i class="bi bi-trash3-fill"></i> Eliminar
         </button>
-      </div>
-    }
+      }
+    </div>
   </div>
 
   <div class="pet-profile-text">
+    <h3 style="color: #4a7477; margin: 0 0 1rem 0; font-size: 1.8rem; font-family: 'Rum Raisin', sans-serif;">{{mascota.name}}</h3>
     <ul>
-      <li><strong>Nombre:</strong> {{datos.name}}</li>
-      <li><strong>Raza:</strong> {{datos.breed}}</li>
+      <li><strong>Raza:</strong> {{mascota.breed}}</li>
       <li><strong>Género:</strong>
-        @if (datos.gender === 'Male') { <i class="bi bi-gender-male"></i> Macho }
-        @else if (datos.gender === 'Female') { <i class="bi bi-gender-female"></i> Hembra }
-        @else { - }
+        @if (mascota.gender === 'Male') { <i class="bi bi-gender-male" style="color: #4a90e2; font-weight: bold;"></i> Macho }
+        @else if (mascota.gender === 'Female') { <i class="bi bi-gender-female" style="color: #e24a90; font-weight: bold;"></i> Hembra }
       </li>
-      <li><strong>Edad:</strong> {{datos.age}} años</li>
-      <li><strong>Peso:</strong> {{datos.weight}}</li>
-      <li><strong>Pelo:</strong> {{datos['hair type']}}</li>
-      <li><strong>Carácter:</strong> {{datos.mood}}</li>
+      <li><strong>Edad:</strong> {{mascota.age}} años</li>
+      <li><strong>Peso:</strong> {{mascota.weight}}</li>
+      <li><strong>Pelo:</strong> {{mascota['hair type']}}</li>
+      <li><strong>Carácter:</strong> {{mascota.mood}}</li>
     </ul>
   </div>
-</div>
 
-@if (mostrarModalEliminar) {
-  <div class="modal-overlay">
-    <div class="modal-box">
-      <div class="modal-icon">
-        <i class="bi bi-exclamation-triangle-fill"></i>
-      </div>
-      <h3>¿Estás seguro?</h3>
-      <p>Vas a eliminar a <strong>{{datos.name}}</strong> de la lista de adopción. Esta acción no se puede deshacer.</p>
-
-      <div class="modal-buttons">
-        <button class="btn-confirm" (click)="confirmarEliminacion()">Sí, eliminar</button>
-        <button class="btn-cancel" (click)="cancelarEliminacion()">Cancelar</button>
+  @if (mostrarModalEliminar) {
+    <div class="modal-overlay">
+      <div class="modal-box">
+        <div class="modal-icon">
+          <i class="bi bi-exclamation-triangle"></i>
+        </div>
+        <h3>¿Eliminar mascota?</h3>
+        <p>Vas a eliminar a <strong>{{mascota.name}}</strong> de la lista de adopción. Esta acción no se puede deshacer.</p>
+        <div class="modal-buttons">
+          <button class="btn-cancel" (click)="cancelarEliminacion()">Cancelar</button>
+          <button class="btn-confirm" (click)="confirmarEliminacion()">Sí, eliminar</button>
+        </div>
       </div>
     </div>
-  </div>
-}
+  }
+</article>

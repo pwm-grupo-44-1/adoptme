@@ -1,11 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { DataService } from '../../services/data';
 
-interface FooterLink {
-  name: string;
-  url: string;
-}
+interface FooterLink { name: string; url: string; }
 
 @Component({
   selector: 'app-footer',
@@ -14,21 +12,32 @@ interface FooterLink {
   templateUrl: './footer.html',
   styleUrl: './footer.css'
 })
-export class FooterComponent {
-  leftLinks: FooterLink[] = [
-    { name: 'Legal', url: '/legal' },
-    { name: 'Historias', url: '/stories' }
-  ];
+export class FooterComponent implements OnInit {
+  leftLinks: FooterLink[] = [];
+  centerLink: FooterLink | null = null;
+  rightLinks: FooterLink[] = [];
+  legalText = '';
 
-  centerLink: FooterLink = {
-    name: 'Reserva tu cita',
-    url: '/pet-schedule'
-  };
+  // Inyectamos el ChangeDetectorRef
+  constructor(private dataService: DataService, private cdr: ChangeDetectorRef) {}
 
-  rightLinks: FooterLink[] = [
-    { name: 'FAQ', url: '/faq' },
-    { name: 'Contacto', url: '/contact-us' }
-  ];
+  ngOnInit(): void {
+    this.dataService.getFooterData().subscribe(data => {
+      this.legalText = data.copyright;
 
-  legalText = '© AdoptMe! Todos los derechos reservados.';
+      if (data.navLinks && data.navLinks.length > 0) {
+        const scheduleLink = data.navLinks.find(l => l.url.includes('schedule'));
+        if (scheduleLink) this.centerLink = scheduleLink;
+
+        const otherLinks = data.navLinks.filter(l => !l.url.includes('schedule'));
+
+        const half = Math.ceil(otherLinks.length / 2);
+        this.leftLinks = otherLinks.slice(0, half);
+        this.rightLinks = otherLinks.slice(half);
+      }
+
+      // 🚀 Despertamos a Angular para que pinte el footer
+      this.cdr.detectChanges();
+    });
+  }
 }

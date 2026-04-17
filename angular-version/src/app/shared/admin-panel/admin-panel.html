@@ -1,83 +1,82 @@
-<!-- ══ PANEL DE ADMINISTRADOR (solo visible si admin) ══ -->
-<div class="admin-panel" aria-label="Panel de administración">
-
+<div class="admin-panel">
   <div class="admin-panel-header">
-    <span class="admin-panel-title"><i class="bi bi-house-gear"></i> Panel de Administrador</span>
-    <button class="admin-toggle-btn" (click)="toggleFormulario()" [attr.aria-expanded]="mostrarFormulario">
-      <i class="bi" [class.bi-plus-circle]="!mostrarFormulario" [class.bi-dash-circle]="mostrarFormulario"></i>
-      {{ mostrarFormulario ? 'Ocultar formulario' : 'Añadir nuevo animal' }}
+    <span class="admin-panel-title"><i class="bi bi-house-gear"></i> Panel de Administración</span>
+    <button class="admin-toggle-btn" (click)="togglePanel()" [attr.aria-expanded]="mostrarPanel">
+      <i class="bi" [class.bi-plus-circle]="!mostrarPanel" [class.bi-dash-circle]="mostrarPanel"></i>
+      {{ mostrarPanel ? 'Ocultar formulario' : 'Añadir nuevo animal' }}
     </button>
   </div>
 
-  @if (mostrarFormulario) {
-    <form class="admin-add-form" [formGroup]="animalForm" (ngSubmit)="onSubmit()" novalidate>
-      <div class="admin-form-grid">
+  @if (mostrarPanel) {
+    <div class="admin-add-form">
+      <form [formGroup]="animalForm" (ngSubmit)="agregarMascota()" novalidate>
+        <div class="admin-form-grid">
+          <div class="admin-field">
+            <label for="name">Nombre</label>
+            <input id="name" type="text" formControlName="name" placeholder="Ej. Toby">
+          </div>
 
-        <div class="admin-field">
-          <label>Nombre *</label>
-          <input type="text" formControlName="nombre" placeholder="Ej: Luna">
-        </div>
+          <div class="admin-field">
+            <label for="breed">Raza</label>
+            <input id="breed" type="text" formControlName="breed" placeholder="Ej. Golden Retriever">
+          </div>
 
-        <div class="admin-field">
-          <label>Género *</label>
-          <select formControlName="genero">
-            <option value="">-- Seleccionar --</option>
-            <option value="Male">Macho</option>
-            <option value="Female">Hembra</option>
-          </select>
-        </div>
+          <div class="admin-field">
+            <label for="gender">Género</label>
+            <select id="gender" formControlName="gender">
+              <option value="Male">Macho</option>
+              <option value="Female">Hembra</option>
+            </select>
+          </div>
 
-        <div class="admin-field">
-          <label>Raza *</label>
-          <input type="text" formControlName="raza" placeholder="Ej: Labrador">
-        </div>
+          <div class="admin-field">
+            <label for="age">Edad (años)</label>
+            <input id="age" type="number" formControlName="age" min="0">
+          </div>
 
-        <div class="admin-field">
-          <label>Edad (años) *</label>
-          <input type="number" formControlName="edad" min="0" max="30" placeholder="Ej: 3">
-        </div>
+          <div class="admin-field">
+            <label for="weight">Peso</label>
+            <input id="weight" type="text" formControlName="weight" placeholder="Ej. 15 kg">
+          </div>
 
-        <div class="admin-field">
-          <label>Peso *</label>
-          <input type="text" formControlName="peso" placeholder="Ej: 12 kg">
-        </div>
+          <div class="admin-field">
+            <label for="hair-type">Tipo de Pelo</label>
+            <input id="hair-type" type="text" formControlName="hair type" placeholder="Ej. Corto">
+          </div>
 
-        <div class="admin-field">
-          <label>Tipo de pelo *</label>
-          <input type="text" formControlName="pelo" placeholder="Ej: Pelo corto liso">
-        </div>
+          <div class="admin-field">
+            <label for="mood">Carácter</label>
+            <input id="mood" type="text" formControlName="mood" placeholder="Ej. Juguetón">
+          </div>
 
-        <div class="admin-field">
-          <label>Carácter *</label>
-          <input type="text" formControlName="caracter" placeholder="Ej: Alegre y juguetona">
-        </div>
+          <div class="admin-field admin-field--full">
+            <label for="description">Descripción</label>
+            <textarea id="description" rows="3" formControlName="description" placeholder="Cuenta un poco sobre el animal..."></textarea>
+          </div>
 
-        <div class="admin-field admin-field--full">
-          <label>Imágenes * <span style="font-weight:400;text-transform:none;">(la primera será la principal)</span></label>
-          <div class="admin-file-picker">
-            <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" multiple style="display:none;">
-            <button type="button" class="admin-file-btn" (click)="fileInput.click()">
-              <i class="bi bi-images"></i> Seleccionar imágenes
-            </button>
-            <span class="admin-file-name">{{ nombreArchivoSeleccionado || 'Ningún archivo seleccionado' }}</span>
+          <div class="admin-field admin-field--full">
+            <label>Fotos del animal</label>
+            <div class="admin-file-picker">
+              <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" id="file-upload" style="display: none;">
+              <button type="button" class="admin-file-btn" (click)="fileInput.click()">
+                <i class="bi bi-images"></i> Seleccionar foto
+              </button>
+              <span class="admin-file-name">{{ nombreArchivoSeleccionado || 'Ningún archivo seleccionado' }}</span>
+            </div>
+            <input type="hidden" formControlName="images">
           </div>
         </div>
 
-        <div class="admin-field admin-field--full">
-          <label>Descripción *</label>
-          <textarea formControlName="descripcion" rows="2" placeholder="Describe la personalidad..."></textarea>
+        <div class="admin-form-actions">
+          <button type="button" class="admin-cancel-btn" (click)="togglePanel()">Cancelar</button>
+          <button type="submit" class="admin-submit-btn" [disabled]="animalForm.invalid">
+            <i class="bi bi-check-circle"></i> Guardar Animal
+          </button>
+          @if (animalForm.invalid) {
+            <span class="admin-form-note">* Rellena todos los campos</span>
+          }
         </div>
-
-      </div>
-
-      <div class="admin-form-actions">
-        <button type="submit" class="admin-submit-btn" [disabled]="animalForm.invalid">
-          <i class="bi bi-check-circle"></i> Añadir animal
-        </button>
-        <button type="button" class="admin-cancel-btn" (click)="toggleFormulario()">Cancelar</button>
-        <span class="admin-form-note">* Todos los campos son obligatorios</span>
-      </div>
-    </form>
+      </form>
+    </div>
   }
-
 </div>

@@ -33,6 +33,7 @@
   align-content: center;
   justify-content: center;
   font-size: clamp(0.95rem, 1vw + 0.6rem, 2rem);
+  gap: 2rem;
 }
 
 .footer-center {
@@ -44,7 +45,7 @@
 .footer-legal {
   grid-column: 1 / -1;
   justify-content: center;
-  font-size: 1.3em;
+  font-size: 1rem;
   color: var(--text-muted);
   background-color: aliceblue;
   text-align: center;

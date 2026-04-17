@@ -1,7 +1,8 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MascotasService } from '../../services/MascotasServices';
 import { CommonModule } from '@angular/common';
+import { DataService } from '../../services/data';
+import { Animal } from '../../models/animal';
 
 @Component({
   selector: 'app-pet-profile',
@@ -11,32 +12,34 @@ import { CommonModule } from '@angular/common';
   styleUrl: './pet-profile.css'
 })
 export class PetProfile implements OnInit {
-  mascota = signal<any>(null);
+  mascota = signal<Animal | null>(null);
   currentImageIndex = signal(0);
-  // Controla si la transición CSS está activa o no
   isAnimating = signal(true);
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private mascotasService: MascotasService
+    private dataService: DataService
   ) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       const id = +params['id'];
 
-      // 🚀 MAGIA: Llamamos al servicio para sumar una visita a este ID
       if (id) {
-        this.mascotasService.incrementarVisitas(id);
+        this.dataService.incrementarVisitas(id);
       }
 
-      this.mascotasService.mascotas$.subscribe(lista => {
-        const encontrada = lista.find((m: any) => m.id === id);
+      this.dataService.mascotas$.subscribe(lista => {
+        // 🚀 LA SOLUCIÓN: Si la lista está vacía, estamos esperando al JSON. No hagas nada.
+        if (lista.length === 0) return;
+
+        const encontrada = lista.find(m => m.id === id);
+
         if (encontrada) {
           this.mascota.set(encontrada);
         } else {
-          // Si no encuentra la mascota, lo devolvemos a la lista de adopción
+          // Solo te echa si el JSON ya cargó y el animal de verdad no existe
           this.router.navigate(['/adoption-list']);
         }
       });
@@ -44,31 +47,30 @@ export class PetProfile implements OnInit {
   }
 
   nextImage() {
-    const totalOriginals = this.mascota().images.length;
+    const animal = this.mascota();
+    if (!animal) return;
+    const totalOriginals = animal.images.length;
 
     this.isAnimating.set(true);
     this.currentImageIndex.update(i => i + 1);
 
-    // Si llegamos al clon (la posición después de la última)
     if (this.currentImageIndex() === totalOriginals) {
       setTimeout(() => {
-        // Desactivamos la animación y saltamos al inicio real (0)
         this.isAnimating.set(false);
         this.currentImageIndex.set(0);
-      }, 400); // 400ms debe coincidir con el tiempo del CSS transition
+      }, 400);
     }
   }
 
   prevImage() {
-    const totalOriginals = this.mascota().images.length;
+    const animal = this.mascota();
+    if (!animal) return;
+    const totalOriginals = animal.images.length;
 
     if (this.currentImageIndex() === 0) {
-      // Si estamos en el inicio y queremos ir atrás:
-      // 1. Saltamos al clon sin que se vea
       this.isAnimating.set(false);
       this.currentImageIndex.set(totalOriginals);
 
-      // 2. Un pequeño delay para que el navegador procese el cambio y luego animamos hacia la última real
       setTimeout(() => {
         this.isAnimating.set(true);
         this.currentImageIndex.set(totalOriginals - 1);
