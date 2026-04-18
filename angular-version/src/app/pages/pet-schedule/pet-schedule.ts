@@ -1,55 +1,47 @@
-//TODO: no se puede reservar más de 2 citas por día.
+//TODO: no se puede reservar mas de 2 citas por dia.
 
-//Hay que hacer un panel de administración para el usuario "admin" para gestionar las citas de los usuarios registrados.
+//TODO: Hay que hacer un panel de administracion para el usuario "admin" con una pestana para gestionar las citas de los usuarios registrados y cuando confirme citas, que se envie un correo electronico al usuario.
+
+//TODO: En el panel de administracion debe haber tambien una pestana con un panel para configurar el horario de visitas. Por ejemplo, las visitas a mascotas solo podran ser de lunes a viernes de 10h a 18h, sabados de 9h a 13h y domingo no hay citas disponibles.
 
 //TODO:permitir citas solo hasta dentro de 1 mes por adelantado.
 
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Animal } from '../../models/animal';
 import { AppointmentBooking } from '../../models/booking';
 import { DataService } from '../../services/data';
 import { LocalJsonService } from '../../services/local-json';
-
-interface CalendarDay {
-  dayNumber: number | null;
-  isoDate: string;
-  isSelected: boolean;
-  isToday: boolean;
-  isDisabled: boolean;
-  freeSlots: number;
-  isPlaceholder: boolean;
-}
-
-interface SlotState {
-  time: string;
-  isBooked: boolean;
-  isExpired: boolean;
-}
-
-interface BookingFormModel {
-  contactName: string;
-  email: string;
-  phone: string;
-  animalId: number | null;
-  notes: string;
-}
+import { AvailableSlots } from '../../shared/available-slots/available-slots';
+import { MonthCalendar } from '../../shared/month-calendar/month-calendar';
+import { ScheduleFormField } from '../../shared/schedule-form-field/schedule-form-field';
+import { UpcomingBookings } from '../../shared/upcoming-bookings/upcoming-bookings';
+import {
+  BookingFormModel,
+  CalendarDay,
+  SlotState,
+  UpcomingBookingView,
+} from './pet-schedule.models';
 
 @Component({
   selector: 'app-pet-schedule',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MonthCalendar, AvailableSlots, ScheduleFormField, UpcomingBookings],
   templateUrl: './pet-schedule.html',
   styleUrl: './pet-schedule.css',
+  encapsulation: ViewEncapsulation.None,
 })
 export class PetSchedule implements OnInit {
   readonly weekDays = ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom'];
   readonly bookingSuccessMessage = 'Su cita sera confirmada por correo electronico.';
+  readonly contactNamePattern = "^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+(?:[\\s'-][A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+)+$";
   readonly emailPattern = '^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$';
-  readonly phonePattern = '^(?:\\+?\\d[\\d\\s()\\-]{7,}\\d)$';
+  readonly phonePattern = '^(?:[6789]\\d{8}|\\+34[6789]\\d{8}|\\+(?!34)[1-9]\\d{5,16})$';
   readonly slotValidationMessage = 'Debes elegir una hora disponible';
+  readonly weekdayScheduleSlots = this.buildHourlySlots(10, 18);
+  readonly saturdayScheduleSlots = this.buildHourlySlots(9, 13);
 
   scheduleSlots: string[] = [];
   animals: Animal[] = [];
@@ -61,6 +53,11 @@ export class PetSchedule implements OnInit {
   isLoading = true;
   isBookingJustConfirmed = false;
   showSlotValidationError = false;
+  fieldTouched = {
+    contactName: false,
+    email: false,
+    phone: false,
+  };
 
   statusTone: 'success' | 'error' | 'info' = 'info';
   statusMessage = '';
@@ -80,7 +77,7 @@ export class PetSchedule implements OnInit {
     private dataService: DataService,
     private localJsonService: LocalJsonService,
     private route: ActivatedRoute
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.bookings = this.sortBookings(this.localJsonService.getBookings());
@@ -96,13 +93,16 @@ export class PetSchedule implements OnInit {
 
     this.dataService.getSchedule().subscribe({
       next: (scheduleData) => {
-        const fallbackSlots = ['10:00', '11:00', '12:00', '13:00', '16:00', '17:00', '18:00'];
-        this.scheduleSlots = scheduleData?.slots?.length ? scheduleData.slots : fallbackSlots;
+        const fallbackSlots = this.buildHourlySlots(9, 18);
+        this.scheduleSlots = this.sortSlots([
+          ...fallbackSlots,
+          ...(scheduleData?.slots ?? []),
+        ]);
         this.isLoading = false;
         this.ensureSelectedDate();
       },
       error: () => {
-        this.scheduleSlots = ['10:00', '11:00', '12:00', '13:00', '16:00', '17:00', '18:00'];
+        this.scheduleSlots = this.buildHourlySlots(9, 18);
         this.isLoading = false;
         this.setStatus('error', 'No se pudo cargar la agenda. Se muestran los horarios por defecto.');
         this.ensureSelectedDate();
@@ -128,7 +128,7 @@ export class PetSchedule implements OnInit {
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     const firstWeekDayOffset = this.getMonthFirstWeekDayOffset(year, month);
 
-    const leadingPlaceholders = Array.from({ length: firstWeekDayOffset }, () => ({
+    const leadingPlaceholders: CalendarDay[] = Array.from({ length: firstWeekDayOffset }, () => ({
       dayNumber: null,
       isoDate: '',
       isSelected: false,
@@ -138,7 +138,7 @@ export class PetSchedule implements OnInit {
       isPlaceholder: true,
     }));
 
-    const monthDays = Array.from({ length: daysInMonth }, (_, index) => {
+    const monthDays: CalendarDay[] = Array.from({ length: daysInMonth }, (_, index) => {
       const dayNumber = index + 1;
       const isoDate = this.toIsoDate(new Date(year, month, dayNumber));
       const freeSlots = this.getFreeSlotCount(isoDate);
@@ -178,7 +178,7 @@ export class PetSchedule implements OnInit {
       return [];
     }
 
-    return this.scheduleSlots.map((time) => ({
+    return this.getAllowedSlotsForDate(this.selectedDate).map((time) => ({
       time,
       isBooked: this.isSlotBooked(this.selectedDate, time),
       isExpired: this.isSlotExpired(this.selectedDate, time),
@@ -192,6 +192,30 @@ export class PetSchedule implements OnInit {
       const bookingDate = this.combineDateAndSlot(booking.date, booking.slot);
       return bookingDate >= now;
     });
+  }
+
+  get upcomingBookingViews(): UpcomingBookingView[] {
+    return this.upcomingBookings.map((booking) => ({
+      id: booking.id,
+      dateLabel: this.formatDate(booking.date),
+      metaLabel: `${booking.slot}h · ${this.animalName(booking.animalId)}`,
+      contactLabel: `${booking.contactName} \n ${booking.email}`,
+    }));
+  }
+
+  get isContactNameInvalid(): boolean {
+    const value = this.bookingForm.contactName.trim();
+    return !value || !new RegExp(this.contactNamePattern).test(value);
+  }
+
+  get isEmailInvalid(): boolean {
+    const value = this.bookingForm.email.trim();
+    return !value || !new RegExp(this.emailPattern).test(value);
+  }
+
+  get isPhoneInvalid(): boolean {
+    const value = this.bookingForm.phone.trim();
+    return !value || !new RegExp(this.phonePattern).test(value);
   }
 
   changeMonth(step: number): void {
@@ -239,6 +263,10 @@ export class PetSchedule implements OnInit {
     this.clearStatus();
   }
 
+  markFieldAsTouched(field: 'contactName' | 'email' | 'phone'): void {
+    this.fieldTouched[field] = true;
+  }
+
   confirmBooking(form: NgForm): void {
     if (!this.selectedDate) {
       this.setStatus('error', 'Selecciona primero un dia disponible.');
@@ -253,7 +281,7 @@ export class PetSchedule implements OnInit {
 
     if (form.invalid) {
       this.setStatus('error', this.getBookingFormError(form));
-      this.scrollToPageStart();
+      // this.scrollToPageStart();
       return;
     }
 
@@ -300,6 +328,11 @@ export class PetSchedule implements OnInit {
       phone: '',
       notes: '',
     };
+    this.fieldTouched = {
+      contactName: false,
+      email: false,
+      phone: false,
+    };
   }
 
   cancelBooking(bookingId: string): void {
@@ -317,7 +350,7 @@ export class PetSchedule implements OnInit {
 
     this.setStatus(
       'info',
-      `Se ha cancelado la cita del ${this.formatDate(booking.date)} a las ${booking.slot}.`
+      `Se ha cancelado la cita del ${this.formatDate(booking.date)} a las ${booking.slot}h.`
     );
 
     if (!this.selectedDate.startsWith(this.monthPrefix(this.visibleMonth))) {
@@ -325,14 +358,6 @@ export class PetSchedule implements OnInit {
     }
 
     this.ensureSelectedDate();
-  }
-
-  trackByDate(index: number, day: CalendarDay): string {
-    return day.isoDate || `placeholder-${index}`;
-  }
-
-  trackByBooking(_: number, booking: AppointmentBooking): string {
-    return booking.id;
   }
 
   animalName(animalId: number | null): string {
@@ -397,11 +422,21 @@ export class PetSchedule implements OnInit {
       return 0;
     }
 
-    return this.scheduleSlots.filter((slot) => this.isSlotSelectable(isoDate, slot)).length;
+    return this.getAllowedSlotsForDate(isoDate).filter((slot) => this.isSlotSelectable(isoDate, slot)).length;
   }
 
   private isSlotSelectable(isoDate: string, slot: string): boolean {
-    return Boolean(isoDate) && !this.isSlotBooked(isoDate, slot) && !this.isSlotExpired(isoDate, slot);
+    return (
+      Boolean(isoDate) &&
+      this.getAllowedSlotsForDate(isoDate).includes(slot) &&
+      !this.hasReachedDailyBookingLimit(isoDate) &&
+      !this.isSlotBooked(isoDate, slot) &&
+      !this.isSlotExpired(isoDate, slot)
+    );
+  }
+
+  private hasReachedDailyBookingLimit(isoDate: string): boolean {
+    return this.bookings.filter((booking) => booking.date === isoDate).length >= 2;
   }
 
   private isSlotBooked(isoDate: string, slot: string): boolean {
@@ -474,10 +509,39 @@ export class PetSchedule implements OnInit {
     return `${Date.now()}-${Math.random().toString(16).slice(2, 8)}`;
   }
 
+  private getAllowedSlotsForDate(isoDate: string): string[] {
+    if (!isoDate) {
+      return [];
+    }
+
+    const dayOfWeek = this.parseIsoDate(isoDate).getDay();
+
+    if (dayOfWeek === 0) {
+      return [];
+    }
+
+    const allowedSlots = dayOfWeek === 6 ? this.saturdayScheduleSlots : this.weekdayScheduleSlots;
+    return allowedSlots.filter((slot) => this.scheduleSlots.includes(slot));
+  }
+
+  private buildHourlySlots(startHour: number, endHour: number): string[] {
+    return Array.from({ length: endHour - startHour + 1 }, (_, index) =>
+      `${String(startHour + index).padStart(2, '0')}:00`
+    );
+  }
+
+  private sortSlots(slots: string[]): string[] {
+    return [...new Set(slots)].sort((left, right) => left.localeCompare(right));
+  }
+
   private getBookingFormError(form: NgForm): string {
     const contactNameErrors = form.controls['contactName']?.errors;
     if (contactNameErrors?.['required']) {
       return 'Introduce el nombre completo para reservar la cita.';
+    }
+
+    if (contactNameErrors?.['pattern']) {
+      return 'Introduce un nombre y apellidos validos.';
     }
 
     const emailErrors = form.controls['email']?.errors;

@@ -1,4 +1,4 @@
-:host {
+app-pet-schedule {
   display: block;
   width: 100%;
 }
@@ -288,17 +288,16 @@
   opacity: 0.45;
   cursor: no-drop;
 }
-}
 
 .booking-form {
   gap: 0.95rem;
 }
 
 .booking-form label {
-    display: grid;
-    gap: 0.45rem;
-    font-family: "Montserrat", "Fira Sans Condensed", sans-serif;
-    margin: 0.5rem 0;
+  display: grid;
+  gap: 0.45rem;
+  font-family: "Montserrat", "Fira Sans Condensed", sans-serif;
+  margin: 0.5rem 0;
 }
 
 .booking-form input,
@@ -330,11 +329,13 @@
 }
 
 .form-summary div {
-  padding: 0.95rem;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.66);
-  display: grid;
-  gap: 0.3rem;
+    padding: 0.95rem;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.66);
+    display: grid;
+    gap: 0.3rem;
+    font-size: 1.3rem;
+    font-weight: 100;
 }
 
 .form-summary span {
@@ -349,12 +350,12 @@
   padding: 0.95rem 1.1rem;
   border-radius: 16px;
   font-size: 1rem;
-  font-weight: 700;
 }
 
 .submit-btn {
   background: var(--color-accent);
   color: #fff;
+  font-size: 1.5rem;
 }
 
 .booking-feedback {
@@ -396,6 +397,7 @@
 
 .booking-contact {
   margin-top: 0.2rem;
+  white-space: pre-line;
 }
 
 .empty-state {
