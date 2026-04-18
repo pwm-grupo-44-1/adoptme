@@ -84,4 +84,11 @@ export class PetProfile implements OnInit {
   volver() {
     this.router.navigate(['/adoption-list']);
   }
+
+  reservarCita() {
+    const animal = this.mascota();
+    this.router.navigate(['/pet-schedule'], {
+      queryParams: animal ? { id: animal.id } : undefined,
+    });
+  }
 }

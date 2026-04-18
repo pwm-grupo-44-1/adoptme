@@ -32,7 +32,7 @@
 }
 
 .logo-img {
-  width: 100px;
+  width: 8rem;
   height: auto;
   object-fit: contain;
   display: block;
@@ -45,13 +45,14 @@
   align-items: flex-start;
   justify-content: flex-start;
   gap: 0.6rem;
+  margin: auto 0;
 }
 
 .brand-text {
   text-decoration: none;
   color: #4a7477;
   font-family: "Rum Raisin", Arial, Helvetica, sans-serif;
-  font-size: clamp(2.2rem, 2.5vw, 3.2rem);
+  font-size: clamp(3.1rem, 2.5vw, 3.2rem);
   line-height: 1;
 }
 
@@ -118,15 +119,15 @@
 
 .hamburger-btn span {
   display: block;
-  width: 22px;
-  height: 3px;
+  width: 2rem;
+  height: 4px;
   background: #4a7477;
   border-radius: 999px;
   transition: transform 0.25s ease, opacity 0.25s ease;
 }
 
 .hamburger-btn span.active-top {
-  transform: translateY(6px) rotate(45deg);
+  transform: translateY(9px) rotate(45deg);
 }
 
 .hamburger-btn span.active-middle {
@@ -134,7 +135,7 @@
 }
 
 .hamburger-btn span.active-bottom {
-  transform: translateY(-6px) rotate(-45deg);
+  transform: translateY(-9px) rotate(-45deg);
 }
 
 .nav-overlay {
@@ -202,12 +203,12 @@
   }
 
   .logo-img {
-    width: 60px;
-    margin-top: 10px;
+    width: 6rem;
+    margin-top: 0.5rem;
   }
 
   .brand-text {
-    font-size: 2rem;
+    font-size: 2.7rem;
   }
 
   .socials {

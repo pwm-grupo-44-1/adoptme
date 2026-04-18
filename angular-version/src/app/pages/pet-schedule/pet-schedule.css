@@ -1,0 +1,441 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.schedule-shell {
+  width: min(1380px, 100%);
+  padding: clamp(1.5rem, 3vw, 3rem) var(--site-padding) clamp(3rem, 6vw, 4rem);
+  display: grid;
+  gap: 1.5rem;
+  margin: 1rem auto;
+}
+
+.schedule-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: stretch;
+}
+
+.hero-copy,
+.calendar-card,
+.slots-card,
+.form-card,
+.bookings-card,
+.loading-card,
+.status-banner {
+  border: 1px solid rgba(74, 116, 119, 0.16);
+  border-radius: 1rem;
+  background: rgba(255, 250, 224, 0.88);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 18px 50px rgba(74, 116, 119, 0.12);
+}
+
+.hero-copy {
+  padding: clamp(1.75rem, 3vw, 2.75rem);
+}
+
+.eyebrow,
+.section-label,
+.panel-label {
+  font-family: 'Montserrat', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.78rem;
+  color: rgba(74, 116, 119, 0.74);
+}
+
+.hero-copy h1,
+.section-head h2,
+.calendar-toolbar h2 {
+  margin-top: 0.55rem;
+  color: var(--color-text);
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: 0.95;
+}
+
+.hero-text {
+  margin-top: 1rem;
+  font-family: 'Fira Sans Condensed', sans-serif;
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
+  line-height: 1.55;
+}
+
+.hero-tag {
+  margin-top: 1.25rem;
+  display: inline-flex;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.8rem 1rem;
+  border-radius: 999px;
+  background: rgba(16, 148, 109, 0.12);
+  color: var(--color-text);
+}
+
+.status-banner,
+.loading-card {
+  padding: 1rem 1.25rem;
+  font-family: 'Fira Sans Condensed', sans-serif;
+}
+
+.status-banner {
+  border-left: 6px solid rgba(74, 116, 119, 0.5);
+}
+
+.status-banner.success {
+  border-left-color: var(--color-accent);
+}
+
+.status-banner.error {
+  border-left-color: var(--color-danger);
+  color: var(--color-danger);
+  font-weight: 600;
+  font-size: large;
+  background-color: var(--color-primary);
+}
+
+.schedule-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.95fr);
+  gap: 1.5rem;
+}
+
+.calendar-card,
+.slots-card,
+.form-card,
+.bookings-card {
+  padding: 1.35rem;
+}
+
+.calendar-card,
+.form-card {
+  min-height: 100%;
+}
+
+.calendar-toolbar,
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.1rem;
+}
+
+.calendar-toolbar h2,
+.section-head h2 {
+  font-size: clamp(2rem, 2vw, 2rem);
+}
+
+.availability-label-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.availability-error {
+  color: var(--color-danger);
+  font-family: 'Fira Sans Condensed', sans-serif;
+  font-size: 0.92rem;
+}
+
+.month-nav {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: var(--color-text);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.month-nav:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.month-nav:not(:disabled):hover {
+  background: var(--color-accent);
+  color: #fff;
+}
+
+.availability-pill {
+  padding: 0.45rem 0.8rem;
+  border-radius: 999px;
+  background: rgba(253, 219, 114, 0.55);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.8rem;
+}
+
+.availability-pill.accent {
+  background: rgba(16, 148, 109, 0.14);
+}
+
+.week-days,
+.days-grid,
+.slots-grid,
+.booking-list,
+.booking-form {
+  display: grid;
+}
+
+.week-days {
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin-bottom: 0.8rem;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  color: rgba(74, 116, 119, 0.75);
+}
+
+.week-days span {
+  text-align: center;
+}
+
+.days-grid {
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.day-cell {
+  min-height: 5.2rem;
+  padding: 0.75rem 0.4rem;
+  border-radius: 20px;
+  border: 1px solid rgba(74, 116, 119, 0.12);
+  background: rgba(255, 255, 255, 0.74);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--color-text);
+}
+
+.day-cell.placeholder {
+  border-color: transparent;
+  background: transparent;
+  pointer-events: none;
+}
+
+.day-cell:hover:not(:disabled),
+.slot-chip:hover:not(:disabled),
+.submit-btn:hover,
+.cancel-btn:hover {
+  transform: translateY(-2px);
+}
+
+.day-number {
+  font-size: 1.35rem;
+}
+
+.day-cell small {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.68rem;
+  opacity: 0.75;
+}
+
+.day-cell.today {
+  outline: 2px solid rgba(16, 148, 109, 0.35);
+}
+
+.day-cell.selected {
+  background: linear-gradient(180deg, rgba(16, 148, 109, 0.92), rgba(74, 116, 119, 0.92));
+  color: #fff;
+}
+
+.day-cell.disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+
+.slots-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.slot-chip {
+  padding: 0.95rem 1rem;
+  border-radius: 20px;
+  border: 1px solid rgba(74, 116, 119, 0.12);
+  background: rgba(255, 255, 255, 0.74);
+  display: grid;
+  gap: 0.25rem;
+  text-align: left;
+  color: var(--color-text);
+}
+
+.slot-chip span {
+  font-size: 1.25rem;
+}
+
+.slot-chip small {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.slot-chip.selected {
+  border-color: transparent;
+  background: linear-gradient(180deg, rgba(253, 219, 114, 0.95), rgba(236, 229, 156, 0.95));
+}
+
+.slot-chip.booked,
+.slot-chip.expired {
+  opacity: 0.45;
+  cursor: no-drop;
+}
+}
+
+.booking-form {
+  gap: 0.95rem;
+}
+
+.booking-form label {
+    display: grid;
+    gap: 0.45rem;
+    font-family: "Montserrat", "Fira Sans Condensed", sans-serif;
+    margin: 0.5rem 0;
+}
+
+.booking-form input,
+.booking-form select,
+.booking-form textarea {
+  width: 100%;
+  padding: 0.85rem 0.95rem;
+  border-radius: 16px;
+  border: 1px solid rgba(74, 116, 119, 0.16);
+  background: rgba(255, 255, 255, 0.82);
+  color: var(--color-text);
+  font: inherit;
+}
+
+.booking-form textarea {
+  resize: vertical;
+  min-height: 7rem;
+}
+
+.field-error {
+  color: var(--color-danger);
+  font-size: 0.9rem;
+}
+
+.form-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.form-summary div {
+  padding: 0.95rem;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.66);
+  display: grid;
+  gap: 0.3rem;
+}
+
+.form-summary span {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  color: rgba(74, 116, 119, 0.74);
+}
+
+.submit-btn,
+.cancel-btn {
+  padding: 0.95rem 1.1rem;
+  border-radius: 16px;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.submit-btn {
+  background: var(--color-accent);
+  color: #fff;
+}
+
+.booking-feedback {
+  margin: 0;
+  font-family: 'Fira Sans Condensed', sans-serif;
+  color: var(--color-accent);
+}
+
+.cancel-btn {
+  background: rgba(192, 57, 43, 0.1);
+  color: var(--color-danger);
+}
+
+.booking-list {
+  gap: 0.85rem;
+}
+
+.booking-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.68);
+  border: 1px solid rgba(74, 116, 119, 0.1);
+}
+
+.booking-date {
+  font-size: 1.05rem;
+}
+
+.booking-meta,
+.booking-contact,
+.empty-state {
+  font-family: 'Fira Sans Condensed', sans-serif;
+  color: rgba(74, 116, 119, 0.86);
+}
+
+.booking-contact {
+  margin-top: 0.2rem;
+}
+
+.empty-state {
+  padding: 1rem 0 0.5rem;
+}
+
+@media (max-width: 1100px) {
+
+  .schedule-hero,
+  .schedule-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .schedule-shell {
+    padding-inline: 1rem;
+  }
+
+  .days-grid {
+    gap: 0.45rem;
+  }
+
+  .day-cell {
+    min-height: 4.35rem;
+    border-radius: 16px;
+  }
+
+  .day-number,
+  .slot-chip span {
+    font-size: 1rem;
+  }
+
+  .slots-grid,
+  .form-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-item {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

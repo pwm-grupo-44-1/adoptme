@@ -1,7 +1,7 @@
 <article class="item-list">
   <div class="photo-btn-column">
     <a [routerLink]="['/pet-profile']" [queryParams]="{id: mascota.id}">
-      <img class="photo-card-list" [src]="mascota.images?.length ? mascota.images[0] : ''" alt="Foto de {{mascota.name}}">
+      <img class="photo-card-list" [src]="mascota.images.length ? mascota.images[0] : ''" alt="Foto de {{mascota.name}}">
     </a>
 
     <a class="btn-pet-detail" [routerLink]="['/pet-profile']" [queryParams]="{id: mascota.id}">

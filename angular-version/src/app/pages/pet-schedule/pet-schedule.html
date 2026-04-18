@@ -1,1 +1,227 @@
-<p>pet-schedule works!</p>
+<section class="schedule-shell">
+  <header class="schedule-hero">
+    <div class="hero-copy">
+      <h1>Calendario de citas</h1>
+      <p class="hero-text">
+        Reserva cita para conocer a la mascota o resolver dudas con el equipo.
+      </p>
+      <p>
+        Elige día y hora e introduce tus datos de contacto para poder confirmarte la cita.
+      </p>
+      @if (selectedAnimal; as animal) {
+      <div class="hero-tag">
+        Preparando cita para <strong>{{ animal.name }}</strong>
+      </div>
+      }
+    </div>
+  </header>
+
+  @if (statusMessage) {
+  <p #statusBanner class="status-banner" [class.success]="statusTone === 'success'"
+    [class.error]="statusTone === 'error'">
+    {{ statusMessage }}
+  </p>
+  }
+
+  @if (isLoading) {
+  <div class="loading-card">Cargando agenda...</div>
+  } @else {
+  <div class="schedule-grid">
+    <section class="calendar-card">
+      <div class="calendar-toolbar">
+        <button type="button" class="month-nav" (click)="changeMonth(-1)" [disabled]="!canGoToPreviousMonth">
+          <i class="bi bi-arrow-left"></i>
+        </button>
+
+        <div>
+          <h2>{{ monthTitle }}</h2>
+        </div>
+
+        <button type="button" class="month-nav" (click)="changeMonth(1)">
+          <i class="bi bi-arrow-right"></i>
+        </button>
+      </div>
+
+      <div class="week-days">
+        @for (weekDay of weekDays; track weekDay) {
+        <span>{{ weekDay }}</span>
+        }
+      </div>
+
+      <div class="days-grid">
+        @for (day of calendarDays; track trackByDate($index, day)) {
+        @if (day.isPlaceholder) {
+        <div class="day-cell placeholder" aria-hidden="true"></div>
+        } @else {
+        <button type="button" class="day-cell" [class.selected]="day.isSelected" [class.today]="day.isToday"
+          [class.disabled]="day.isDisabled" [disabled]="day.isDisabled" (click)="selectDate(day.isoDate)">
+          <span class="day-number">{{ day.dayNumber }}</span>
+          <small>{{ day.freeSlots }} libres</small>
+        </button>
+        }
+        }
+      </div>
+    </section>
+
+    <section class="slots-card">
+      <div class="section-head">
+        <div>
+          <div class="availability-label-row">
+            <p class="section-label">Disponibilidad</p>
+
+          </div>
+          <h2>{{ selectedDate ? selectedDateLabel : 'Sin fecha activa' }}</h2>
+        </div>
+      </div>
+
+      @if (!selectedDate) {
+      <p class="empty-state">
+        No quedan huecos en este mes. Prueba con el siguiente mes para seguir reservando.
+      </p>
+      } @else {
+      <div class="slots-grid">
+        @for (slot of selectedDaySlots; track slot.time) {
+        <button type="button" class="slot-chip" [class.selected]="selectedSlot === slot.time"
+          [class.booked]="slot.isBooked" [class.expired]="slot.isExpired" [disabled]="slot.isBooked || slot.isExpired"
+          (click)="selectSlot(slot)">
+          <span>{{ slot.time }}</span>
+          <small>
+            @if (slot.isBooked) {
+            Reservado
+            } @else if (slot.isExpired) {
+            No disponible
+            } @else {
+            Disponible
+            }
+          </small>
+        </button>
+        }
+      </div>
+      }
+    </section>
+
+    <section class="form-card">
+      <div class="section-head">
+        <div>
+          <p class="section-label">Datos de la cita</p>
+          <h2>Confirma tu reserva</h2>
+        </div>
+        <span class="availability-pill accent">Paso final</span>
+      </div>
+
+      <form #appointmentForm="ngForm" class="booking-form" (ngSubmit)="confirmBooking(appointmentForm)">
+        <label>
+          Nombre completo
+          <input type="text" name="contactName" [(ngModel)]="bookingForm.contactName" #contactNameModel="ngModel"
+            required
+            placeholder="Quien asistira a la visita">
+          @if (contactNameModel.invalid && (contactNameModel.dirty || contactNameModel.touched || appointmentForm.submitted)) {
+          <small class="field-error">Introduce el nombre completo.</small>
+          }
+        </label>
+
+        <label>
+          Correo electronico
+          <input type="email" name="email" [(ngModel)]="bookingForm.email" #emailModel="ngModel" required email
+            [pattern]="emailPattern" placeholder="tu@correo.com" inputmode="email" autocomplete="email">
+          @if (emailModel.invalid && (emailModel.dirty || emailModel.touched || appointmentForm.submitted)) {
+          <small class="field-error">
+            @if (emailModel.errors?.['required']) {
+            Introduce un correo electronico.
+            } @else {
+            Introduce un correo electronico valido.
+            }
+          </small>
+          }
+        </label>
+
+        <label>
+          Telefono
+          <input type="tel" name="phone" [(ngModel)]="bookingForm.phone" #phoneModel="ngModel" required
+            [pattern]="phonePattern" placeholder="+34 600 000 000" inputmode="tel" autocomplete="tel">
+          @if (phoneModel.invalid && (phoneModel.dirty || phoneModel.touched || appointmentForm.submitted)) {
+          <small class="field-error">
+            @if (phoneModel.errors?.['required']) {
+            Introduce un telefono.
+            } @else {
+            Introduce un telefono valido.
+            }
+          </small>
+          }
+        </label>
+
+        <label>
+          Mascota de interes
+          <select name="animalId" [(ngModel)]="bookingForm.animalId">
+            <option [ngValue]="null">Visita general</option>
+            @for (animal of animals; track animal.id) {
+            <option [ngValue]="animal.id">{{ animal.name }} - {{ animal.breed }}</option>
+            }
+          </select>
+        </label>
+
+        <label>
+          Notas para el refugio
+          <textarea name="notes" [(ngModel)]="bookingForm.notes" rows="4"
+            placeholder="Cuantas personas asistiran, si ya has adoptado anteriormente, etc."></textarea>
+        </label>
+
+        <div class="form-summary">
+          <div>
+            <span>Fecha elegida</span>
+            <strong>{{ selectedDate ? selectedDateLabel : 'Pendiente' }}</strong>
+          </div>
+          <div>
+            <span>Hora elegida</span>
+            <strong>{{ selectedSlot || 'Pendiente' }}</strong>
+          </div>
+        </div>
+
+        <button type="submit" class="submit-btn">
+          {{ isBookingJustConfirmed ? 'CITA RESERVADA' : 'Reservar cita' }}
+        </button>
+
+        @if (statusTone === 'success' && statusMessage) {
+        <p class="booking-feedback">{{ statusMessage }}</p>
+        }
+      </form>
+    </section>
+
+    <section class="bookings-card">
+      <div class="section-head">
+        <div>
+          <p class="section-label">Tus reservas</p>
+          <h2>Proximas citas</h2>
+        </div>
+        <span class="availability-pill">{{ upcomingBookings.length }} activas</span>
+      </div>
+
+      @if (upcomingBookings.length === 0) {
+      <p class="empty-state">
+        Aun no has creado citas en este navegador.
+      </p>
+      } @else {
+      <div class="booking-list">
+        @for (booking of upcomingBookings; track trackByBooking($index, booking)) {
+        <article class="booking-item">
+          <div>
+            <p class="booking-date">{{ formatDate(booking.date) }}</p>
+            <p class="booking-meta">
+              {{ booking.slot }} · {{ animalName(booking.animalId) }}
+            </p>
+            <p class="booking-contact">
+              {{ booking.contactName }} · {{ booking.email }}
+            </p>
+          </div>
+
+          <button type="button" class="cancel-btn" (click)="cancelBooking(booking.id)">
+            Cancelar
+          </button>
+        </article>
+        }
+      </div>
+      }
+    </section>
+  </div>
+  }
+</section>

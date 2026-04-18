@@ -2,12 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Animal } from '../models/animal';
+import { AppointmentBooking } from '../models/booking';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LocalJsonService {
   private dbUrl = '/db.json';
+  private bookingsStorageKey = 'adoptme_bookings';
 
   constructor(private http: HttpClient) {}
 
@@ -50,5 +52,13 @@ export class LocalJsonService {
     const clicksGuardados = this.getClicksData();
     clicksGuardados[id] = clicks;
     localStorage.setItem('adoptme_clicks', JSON.stringify(clicksGuardados));
+  }
+
+  getBookings(): AppointmentBooking[] {
+    return JSON.parse(localStorage.getItem(this.bookingsStorageKey) || '[]');
+  }
+
+  saveBookings(bookings: AppointmentBooking[]): void {
+    localStorage.setItem(this.bookingsStorageKey, JSON.stringify(bookings));
   }
 }

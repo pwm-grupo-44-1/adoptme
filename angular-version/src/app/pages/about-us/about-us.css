@@ -11,14 +11,15 @@
   justify-content: center;
   gap: clamp(5rem, 2vw, 2rem);
   padding: 2rem;
+  margin: 2rem 0;
 }
 
-.card-about_us {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 0.5rem;
+.card-about_us[_ngcontent-ng-c352211470] {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: 2rem 0;
 }
 
 .photo-card-about_us {
@@ -37,6 +38,7 @@
   text-align: center;
   font-size: x-large;
   text-align: justify;
+  margin: 0 20%;
 }
 
 @media (max-width: 576px) {
