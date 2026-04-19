@@ -1,25 +1,28 @@
 :host {
-  display: block;
+  display: flex;
+  justify-content: center;
   width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 #about_us {
   width: min(100%, 80rem);
-  margin: 0 auto;
+  margin: 4rem auto 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
   justify-content: center;
-  gap: clamp(5rem, 2vw, 2rem);
-  padding: 2rem;
-  margin: 2rem 0;
+  gap: clamp(1.5rem, 3vw, 3rem);
+  box-sizing: border-box;
 }
 
-.card-about_us[_ngcontent-ng-c352211470] {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    margin: 2rem 0;
+.card-about_us {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin: 1rem 0;
+  gap: 1rem;
 }
 
 .photo-card-about_us {
@@ -35,44 +38,57 @@
 }
 
 .text-card-about_us {
+  font-size: 1.25rem;
   text-align: center;
-  font-size: x-large;
-  text-align: justify;
-  margin: 0 20%;
+  margin: 1rem 10%;
+  line-height: 1.5; /* Añadimos line-height para que el texto respire mejor */
 }
 
-@media (max-width: 576px) {
+/* ==========================================================
+   1. TABLET APAISADA (< 1200px)
+   ========================================================== */
+@media (max-width: 1200px) {
   #about_us {
-    grid-template-columns: repeat(1, 1fr);
-    padding: 0 2rem;
-    font-size: 1.5rem;
-    gap: 4rem;
-    margin: 2rem 0 0 0;
-  }
-}
-
-/* Tablet apaisada */
-@media (min-width: 600px) and (max-width: 900px) {
-  #about_us {
-    grid-template-columns: repeat(3, 1fr);
-    padding: 0 2rem;
-    gap: 1.5rem;
+    /* Bajamos el tamaño mínimo a 12rem. Esto permite que las tarjetas
+       se encojan MUCHO más físicamente antes de saltar a la siguiente línea */
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    gap: 2rem;
   }
 
-  .photo-card-about_us {
-    height: 11rem;
-    width: 8rem;
-  }
-
+  /* Usamos clamp() en las fuentes. Así el texto se irá haciendo
+     más pequeño dinámicamente según se encoja la pantalla */
   .card-about_us h2 {
-    font-size: 1.25rem;
+    font-size: clamp(1.2rem, 2.5vw, 1.5rem);
   }
 
   .card-about_us h3 {
-    font-size: 1rem;
+    font-size: clamp(0.9rem, 2vw, 1.1rem);
   }
 
   .text-card-about_us {
-    font-size: 0.8rem;
+    font-size: clamp(0.9rem, 1.8vw, 1.15rem);
+    margin: 1rem 5%;
+  }
+}
+
+/* ==========================================================
+   2. MÓVIL (< 700px)
+   ========================================================== */
+@media (max-width: 700px) {
+  #about_us {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .photo-card-about_us {
+    width: min(100%, 16rem);
+  }
+
+  .text-card-about_us {
+    /* Subimos el tamaño de la letra para que se lea bien en móvil */
+    font-size: 1.1rem;
+    /* Le devolvemos un 10% de margen a los lados. Esto empuja el texto
+       hacia el centro y hace que salte de línea, creando un bloque bonito */
+    margin: 0.5rem 10%;
   }
 }

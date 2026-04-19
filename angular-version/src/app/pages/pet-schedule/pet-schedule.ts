@@ -6,24 +6,19 @@
 
 //TODO:permitir citas solo hasta dentro de 1 mes por adelantado.
 
-import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormsModule, NgForm } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Animal } from '../../models/animal';
-import { AppointmentBooking } from '../../models/booking';
-import { DataService } from '../../services/data';
-import { LocalJsonService } from '../../services/local-json';
-import { AvailableSlots } from '../../shared/available-slots/available-slots';
-import { MonthCalendar } from '../../shared/month-calendar/month-calendar';
-import { ScheduleFormField } from '../../shared/schedule-form-field/schedule-form-field';
-import { UpcomingBookings } from '../../shared/upcoming-bookings/upcoming-bookings';
-import {
-  BookingFormModel,
-  CalendarDay,
-  SlotState,
-  UpcomingBookingView,
-} from './pet-schedule.models';
+import {CommonModule} from '@angular/common';
+import {ChangeDetectorRef, Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {FormsModule, NgForm} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {Animal} from '../../models/animal';
+import {AppointmentBooking} from '../../models/booking';
+import {DataService} from '../../services/data'; // Ajustado al nombre real de tu servicio
+import {LocalJsonService} from '../../services/local-json';
+import {AvailableSlots} from '../../shared/available-slots/available-slots';
+import {MonthCalendar} from '../../shared/month-calendar/month-calendar';
+import {ScheduleFormField} from '../../shared/schedule-form-field/schedule-form-field';
+import {UpcomingBookings} from '../../shared/upcoming-bookings/upcoming-bookings';
+import {BookingFormModel, CalendarDay, SlotState, UpcomingBookingView,} from './pet-schedule.models';
 
 @Component({
   selector: 'app-pet-schedule',
@@ -85,27 +80,37 @@ export class PetSchedule implements OnInit {
     this.dataService.mascotas$.subscribe((animals) => {
       this.animals = [...animals].sort((left, right) => left.name.localeCompare(right.name));
       this.applySelectedAnimalFromRoute();
+      // 🚀 MAGIA: Obligamos a repintar si los datos llegan de golpe tras un F5
+      this.changeDetectorRef.detectChanges();
     });
 
     this.route.queryParamMap.subscribe(() => {
       this.applySelectedAnimalFromRoute();
+      this.changeDetectorRef.detectChanges();
     });
 
     this.dataService.getSchedule().subscribe({
       next: (scheduleData) => {
         const fallbackSlots = this.buildHourlySlots(9, 18);
+
+        // 🚀 CORRECCIÓN DEL BUG: Quitamos la 'h' del db.json ("10:00h" -> "10:00")
+        const dbSlots = (scheduleData?.slots ?? []).map(s => s.replace('h', '').trim());
+
         this.scheduleSlots = this.sortSlots([
           ...fallbackSlots,
-          ...(scheduleData?.slots ?? []),
+          ...dbSlots,
         ]);
         this.isLoading = false;
         this.ensureSelectedDate();
+        // 🚀 MAGIA: Repintamos para que desaparezca el "Cargando agenda..."
+        this.changeDetectorRef.detectChanges();
       },
       error: () => {
         this.scheduleSlots = this.buildHourlySlots(9, 18);
         this.isLoading = false;
         this.setStatus('error', 'No se pudo cargar la agenda. Se muestran los horarios por defecto.');
         this.ensureSelectedDate();
+        this.changeDetectorRef.detectChanges();
       },
     });
   }
@@ -281,7 +286,6 @@ export class PetSchedule implements OnInit {
 
     if (form.invalid) {
       this.setStatus('error', this.getBookingFormError(form));
-      // this.scrollToPageStart();
       return;
     }
 
@@ -387,8 +391,7 @@ export class PetSchedule implements OnInit {
       return;
     }
 
-    const firstAvailable = this.findFirstAvailableDateInMonth(this.visibleMonth);
-    this.selectedDate = firstAvailable;
+    this.selectedDate = this.findFirstAvailableDateInMonth(this.visibleMonth);
 
     if (!this.isSlotSelectable(this.selectedDate, this.selectedSlot)) {
       this.selectedSlot = '';
@@ -494,6 +497,8 @@ export class PetSchedule implements OnInit {
     this.bookingConfirmationTimeoutId = setTimeout(() => {
       this.isBookingJustConfirmed = false;
       this.bookingConfirmationTimeoutId = null;
+      // 🚀 MAGIA: Repintar cuando desaparece el feedback de éxito
+      this.changeDetectorRef.detectChanges();
     }, 1000);
   }
 

@@ -1,1 +1,49 @@
-<p>login works!</p>
+<div class="login-box">
+  <form class="login-inputs" [formGroup]="authForm" (ngSubmit)="onSubmit()">
+
+    @if (!isLoginMode()) {
+      <input type="text" formControlName="name" placeholder="Usuario">
+    }
+
+    <input type="email" formControlName="email" placeholder="Correo electrónico" required>
+
+    @if (!isLoginMode()) {
+      <input type="tel" formControlName="phone" placeholder="Teléfono" pattern="[6789][0-9]{8}">
+    }
+
+    <div class="password-wrapper">
+      <input [type]="showPassword() ? 'text' : 'password'"
+             formControlName="password"
+             placeholder="Contraseña"
+             title="Mínimo 8 caracteres, debe incluir mayúscula, número y símbolo."
+             required>
+      <span class="toggle-password"
+            (click)="showPassword.set(!showPassword())"
+            [style.color]="showPassword() ? '#111211' : '#4a7477'">
+                &#128065;
+            </span>
+    </div>
+
+    @if (!isLoginMode()) {
+      <div class="password-wrapper">
+        <input [type]="showRePassword() ? 'text' : 'password'"
+               formControlName="repassword"
+               placeholder="Repetir contraseña">
+        <span class="toggle-password"
+              (click)="showRePassword.set(!showRePassword())"
+              [style.color]="showRePassword() ? '#111211' : '#4a7477'">
+                    &#128065;
+                </span>
+      </div>
+    }
+
+    <div class="login-actions">
+      <button type="submit" class="btn-small">
+        {{ isLoginMode() ? 'Iniciar Sesión' : 'Registrarse' }}
+      </button>
+      <button type="button" class="btn-small secondary" (click)="toggleMode()">
+        {{ isLoginMode() ? 'Registrarse' : 'Volver a Iniciar Sesión' }}
+      </button>
+    </div>
+  </form>
+</div>

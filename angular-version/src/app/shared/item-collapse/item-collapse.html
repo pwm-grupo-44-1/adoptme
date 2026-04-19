@@ -1,1 +1,14 @@
-<p>item-collapse works!</p>
+<div class="collapse-group" [class.is-open]="isOpen()">
+
+  <button class="collapse-header" (click)="toggle()">
+    <span class="collapse-title">{{ title() }}</span>
+    <span class="collapse-icon">{{ isOpen() ? '−' : '+' }}</span>
+  </button>
+
+  <div class="collapse-content">
+    <div class="collapse-body">
+      <ng-content></ng-content>
+    </div>
+  </div>
+
+</div>

@@ -1,9 +1,25 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { DataService } from '../../services/data';
+import { LegalItem } from '../../models/data';
+import { ItemCollapse } from '../../shared/item-collapse/item-collapse';
 
 @Component({
   selector: 'app-legal',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule, ItemCollapse],
   templateUrl: './legal.html',
-  styleUrl: './legal.css',
+  styleUrls: ['./legal.css']
 })
-export class Legal {}
+export class Legal implements OnInit {
+  private dataService = inject(DataService);
+
+  legals = signal<LegalItem[]>([]);
+
+  ngOnInit(): void {
+    this.dataService.getLegal().subscribe({
+      next: (data) => this.legals.set(data),
+      error: (err) => console.error('Error al cargar legales:', err)
+    });
+  }
+}

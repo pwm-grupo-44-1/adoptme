@@ -1,0 +1,66 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.collapse-group {
+  width: 100%;
+  background: #bbdcbf;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden; /* Asegura que el contenido no se salga de las esquinas redondeadas */
+  margin-bottom: 1rem;
+}
+
+.collapse-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: clamp(1.2rem, 1vw + 1rem, 1.5rem);
+  color: #4a7477;
+  text-align: left;
+  transition: background-color 0.2s ease;
+}
+
+.collapse-header:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.collapse-icon {
+  font-size: 1.8rem;
+  line-height: 1;
+  font-weight: normal;
+  transition: transform 0.3s ease;
+}
+
+/* 🚀 LA MAGIA DE LA ANIMACIÓN CON CSS GRID */
+.collapse-content {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s ease-in-out;
+  background: #f7f7f7;
+}
+
+.collapse-group.is-open .collapse-content {
+  grid-template-rows: 1fr; /* Se expande a la altura real de su contenido */
+}
+
+.collapse-body {
+  overflow: hidden;
+}
+
+/* Aplicamos un padding al contenido real usando :has o simplemente al hijo directo.
+   Usar un div interno evita saltos extraños en la animación de grid */
+::ng-deep .collapse-body > * {
+  padding: 0 1.2rem 1.2rem 1.2rem;
+  margin: 0;
+  font-size: clamp(1rem, 1vw + 0.5rem, 1.2rem);
+  color: #515151;
+  line-height: 1.5;
+}

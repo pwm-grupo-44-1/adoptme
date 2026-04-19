@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { DataService } from '../../services/data';
 import { StoryItem } from '../../models/data';
 
@@ -8,16 +8,17 @@ import { StoryItem } from '../../models/data';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './stories.html',
-  styleUrl: './stories.css'
+  styleUrls: ['./stories.css']
 })
 export class Stories implements OnInit {
-  stories: StoryItem[] = [];
+  private dataService = inject(DataService);
 
-  constructor(private dataService: DataService) {}
+  // Usamos Signal
+  stories = signal<StoryItem[]>([]);
 
   ngOnInit(): void {
     this.dataService.getStories().subscribe({
-      next: (data) => this.stories = data,
+      next: (data) => this.stories.set(data),
       error: (err) => console.error('Error cargando historias', err)
     });
   }

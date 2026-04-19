@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map, shareReplay, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 import { LocalJsonService } from './local-json';
 import { Animal } from '../models/animal';
+import { User } from '../models/user';
 import {
   HeaderData, FooterData, HomeData, TeamMember,
   FaqItem, StoryItem, LegalItem, ContactUsData,
-  ScheduleData, User
+  ScheduleData
 } from '../models/data';
 
 @Injectable({
@@ -17,22 +18,25 @@ export class DataService {
   private mascotasSubject = new BehaviorSubject<Animal[]>([]);
   public mascotas$ = this.mascotasSubject.asObservable();
 
-  // 🚀 LA MAGIA: Un observable cacheado que guarda toda la BBDD
-  private db$: Observable<any>;
+  // 🚀 LA MAGIA DEFINITIVA: ReplaySubject para evitar el bug del F5
+  private dbCache = new ReplaySubject<any>(1);
+  private db$: Observable<any> = this.dbCache.asObservable();
 
   constructor(private dataSource: LocalJsonService) {
-    // Al usar shareReplay(1), Angular hace UNA sola petición HTTP.
-    // Todos los componentes que se suscriban recibirán la respuesta al instante.
-    this.db$ = this.dataSource.getFullDatabase().pipe(
-      tap(db => this.procesarMascotas(db.animals || [])),
-      shareReplay(1)
-    );
+    // take(1) asegura que la petición HTTP se haga estrictamente 1 vez al arrancar
+    this.dataSource.getFullDatabase().pipe(take(1)).subscribe({
+      next: (db) => {
+        this.procesarMascotas(db.animals || []);
+        // Guardamos todo el JSON en el caché blindado
+        this.dbCache.next(db);
+      },
+      error: (err) => console.error('Error cargando BD:', err)
+    });
   }
 
   // ==========================================
   // LÓGICA DE MASCOTAS
   // ==========================================
-
   private procesarMascotas(animalesBase: Animal[]) {
     try {
       const extras = this.dataSource.getExtraAnimals();
@@ -84,9 +88,7 @@ export class DataService {
   // ==========================================
   // GETTERS DE DATOS ESTÁTICOS
   // ==========================================
-
   private fetchSection<T>(section: string): Observable<T> {
-    // Ya no necesitamos ifs complicados, el db$ ya está cacheado
     return this.db$.pipe(map(db => db[section]));
   }
 
