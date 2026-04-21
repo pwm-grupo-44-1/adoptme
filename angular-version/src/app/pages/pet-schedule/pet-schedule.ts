@@ -1,3 +1,5 @@
+//TODO: al reservar cita, no se debe solicitar los datos del usuario, puesto que ya están en la base de datos. Si acaso, 
+
 //TODO: no se puede reservar mas de 2 citas por dia.
 
 //TODO: Hay que hacer un panel de administracion para el usuario "admin" con una pestana para gestionar las citas de los usuarios registrados y cuando confirme citas, que se envie un correo electronico al usuario.
