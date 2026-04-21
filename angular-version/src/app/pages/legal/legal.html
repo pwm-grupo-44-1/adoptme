@@ -1,1 +1,11 @@
-<p>legal works!</p>
+<h1 class="page-title">Términos y Condiciones</h1>
+
+<div class="accordion-container">
+  @for (item of legals(); track item.title) {
+    <app-item-collapse [title]="item.title">
+      <p>{{ item.content }}</p>
+    </app-item-collapse>
+  } @empty {
+    <p class="no-results">Cargando información legal...</p>
+  }
+</div>

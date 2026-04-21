@@ -30,8 +30,8 @@
   --scroll-arrow-shadow: 0 8px 24px rgba(74, 116, 119, 0.18);
 
   /* Espacios reservados para header y footer fijos */
-  --header-space-desktop: 132px;
-  --header-space-mobile: 104px;
+  --header-space-desktop: 160px; /* <- Aumentado (antes era 132px) */
+  --header-space-mobile: 125px;  /* <- Aumentado (antes era 104px) */
   --footer-space-desktop: 110px;
 }
 

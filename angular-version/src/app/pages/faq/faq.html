@@ -1,1 +1,11 @@
-<p>faq works!</p>
+<h1 class="page-title">Preguntas Frecuentes</h1>
+
+<div class="accordion-container">
+  @for (item of faqs(); track item.question) {
+    <app-item-collapse [title]="item.question">
+      <p>{{ item.answer }}</p>
+    </app-item-collapse>
+  } @empty {
+    <p class="no-results">Cargando preguntas...</p>
+  }
+</div>

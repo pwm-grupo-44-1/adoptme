@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { DataService } from '../../services/data';
+import { Component, OnInit, inject, signal } from '@angular/core';
+import { DataService } from '../../services/data'; // Ajusta la ruta si es necesario
 import { TeamMember } from '../../models/data';
 
 @Component({
@@ -8,16 +8,17 @@ import { TeamMember } from '../../models/data';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './about-us.html',
-  styleUrl: './about-us.css'
+  styleUrls: ['./about-us.css'] // styleUrls en plural
 })
 export class AboutUs implements OnInit {
-  members: TeamMember[] = [];
+  private dataService = inject(DataService);
 
-  constructor(private dataService: DataService) {}
+  // Usamos Signal
+  members = signal<TeamMember[]>([]);
 
   ngOnInit(): void {
     this.dataService.getAboutUs().subscribe({
-      next: (data) => this.members = data,
+      next: (data) => this.members.set(data),
       error: (err) => console.error('Error cargando equipo', err)
     });
   }

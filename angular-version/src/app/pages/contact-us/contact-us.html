@@ -1,11 +1,11 @@
 <div class="contact">
   <div class="contact-left">
     <h2 class="contact-title">
-      {{ title }}
+      {{ title() }}
     </h2>
 
     <div class="contact-reasons">
-      @for (reason of reasons; track reason.title) {
+      @for (reason of reasons(); track reason.title) {
         <div class="contact-reason">
           <span class="contact-reason-icon">{{ reason.icon }}</span>
 
@@ -20,19 +20,21 @@
 
   <div class="contact-right">
     <div class="contact-map">
-      <iframe
-        [src]="mapUrl"
-        width="100%"
-        height="100%"
-        style="border:0;"
-        allowfullscreen=""
-        loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade">
-      </iframe>
+      @if (mapUrl()) {
+        <iframe
+          [src]="mapUrl()"
+          width="100%"
+          height="100%"
+          style="border:0;"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      }
     </div>
 
     <ul class="contact-text">
-      @for (item of contactInfo; track item) {
+      @for (item of contactInfo(); track item) {
         <li>{{ item }}</li>
       }
     </ul>

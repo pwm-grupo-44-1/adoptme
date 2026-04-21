@@ -1,0 +1,136 @@
+/* Centrado absoluto en la pantalla */
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: calc(100vh - var(--header-space-desktop) - var(--footer-space-desktop));
+  box-sizing: border-box;
+}
+
+/* Caja principal redimensionada */
+.login-box {
+  background: #f4f5c9;
+  border: 1px solid #c8d87a;
+  border-radius: 1rem;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+
+  width: min(95%, 38rem);
+  min-height: 28rem; /* 🔴 CLAVE: Mantiene el tamaño en el login, pero no suma exceso al registro */
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: clamp(2rem, 4vw, 3rem); /* 🔴 CLAVE: Menos relleno arriba y abajo */
+  margin: 2rem;
+}
+
+.login-inputs {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 0.9rem; /* 🔴 CLAVE: Menos espacio entre inputs para que en registro no se estire tanto */
+}
+
+.login-inputs input {
+  width: 100%;
+  padding: 0.85rem 1.2rem; /* 🔴 CLAVE: Inputs un poco menos altos */
+  font-size: 1.05rem;
+  background-color: #fffdf0;
+  border: 1px solid #a8c084;
+  color: #4a7477;
+  border-radius: 8px;
+  font-family: inherit;
+  outline: none;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.login-inputs input:focus {
+  border-color: #10946d;
+  box-shadow: 0 0 0 3px rgba(16, 148, 109, 0.1);
+}
+
+.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-wrapper input {
+  width: 100% !important;
+  padding-right: 3rem !important;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 1.2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 1.3rem;
+  color: #4a7477;
+  user-select: none;
+  transition: color 0.2s;
+}
+
+.login-actions {
+  margin-top: 1rem; /* Acercamos un poco los botones a los inputs */
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  width: 100%;
+}
+
+/* ── ESTILOS DE LOS BOTONES ── */
+.btn-small {
+  width: 100%;
+  padding: 0.9rem 1.5rem; /* Botones un poco más compactos */
+  border-radius: 8px;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 1.15rem;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, transform 0.1s;
+  text-align: center;
+}
+
+.btn-small:not(.secondary) {
+  background-color: #fddb72;
+  color: #4a7477;
+  border: none;
+}
+
+.btn-small:not(.secondary):hover {
+  background-color: #f5ca40;
+  transform: translateY(-1px);
+}
+
+.btn-small.secondary {
+  background-color: transparent;
+  color: #4a7477;
+  border: 1px solid #a8c084;
+}
+
+.btn-small.secondary:hover {
+  background-color: #e8edaa;
+  border-color: #4a7477;
+}
+
+/* ── Responsive Móvil ── */
+@media (max-width: 700px) {
+  :host {
+    min-height: calc(100vh - var(--header-space-mobile));
+    align-items: flex-start;
+  }
+
+  .login-box {
+    width: 100%;
+    margin: 0;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    padding: 1.5rem;
+  }
+}
