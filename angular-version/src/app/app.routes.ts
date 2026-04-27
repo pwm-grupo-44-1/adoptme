@@ -6,7 +6,7 @@ import { Stories } from './pages/stories/stories';
 import { ContactUs } from './pages/contact-us/contact-us';
 import { AboutUs } from './pages/about-us/about-us';
 import { PetSchedule } from './pages/pet-schedule/pet-schedule';
-import {Login} from './pages/login/login';
+import LoginComponent from './pages/login/login';
 import {Faq} from './pages/faq/faq';
 import {Legal} from './pages/legal/legal';
 
@@ -18,7 +18,7 @@ export const routes: Routes = [
   { path: 'stories', component: Stories },
   { path: 'contact-us', component: ContactUs },
   { path: 'about-us', component: AboutUs },
-  { path: 'login', component: Login },
+  { path: 'login', component: LoginComponent },
   { path: 'faq', component: Faq },
   { path: 'legal', component: Legal },
   { path: '**', redirectTo: '' }

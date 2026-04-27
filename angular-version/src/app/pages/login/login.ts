@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
-// Ajusta estas rutas a tu estructura de carpetas real si fuera necesario
 import { AuthService } from '../../services/auth';
-import { DataService } from '../../services/data';
 import { User } from '../../models/user';
+
+import { collection, getDocs, addDoc } from 'firebase/firestore';
+import { dbFirebase } from '../../firebase';
 
 @Component({
   selector: 'app-login',
@@ -15,24 +16,21 @@ import { User } from '../../models/user';
   templateUrl: './login.html',
   styleUrls: ['./login.css']
 })
-export class Login {
-  // Inyección de dependencias (Estándar Angular moderno)
+class LoginComponent {
+
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
-  private dataService = inject(DataService);
   private router = inject(Router);
 
-  // Signals para manejar el estado de la vista instantáneamente
   isLoginMode = signal(true);
   showPassword = signal(false);
   showRePassword = signal(false);
 
-  // Formulario Reactivo
   authForm: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.pattern(/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/)]],
+    password: ['', Validators.required],
     name: [''],
-    phone: ['', [Validators.pattern(/^[6789]\d{8}$/)]],
+    phone: [''],
     repassword: ['']
   });
 
@@ -41,88 +39,109 @@ export class Login {
     this.authForm.reset();
   }
 
-  onSubmit() {
+  async onSubmit() {
     if (this.authForm.invalid) {
-      alert('Por favor, revisa los errores en el formulario. Recuerda que la contraseña requiere 8 caracteres, mayúscula, número y símbolo.');
+      alert('Formulario incorrecto');
       return;
     }
 
     if (this.isLoginMode()) {
-      this.iniciarSesion();
+      await this.iniciarSesion();
     } else {
-      this.registrarse();
+      await this.registrarse();
     }
   }
 
-  private iniciarSesion() {
-    const { email, password } = this.authForm.value;
+  // 🔐 LOGIN
+  private async iniciarSesion() {
+    const email = this.authForm.value.email?.trim().toLowerCase();
+    const password = this.authForm.value.password?.trim();
 
-    // 1. Pedimos los usuarios de la base de datos (db.json) a través de tu DataService
-    this.dataService.getUsers().subscribe({
-      next: (dbUsers) => {
-        // 2. Rescatamos los usuarios recién registrados (que viven en LocalStorage)
-        const localUsers: User[] = JSON.parse(localStorage.getItem('adoptme_new_users') || '[]');
+    try {
+      const snapshot = await getDocs(collection(dbFirebase, 'users'));
 
-        // 3. Juntamos ambas listas
-        const allUsers = [...dbUsers, ...localUsers];
+      const users = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...(doc.data() as Omit<User, 'id'>)
+      })) as User[];
 
-        // 4. COMPROBACIÓN REAL
-        const usuarioEncontrado = allUsers.find(u => u.email === email && u.password === password);
+      console.log("Usuarios Firebase:", users);
 
-        if (usuarioEncontrado) {
-          // Logueamos al usuario usando tu AuthService (que internamente actualiza el signal currentUser)
-          this.authService.login(usuarioEncontrado);
+      const user = users.find(u =>
+        u.email?.toLowerCase() === email &&
+        u.password === password
+      );
 
-          // Navegamos a la home
-          this.router.navigate(['/home']).then(() => {
-            // Nota: Si el Header ya usa authService.currentUser(), no haría falta el reload,
-            // pero lo mantenemos si tienes partes de la web que aún dependen de leer el localStorage al cargar.
-            window.location.reload();
-          });
-        } else {
-          alert('Correo o contraseña incorrectos.');
-        }
-      },
-      error: (err) => {
-        console.error('Error al conectar con la base de datos de usuarios:', err);
-        alert('Hubo un problema al validar tus datos.');
+      console.log("Usuario encontrado:", user);
+
+      if (user) {
+        this.authService.login(user);
+        this.router.navigate(['/home']).then(() => location.reload());
+      } else {
+        alert('Correo o contraseña incorrectos');
       }
-    });
+
+    } catch (err) {
+      console.error(err);
+      alert('Error leyendo Firebase');
+    }
   }
 
-  private registrarse() {
-    const { email, password, repassword, name, phone } = this.authForm.value;
+  // 📝 REGISTRO
+  private async registrarse() {
+    const email = this.authForm.value.email?.trim().toLowerCase();
+    const password = this.authForm.value.password?.trim();
+    const repassword = this.authForm.value.repassword?.trim();
+    const name = this.authForm.value.name?.trim();
+    const phone = this.authForm.value.phone?.trim();
 
     if (password !== repassword) {
-      alert('Las contraseñas no coinciden.');
+      alert('Las contraseñas no coinciden');
       return;
     }
 
-    // Leemos los registros previos del localStorage
-    const localUsers: User[] = JSON.parse(localStorage.getItem('adoptme_new_users') || '[]');
+    try {
+      const snapshot = await getDocs(collection(dbFirebase, 'users'));
 
-    // Verificamos que el email no esté ya registrado en localStorage
-    if (localUsers.some(u => u.email === email)) {
-      alert('Este correo ya está registrado.');
-      return;
+      const users = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...(doc.data() as Omit<User, 'id'>)
+      })) as User[];
+
+      const exists = users.some(u =>
+        u.email?.toLowerCase() === email
+      );
+
+      if (exists) {
+        alert('El usuario ya existe');
+        return;
+      }
+
+      const newUser: User = {
+        name,
+        email,
+        password,
+        phone,
+        type: 'user'
+      };
+
+      const docRef = await addDoc(collection(dbFirebase, 'users'), newUser);
+
+      const createdUser: User = {
+        ...newUser
+      };
+
+      this.authService.login(createdUser);
+
+      this.router.navigate(['/home']).then(() => {
+        location.reload();
+      });
+
+    } catch (err) {
+      console.error(err);
+      alert('Error registrando usuario');
     }
-
-    // Creamos el nuevo usuario respetando ESTRICTAMENTE tu interfaz User de user.ts
-    const newUser: User = {
-      name: name,
-      email: email,
-      type: 'user', // Tu interfaz User dice: type: 'admin' | 'user'
-      phone: phone, // phone es opcional según tu interfaz
-      password: password
-    };
-
-    localUsers.push(newUser);
-    localStorage.setItem('adoptme_new_users', JSON.stringify(localUsers));
-
-    alert('¡Te has registrado correctamente! Ahora puedes iniciar sesión.');
-
-    // Devolvemos el formulario a la vista de login y lo limpiamos
-    this.isLoginMode.set(true);
-    this.authForm.reset();
   }
 }
+
+export default LoginComponent
