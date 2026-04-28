@@ -1,5 +1,5 @@
 export interface Animal {
-  id: number;
+  id: string | number
   name: string;
   breed: string;
   gender: 'Male' | 'Female';
