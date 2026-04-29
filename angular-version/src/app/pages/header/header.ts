@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, HostListener, OnInit, ChangeDetectorRef } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { DataService } from '../../services/data';
+import { AuthService } from '../../services/auth';
 import { SocialLink } from '../../models/data';
 
 interface NavLinkExtended {
@@ -25,8 +26,13 @@ export class HeaderComponent implements OnInit {
   navLinks: NavLinkExtended[] = [];
   socialLinks: SocialLink[] = [];
 
-  // Inyectamos el ChangeDetectorRef
-  constructor(private dataService: DataService, private cdr: ChangeDetectorRef) {}
+  // Inyectamos el ChangeDetectorRef y el AuthService
+  constructor(
+    private dataService: DataService,
+    private cdr: ChangeDetectorRef,
+    private router: Router,
+    public authService: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.dataService.getHeaderData().subscribe(data => {
@@ -52,6 +58,12 @@ export class HeaderComponent implements OnInit {
 
   toggleMenu(): void { this.menuOpen = !this.menuOpen; }
   closeMenu(): void { this.menuOpen = false; }
+
+  logout(): void {
+    this.authService.logout();
+    this.closeMenu();
+    this.router.navigate(['/login']);
+  }
 
   @HostListener('window:resize')
   onResize(): void { if (window.innerWidth > 700) this.closeMenu(); }

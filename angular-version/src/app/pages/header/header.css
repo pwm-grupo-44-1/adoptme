@@ -277,3 +277,64 @@
     pointer-events: auto;
   }
 }
+
+/* Auth Info Styles */
+.user-auth-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0 0.5rem;
+}
+
+.user-name {
+  color: #4a7477;
+  font-family: "Rum Raisin", Arial, Helvetica, sans-serif;
+  font-size: clamp(1.4rem, 1.5vw, 2rem);
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+.logout-btn {
+  background: #f2c94c;
+  border: 2px solid transparent;
+  color: #4a7477;
+  font-family: "Rum Raisin", Arial, Helvetica, sans-serif;
+  font-size: clamp(1.4rem, 1.5vw, 2rem);
+  padding: 0.6rem 1.4rem;
+  border-radius: 0.6rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.logout-btn:hover {
+  background: transparent;
+  border-color: #f2c94c;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(242, 201, 76, 0.2);
+}
+
+@media (max-width: 700px) {
+  .user-auth-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.8rem;
+    padding: 1rem;
+    background: rgba(74, 116, 119, 0.05);
+    border-radius: 0.8rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .user-name {
+    font-size: 1.3rem;
+    padding-left: 0.5rem;
+  }
+
+  .logout-btn {
+    width: 100%;
+    text-align: center;
+    font-size: 1.5rem;
+    padding: 0.8rem;
+  }
+}

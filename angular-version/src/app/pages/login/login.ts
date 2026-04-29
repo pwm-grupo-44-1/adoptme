@@ -76,7 +76,7 @@ class LoginComponent {
 
       if (user) {
         this.authService.login(user);
-        this.router.navigate(['/home']).then(() => location.reload());
+        this.router.navigate(['/']);
       } else {
         alert('Correo o contraseña incorrectos');
       }
@@ -132,10 +132,7 @@ class LoginComponent {
       };
 
       this.authService.login(createdUser);
-
-      this.router.navigate(['/home']).then(() => {
-        location.reload();
-      });
+      this.router.navigate(['/']);
 
     } catch (err) {
       console.error(err);
