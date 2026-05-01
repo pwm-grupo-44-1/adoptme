@@ -213,6 +213,10 @@
   padding: 1.25rem;
 }
 
+.admin-clients-modal {
+  width: min(980px, 100%);
+}
+
 .admin-modal-header {
   display: flex;
   justify-content: space-between;
@@ -313,6 +317,104 @@
   border-radius: 0.7rem;
   background: rgba(255, 255, 255, 0.68);
   color: #4a7477;
+}
+
+.admin-users-list {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.admin-user-item {
+  display: grid;
+  gap: 0.9rem;
+  padding: 1rem;
+  border-radius: 0.7rem;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(74, 116, 119, 0.12);
+}
+
+.admin-user-item.is-banned {
+  border-color: rgba(192, 57, 43, 0.3);
+  background: rgba(192, 57, 43, 0.06);
+}
+
+.admin-user-status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font: 700 0.95rem Arial, Helvetica, sans-serif;
+  color: #4a7477;
+}
+
+.admin-user-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(16, 148, 109, 0.14);
+  color: #10946d;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+}
+
+.admin-user-status.banned {
+  background: rgba(192, 57, 43, 0.14);
+  color: #c0392b;
+}
+
+.admin-user-form {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.admin-user-form label {
+  display: grid;
+  gap: 0.35rem;
+  font: 700 0.78rem Arial, Helvetica, sans-serif;
+  color: rgba(74, 116, 119, 0.85);
+}
+
+.admin-user-form input,
+.admin-user-form select {
+  width: 100%;
+  min-width: 0;
+  padding: 0.65rem 0.7rem;
+  border-radius: 0.45rem;
+  border: 1px solid rgba(74, 116, 119, 0.16);
+  background: #fff;
+  color: #4a7477;
+  font: 500 0.9rem Arial, Helvetica, sans-serif;
+}
+
+.admin-user-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.55rem;
+}
+
+.admin-save-user-btn,
+.admin-ban-user-btn {
+  border: 0;
+  border-radius: 0.5rem;
+  padding: 0.7rem 0.9rem;
+  color: #fff;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.admin-save-user-btn {
+  background: #10946d;
+}
+
+.admin-ban-user-btn {
+  background: #c0392b;
+}
+
+.admin-ban-user-btn.unban {
+  background: #4a7477;
 }
 
 .drawer-only-link {
@@ -508,6 +610,19 @@
   .admin-booking-item {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .admin-user-form {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-user-actions {
+    justify-content: stretch;
+  }
+
+  .admin-save-user-btn,
+  .admin-ban-user-btn {
+    flex: 1 1 100%;
   }
 
   .drawer-only-link {

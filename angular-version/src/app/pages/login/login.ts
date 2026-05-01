@@ -107,6 +107,10 @@ export class Login {
         : 'Revisa la contrasena introducida.';
     }
 
+    if (control.errors['banned']) {
+      return 'Este usuario esta baneado.';
+    }
+
     return 'Revisa este campo.';
   }
 
@@ -118,6 +122,12 @@ export class Login {
         const usuarioEncontrado = dbUsers.find(u => u.email === email && u.password === password);
 
         if (usuarioEncontrado) {
+          if (usuarioEncontrado.banned) {
+            this.showFormError('Tu usuario ha sido baneado y no puede acceder a la app.');
+            this.authForm.controls['email'].setErrors({ banned: true });
+            return;
+          }
+
           this.authService.login(usuarioEncontrado);
 
           this.router.navigate(['/']).then(() => {

@@ -54,6 +54,7 @@
               @if (adminMenuOpen) {
                 <div class="admin-menu">
                   <button type="button" (click)="openBookingsModal()">Confirmar citas</button>
+                  <button type="button" (click)="openClientsModal()">Gestion de clientes</button>
                   <button type="button" (click)="goToPetManagement()">Gestion de mascotas</button>
                   <button type="button" class="admin-menu-logout" (click)="logout()">Cerrar sesion</button>
                 </div>
@@ -125,6 +126,74 @@
                   Rechazar cita
                 </button>
               </div>
+            </article>
+          }
+        </div>
+      }
+    </section>
+  </div>
+}
+
+@if (showClientsModal) {
+  <div class="admin-modal-backdrop" (click)="closeClientsModal()">
+    <section class="admin-bookings-modal admin-clients-modal" role="dialog" aria-modal="true" aria-labelledby="admin-clients-title" (click)="$event.stopPropagation()">
+      <div class="admin-modal-header">
+        <div>
+          <p>Administracion</p>
+          <h2 id="admin-clients-title">Gestion de clientes</h2>
+        </div>
+        <button type="button" class="admin-modal-close" aria-label="Cerrar panel" (click)="closeClientsModal()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      @if (isAdminUsersLoading) {
+        <p class="admin-modal-empty">Cargando usuarios registrados...</p>
+      } @else if (users.length === 0) {
+        <p class="admin-modal-empty">No hay usuarios registrados.</p>
+      } @else {
+        <div class="admin-users-list">
+          @for (user of users; track user.id || user.email) {
+            <article class="admin-user-item" [class.is-banned]="user.banned">
+              <div class="admin-user-status-row">
+                <strong>{{ user.email }}</strong>
+                <span class="admin-user-status" [class.banned]="user.banned">
+                  {{ user.banned ? 'Baneado' : 'Activo' }}
+                </span>
+              </div>
+
+              @if (user.id && userDrafts[user.id]) {
+                <div class="admin-user-form">
+                  <label>
+                    Nombre
+                    <input type="text" [(ngModel)]="userDrafts[user.id].name" [name]="'client-name-' + user.id">
+                  </label>
+                  <label>
+                    Correo
+                    <input type="email" [(ngModel)]="userDrafts[user.id].email" [name]="'client-email-' + user.id">
+                  </label>
+                  <label>
+                    Telefono
+                    <input type="tel" [(ngModel)]="userDrafts[user.id].phone" [name]="'client-phone-' + user.id">
+                  </label>
+                  <label>
+                    Tipo
+                    <select [(ngModel)]="userDrafts[user.id].type" [name]="'client-type-' + user.id">
+                      <option value="user">Usuario</option>
+                      <option value="admin">Admin</option>
+                    </select>
+                  </label>
+                </div>
+
+                <div class="admin-user-actions">
+                  <button type="button" class="admin-save-user-btn" (click)="saveUser(user)">
+                    Guardar cambios
+                  </button>
+                  <button type="button" class="admin-ban-user-btn" [class.unban]="user.banned" (click)="toggleUserBan(user)">
+                    {{ user.banned ? 'Quitar baneo' : 'Banear usuario' }}
+                  </button>
+                </div>
+              }
             </article>
           }
         </div>

@@ -105,11 +105,15 @@ export class DataService {
   getSchedule(): Observable<ScheduleData> { return this.fetchSection<ScheduleData>('schedule'); }
 
   getUsers(): Observable<User[]> {
-    return collectionData(collection(this.firestore, 'users')) as Observable<User[]>;
+    return collectionData(collection(this.firestore, 'users'), { idField: 'id' }) as Observable<User[]>;
   }
 
   addUser(user: User): Promise<void> {
     return addDoc(collection(this.firestore, 'users'), user).then(() => undefined);
+  }
+
+  updateUser(userId: string, data: Partial<User>): Promise<void> {
+    return updateDoc(doc(this.firestore, 'users', userId), data);
   }
 
   getBookings(): Observable<AppointmentBooking[]> {

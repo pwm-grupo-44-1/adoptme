@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, HostListener, OnInit, ChangeDetectorRef, computed, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { DataService } from '../../services/data';
@@ -7,6 +8,7 @@ import { AuthService } from '../../services/auth';
 import { SocialLink } from '../../models/data';
 import { AppointmentBooking } from '../../models/booking';
 import { Animal } from '../../models/animal';
+import { User } from '../../models/user';
 
 interface NavLinkExtended {
   name: string;
@@ -14,10 +16,17 @@ interface NavLinkExtended {
   mobileOnly?: boolean;
 }
 
+interface UserDraft {
+  name: string;
+  email: string;
+  phone: string;
+  type: 'admin' | 'user';
+}
+
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './header.html',
   styleUrl: './header.css'
 })
@@ -33,8 +42,12 @@ export class HeaderComponent implements OnInit {
   adminMenuOpen = false;
   showBookingsModal = false;
   isAdminBookingsLoading = false;
+  showClientsModal = false;
+  isAdminUsersLoading = false;
   bookings: AppointmentBooking[] = [];
   animals: Animal[] = [];
+  users: User[] = [];
+  userDrafts: Record<string, UserDraft> = {};
 
   navLinks: NavLinkExtended[] = [];
   socialLinks: SocialLink[] = [];
@@ -69,6 +82,26 @@ export class HeaderComponent implements OnInit {
     this.dataService.mascotas$.subscribe((animals) => {
       this.animals = animals;
     });
+
+    this.dataService.getUsers().subscribe((users) => {
+      const currentUser = this.authService.currentUser();
+      if (!currentUser) {
+        return;
+      }
+
+      const refreshedUser = users.find((user) =>
+        user.email.trim().toLowerCase() === currentUser.email.trim().toLowerCase()
+      );
+
+      if (refreshedUser?.banned) {
+        this.logout();
+        return;
+      }
+
+      if (refreshedUser) {
+        this.authService.login(refreshedUser);
+      }
+    });
   }
 
   toggleMenu(): void { this.menuOpen = !this.menuOpen; }
@@ -93,6 +126,17 @@ export class HeaderComponent implements OnInit {
 
   closeBookingsModal(): void {
     this.showBookingsModal = false;
+  }
+
+  openClientsModal(): void {
+    this.adminMenuOpen = false;
+    this.closeMenu();
+    this.showClientsModal = true;
+    this.loadUsers();
+  }
+
+  closeClientsModal(): void {
+    this.showClientsModal = false;
   }
 
   goToPetManagement(): void {
@@ -144,6 +188,53 @@ export class HeaderComponent implements OnInit {
     this.openRejectionEmail(booking);
   }
 
+  saveUser(user: User): void {
+    if (!user.id) {
+      return;
+    }
+
+    const draft = this.userDrafts[user.id];
+    if (!draft) {
+      return;
+    }
+
+    const updates: Partial<User> = {
+      name: draft.name.trim(),
+      email: draft.email.trim(),
+      phone: draft.phone.trim(),
+      type: draft.type,
+    };
+
+    this.users = this.users.map((item) =>
+      item.id === user.id
+        ? { ...item, ...updates }
+        : item
+    );
+
+    this.dataService.updateUser(user.id, updates)
+      .catch((err) => console.error('Error actualizando el usuario en Firestore:', err));
+  }
+
+  toggleUserBan(user: User): void {
+    if (!user.id) {
+      return;
+    }
+
+    const banned = !user.banned;
+    const updates: Partial<User> = banned
+      ? { banned: true, bannedAt: new Date().toISOString() }
+      : { banned: false, bannedAt: '' };
+
+    this.users = this.users.map((item) =>
+      item.id === user.id
+        ? { ...item, ...updates }
+        : item
+    );
+
+    this.dataService.updateUser(user.id, updates)
+      .catch((err) => console.error('Error actualizando el baneo del usuario en Firestore:', err));
+  }
+
   logout(): void {
     this.authService.logout();
     this.adminMenuOpen = false;
@@ -182,6 +273,37 @@ export class HeaderComponent implements OnInit {
       error: (err) => {
         console.error('Error cargando las citas pendientes:', err);
         this.isAdminBookingsLoading = false;
+        this.cdr.detectChanges();
+      },
+    });
+  }
+
+  private loadUsers(): void {
+    this.isAdminUsersLoading = true;
+    this.cdr.detectChanges();
+
+    this.dataService.getUsers().pipe(take(1)).subscribe({
+      next: (users) => {
+        this.users = [...users].sort((left, right) => left.email.localeCompare(right.email));
+        this.userDrafts = this.users.reduce<Record<string, UserDraft>>((drafts, user) => {
+          if (!user.id) {
+            return drafts;
+          }
+
+          drafts[user.id] = {
+            name: user.name ?? '',
+            email: user.email ?? '',
+            phone: user.phone ?? '',
+            type: user.type ?? 'user',
+          };
+          return drafts;
+        }, {});
+        this.isAdminUsersLoading = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error cargando usuarios registrados:', err);
+        this.isAdminUsersLoading = false;
         this.cdr.detectChanges();
       },
     });
