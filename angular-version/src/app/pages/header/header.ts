@@ -76,7 +76,7 @@ export class HeaderComponent implements OnInit {
 
   get pendingBookings(): AppointmentBooking[] {
     return this.bookings
-      .filter((booking) => booking.status !== 'confirmed')
+      .filter((booking) => !booking.status || booking.status === 'pending')
       .sort((left, right) => `${left.date}T${left.slot}`.localeCompare(`${right.date}T${right.slot}`));
   }
 
@@ -129,8 +129,17 @@ export class HeaderComponent implements OnInit {
   }
 
   rejectBooking(booking: AppointmentBooking): void {
-    this.bookings = this.bookings.filter((item) => item.id !== booking.id);
-    this.dataService.deleteBooking(booking.id)
+    const rejectedAt = new Date().toISOString();
+
+    this.bookings = this.bookings.map((item) =>
+      item.id === booking.id
+        ? { ...item, status: 'rejected', rejectedAt }
+        : item
+    );
+    this.dataService.updateBooking(booking.id, {
+      status: 'rejected',
+      rejectedAt,
+    })
       .catch((err) => console.error('Error al rechazar la cita en Firestore:', err));
     this.openRejectionEmail(booking);
   }

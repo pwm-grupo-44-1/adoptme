@@ -29,6 +29,14 @@ import { CancelBookingButton } from '../cancel-booking-button/cancel-booking-but
                 <p class="booking-date">{{ booking.dateLabel }}</p>
                 <p class="booking-meta">{{ booking.metaLabel }}</p>
                 <p class="booking-contact">{{ booking.contactLabel }}</p>
+                <span
+                  class="booking-status-chip"
+                  [class.confirmed]="booking.statusTone === 'confirmed'"
+                  [class.rejected]="booking.statusTone === 'rejected'"
+                  [class.pending]="booking.statusTone === 'pending'"
+                >
+                  {{ booking.statusLabel }}
+                </span>
               </div>
 
               <app-cancel-booking-button (clicked)="cancelBooking.emit(booking.id)" />

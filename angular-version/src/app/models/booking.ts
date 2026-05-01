@@ -5,9 +5,9 @@ export interface AppointmentBooking {
   animalId: number | null;
   contactName: string;
   email: string;
-  phone: string;
   notes: string;
   createdAt: string;
-  status?: 'pending' | 'confirmed';
+  status?: 'pending' | 'confirmed' | 'rejected';
   confirmedAt?: string;
+  rejectedAt?: string;
 }

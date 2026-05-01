@@ -24,4 +24,6 @@ export interface UpcomingBookingView {
   dateLabel: string;
   metaLabel: string;
   contactLabel: string;
+  statusLabel: string;
+  statusTone: 'confirmed' | 'rejected' | 'pending';
 }

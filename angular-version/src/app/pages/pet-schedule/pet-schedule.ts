@@ -8,18 +8,18 @@
 
 //TODO:permitir citas solo hasta dentro de 1 mes por adelantado.
 
-import {CommonModule} from '@angular/common';
-import {ChangeDetectorRef, Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {FormsModule, NgForm} from '@angular/forms';
-import {ActivatedRoute, RouterLink} from '@angular/router';
-import {Animal} from '../../models/animal';
-import {AppointmentBooking} from '../../models/booking';
-import {DataService} from '../../services/data'; // Ajustado al nombre real de tu servicio
-import {AuthService} from '../../services/auth';
-import {AvailableSlots} from '../../shared/available-slots/available-slots';
-import {MonthCalendar} from '../../shared/month-calendar/month-calendar';
-import {UpcomingBookings} from '../../shared/upcoming-bookings/upcoming-bookings';
-import {BookingFormModel, CalendarDay, SlotState, UpcomingBookingView,} from './pet-schedule.models';
+import { CommonModule } from '@angular/common';
+import { ChangeDetectorRef, Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { FormsModule, NgForm } from '@angular/forms';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { Animal } from '../../models/animal';
+import { AppointmentBooking } from '../../models/booking';
+import { AuthService } from '../../services/auth';
+import { DataService } from '../../services/data'; // Ajustado al nombre real de tu servicio
+import { AvailableSlots } from '../../shared/available-slots/available-slots';
+import { MonthCalendar } from '../../shared/month-calendar/month-calendar';
+import { UpcomingBookings } from '../../shared/upcoming-bookings/upcoming-bookings';
+import { BookingFormModel, CalendarDay, SlotState, UpcomingBookingView, } from './pet-schedule.models';
 
 @Component({
   selector: 'app-pet-schedule',
@@ -60,7 +60,7 @@ export class PetSchedule implements OnInit {
     private dataService: DataService,
     private authService: AuthService,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   get canAccessSchedule(): boolean {
     const user = this.authService.currentUser();
@@ -190,12 +190,18 @@ export class PetSchedule implements OnInit {
   }
 
   get upcomingBookingViews(): UpcomingBookingView[] {
-    return this.upcomingBookings.map((booking) => ({
-      id: booking.id,
-      dateLabel: this.formatDate(booking.date),
-      metaLabel: `${booking.slot}h · ${this.animalName(booking.animalId)}`,
-      contactLabel: `${booking.contactName} \n ${booking.email} \n ${booking.status === 'confirmed' ? 'Confirmada' : 'Pendiente de confirmar'}`,
-    }));
+    return this.upcomingBookings.map((booking) => {
+      const statusTone = this.getBookingStatusTone(booking);
+
+      return {
+        id: booking.id,
+        dateLabel: this.formatDate(booking.date),
+        metaLabel: `${booking.slot}h · ${this.animalName(booking.animalId)}`,
+        contactLabel: `${booking.contactName} \n ${booking.email}`,
+        statusLabel: this.getBookingStatusLabel(statusTone),
+        statusTone,
+      };
+    });
   }
 
   get isContactNameInvalid(): boolean {
@@ -297,7 +303,6 @@ export class PetSchedule implements OnInit {
       animalId: this.bookingForm.animalId,
       contactName: currentUser.name.trim(),
       email: currentUser.email.trim(),
-      phone: currentUser.phone?.trim() ?? '',
       notes: this.bookingForm.notes.trim(),
       createdAt: new Date().toISOString(),
       status: 'pending',
@@ -364,6 +369,30 @@ export class PetSchedule implements OnInit {
     }
 
     return this.animals.find((animal) => animal.id === animalId)?.name ?? 'Mascota';
+  }
+
+  private getBookingStatusTone(booking: AppointmentBooking): 'confirmed' | 'rejected' | 'pending' {
+    if (booking.status === 'confirmed') {
+      return 'confirmed';
+    }
+
+    if (booking.status === 'rejected') {
+      return 'rejected';
+    }
+
+    return 'pending';
+  }
+
+  private getBookingStatusLabel(statusTone: 'confirmed' | 'rejected' | 'pending'): string {
+    if (statusTone === 'confirmed') {
+      return 'Confirmada';
+    }
+
+    if (statusTone === 'rejected') {
+      return 'Rechazada';
+    }
+
+    return 'Pendiente de confirmar';
   }
 
   private applySelectedAnimalFromRoute(): void {

@@ -401,6 +401,33 @@ app-pet-schedule {
   white-space: pre-line;
 }
 
+.booking-status-chip {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin-top: 0.65rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.booking-status-chip.confirmed {
+  background: var(--color-accent);
+}
+
+.booking-status-chip.rejected {
+  background: var(--color-danger);
+}
+
+.booking-status-chip.pending {
+  background: rgba(253, 219, 114, 0.82);
+  color: var(--color-text);
+}
+
 .empty-state {
   padding: 1rem 0 0.5rem;
 }
