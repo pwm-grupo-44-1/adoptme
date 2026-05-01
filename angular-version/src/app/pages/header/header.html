@@ -38,14 +38,26 @@
 
     <nav class="main-nav" [class.open]="menuOpen">
       @for (link of navLinks; track link.name) {
-        <a
-          class="nav-link"
-          [class.drawer-only-link]="link.mobileOnly"
-          [routerLink]="link.url"
-          (click)="closeMenu()"
-        >
-          {{ link.name }}
-        </a>
+        @if (link.url === '/login' && isLoggedIn()) {
+          <button
+            class="nav-link logout-link"
+            type="button"
+            [class.drawer-only-link]="link.mobileOnly"
+            (click)="logout()"
+          >
+            <span class="logout-title">Logout</span>
+            <span class="logout-subtitle">Cerrar sesión</span>
+          </button>
+        } @else {
+          <a
+            class="nav-link"
+            [class.drawer-only-link]="link.mobileOnly"
+            [routerLink]="link.url"
+            (click)="closeMenu()"
+          >
+            {{ link.name }}
+          </a>
+        }
       }
     </nav>
   </div>

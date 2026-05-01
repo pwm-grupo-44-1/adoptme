@@ -4,3 +4,4 @@
 .vscode/
 angular-version/firebase-service-account*.json
 angular-version/.env
+angular-version/.ng-*.log

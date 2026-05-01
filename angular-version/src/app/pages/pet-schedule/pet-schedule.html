@@ -1,21 +1,4 @@
 <section class="schedule-shell">
-  <header class="schedule-hero">
-    <div class="hero-copy">
-      <h1>Calendario de citas</h1>
-      <p class="hero-text">
-        Reserva cita para conocer a la mascota o resolver dudas con el equipo.
-      </p>
-      <p>
-        Elige día y hora e introduce tus datos de contacto para poder confirmarte la cita.
-      </p>
-      @if (selectedAnimal; as animal) {
-        <div class="hero-tag">
-          Preparando cita para <strong>{{ animal.name }}</strong>
-        </div>
-      }
-    </div>
-  </header>
-
   @if (statusMessage) {
     <p #statusBanner class="status-banner" [class.success]="statusTone === 'success'"
       [class.error]="statusTone === 'error'">

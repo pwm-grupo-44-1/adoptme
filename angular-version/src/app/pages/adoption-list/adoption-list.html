@@ -1,5 +1,5 @@
 <div class="adoption-page-wrapper">
-  @if (esAdmin) {
+  @if (esAdmin()) {
     <div class="admin-container-spacing">
       <app-admin-panel></app-admin-panel>
     </div>
@@ -13,7 +13,7 @@
       <div id="pets-list">
 
         @for (mascota of listaFiltrada(); track mascota.id) {
-          <app-card-animal [mascota]="mascota" [esAdmin]="esAdmin"></app-card-animal>
+          <app-card-animal [mascota]="mascota" [esAdmin]="esAdmin()"></app-card-animal>
         } @empty {
           <div class="no-results">
             <p>No se encontraron mascotas con estos filtros.</p>

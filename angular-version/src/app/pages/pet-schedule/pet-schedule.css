@@ -11,14 +11,6 @@ app-pet-schedule {
   margin: 1rem auto;
 }
 
-.schedule-hero {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 1.5rem;
-  align-items: stretch;
-}
-
-.hero-copy,
 .calendar-card,
 .slots-card,
 .form-card,
@@ -32,10 +24,6 @@ app-pet-schedule {
   box-shadow: 0 18px 50px rgba(74, 116, 119, 0.12);
 }
 
-.hero-copy {
-  padding: clamp(1.75rem, 3vw, 2.75rem);
-}
-
 .eyebrow,
 .section-label,
 .panel-label {
@@ -46,31 +34,12 @@ app-pet-schedule {
   color: rgba(74, 116, 119, 0.74);
 }
 
-.hero-copy h1,
 .section-head h2,
 .calendar-toolbar h2 {
   margin-top: 0.55rem;
   color: var(--color-text);
   font-size: clamp(2rem, 4vw, 3.2rem);
   line-height: 0.95;
-}
-
-.hero-text {
-  margin-top: 1rem;
-  font-family: 'Fira Sans Condensed', sans-serif;
-  font-size: clamp(1rem, 1.5vw, 1.15rem);
-  line-height: 1.55;
-}
-
-.hero-tag {
-  margin-top: 1.25rem;
-  display: inline-flex;
-  gap: 0.5rem;
-  align-items: center;
-  padding: 0.8rem 1rem;
-  border-radius: 999px;
-  background: rgba(16, 148, 109, 0.12);
-  color: var(--color-text);
 }
 
 .status-banner,
@@ -406,7 +375,6 @@ app-pet-schedule {
 
 @media (max-width: 1100px) {
 
-  .schedule-hero,
   .schedule-grid {
     grid-template-columns: 1fr;
   }

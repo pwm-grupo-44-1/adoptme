@@ -1,8 +1,9 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, computed, signal } from '@angular/core';
 import { AdminPanel } from '../../shared/admin-panel/admin-panel';
 import { Filter } from '../../shared/filter/filter';
 import { CardAnimal } from '../../shared/card-animal/card-animal';
 import { DataService } from '../../services/data';
+import { AuthService } from '../../services/auth';
 import { Animal } from '../../models/animal';
 
 @Component({
@@ -13,12 +14,12 @@ import { Animal } from '../../models/animal';
   styleUrl: './adoption-list.css',
 })
 export class AdoptionList implements OnInit {
-  esAdmin: boolean = true; // Aquí en el futuro leerás el usuario logueado
+  esAdmin = computed(() => this.authService.currentUser()?.type === 'admin');
 
   listaCompleta = signal<Animal[]>([]);
   listaFiltrada = signal<Animal[]>([]);
 
-  constructor(private dataService: DataService) {}
+  constructor(private dataService: DataService, private authService: AuthService) {}
 
   ngOnInit(): void {
     this.dataService.mascotas$.subscribe(data => {

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { addDoc, collection, collectionData, Firestore } from '@angular/fire/firestore';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { LocalJsonService } from './local-json';
@@ -22,7 +23,7 @@ export class DataService {
   private dbCache = new ReplaySubject<any>(1);
   private db$: Observable<any> = this.dbCache.asObservable();
 
-  constructor(private dataSource: LocalJsonService) {
+  constructor(private dataSource: LocalJsonService, private firestore: Firestore) {
     // take(1) asegura que la petición HTTP se haga estrictamente 1 vez al arrancar
     this.dataSource.getFullDatabase().pipe(take(1)).subscribe({
       next: (db) => {
@@ -101,5 +102,12 @@ export class DataService {
   getLegal(): Observable<LegalItem[]> { return this.fetchSection<LegalItem[]>('legal'); }
   getContactUs(): Observable<ContactUsData> { return this.fetchSection<ContactUsData>('contact_us'); }
   getSchedule(): Observable<ScheduleData> { return this.fetchSection<ScheduleData>('schedule'); }
-  getUsers(): Observable<User[]> { return this.fetchSection<User[]>('users'); }
+
+  getUsers(): Observable<User[]> {
+    return collectionData(collection(this.firestore, 'users')) as Observable<User[]>;
+  }
+
+  addUser(user: User): Promise<void> {
+    return addDoc(collection(this.firestore, 'users'), user).then(() => undefined);
+  }
 }

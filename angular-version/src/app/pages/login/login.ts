@@ -1,9 +1,9 @@
 import { Component, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { AbstractControl, ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { take } from 'rxjs/operators';
 
-// Ajusta estas rutas a tu estructura de carpetas real si fuera necesario
 import { AuthService } from '../../services/auth';
 import { DataService } from '../../services/data';
 import { User } from '../../models/user';
@@ -16,21 +16,23 @@ import { User } from '../../models/user';
   styleUrls: ['./login.css']
 })
 export class Login {
-  // Inyección de dependencias (Estándar Angular moderno)
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private dataService = inject(DataService);
   private router = inject(Router);
 
-  // Signals para manejar el estado de la vista instantáneamente
   isLoginMode = signal(true);
   showPassword = signal(false);
   showRePassword = signal(false);
+  submitAttempted = signal(false);
+  formMessage = signal('');
+  formMessageType = signal<'error' | 'success'>('error');
 
-  // Formulario Reactivo
+  private readonly passwordPattern = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/;
+
   authForm: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.pattern(/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/)]],
+    password: ['', [Validators.required]],
     name: [''],
     phone: ['', [Validators.pattern(/^[6789]\d{8}$/)]],
     repassword: ['']
@@ -39,11 +41,18 @@ export class Login {
   toggleMode() {
     this.isLoginMode.update(mode => !mode);
     this.authForm.reset();
+    this.submitAttempted.set(false);
+    this.clearFormMessage();
+    this.updateValidatorsForMode();
   }
 
   onSubmit() {
+    this.submitAttempted.set(true);
+    this.clearFormMessage();
+    this.authForm.markAllAsTouched();
+    this.authForm.updateValueAndValidity();
+
     if (this.authForm.invalid) {
-      alert('Por favor, revisa los errores en el formulario. Recuerda que la contraseña requiere 8 caracteres, mayúscula, número y símbolo.');
       return;
     }
 
@@ -54,38 +63,75 @@ export class Login {
     }
   }
 
+  shouldShowError(controlName: string): boolean {
+    const control = this.authForm.get(controlName);
+    return !!control && control.invalid && (control.touched || this.submitAttempted());
+  }
+
+  getFieldError(controlName: string): string {
+    const control = this.authForm.get(controlName);
+
+    if (!control?.errors) {
+      return '';
+    }
+
+    if (control.errors['required']) {
+      return 'Este campo es obligatorio.';
+    }
+
+    if (control.errors['email']) {
+      return 'Introduce un correo electronico valido.';
+    }
+
+    if (control.errors['pattern']) {
+      if (controlName === 'password') {
+        return 'Minimo 8 caracteres, una mayuscula, un numero y un simbolo.';
+      }
+
+      if (controlName === 'phone') {
+        return 'Introduce un telefono valido de 9 cifras.';
+      }
+    }
+
+    if (control.errors['mismatch']) {
+      return 'Las contrasenas no coinciden.';
+    }
+
+    if (control.errors['duplicate']) {
+      return 'Este correo ya esta registrado.';
+    }
+
+    if (control.errors['invalidCredentials']) {
+      return controlName === 'email'
+        ? 'Revisa el correo introducido.'
+        : 'Revisa la contrasena introducida.';
+    }
+
+    return 'Revisa este campo.';
+  }
+
   private iniciarSesion() {
     const { email, password } = this.authForm.value;
 
-    // 1. Pedimos los usuarios de la base de datos (db.json) a través de tu DataService
-    this.dataService.getUsers().subscribe({
-      next: (dbUsers) => {
-        // 2. Rescatamos los usuarios recién registrados (que viven en LocalStorage)
-        const localUsers: User[] = JSON.parse(localStorage.getItem('adoptme_new_users') || '[]');
-
-        // 3. Juntamos ambas listas
-        const allUsers = [...dbUsers, ...localUsers];
-
-        // 4. COMPROBACIÓN REAL
-        const usuarioEncontrado = allUsers.find(u => u.email === email && u.password === password);
+    this.dataService.getUsers().pipe(take(1)).subscribe({
+      next: (dbUsers = []) => {
+        const usuarioEncontrado = dbUsers.find(u => u.email === email && u.password === password);
 
         if (usuarioEncontrado) {
-          // Logueamos al usuario usando tu AuthService (que internamente actualiza el signal currentUser)
           this.authService.login(usuarioEncontrado);
 
-          // Navegamos a la home
-          this.router.navigate(['/home']).then(() => {
-            // Nota: Si el Header ya usa authService.currentUser(), no haría falta el reload,
-            // pero lo mantenemos si tienes partes de la web que aún dependen de leer el localStorage al cargar.
+          this.router.navigate(['/']).then(() => {
             window.location.reload();
           });
         } else {
-          alert('Correo o contraseña incorrectos.');
+          this.showFormError('Correo o contrasena incorrectos.');
+          this.authForm.controls['email'].setErrors({ invalidCredentials: true });
+          this.authForm.controls['password'].setErrors({ invalidCredentials: true });
         }
       },
       error: (err) => {
-        console.error('Error al conectar con la base de datos de usuarios:', err);
-        alert('Hubo un problema al validar tus datos.');
+        console.error('Error al conectar con la coleccion users de Firestore:', err);
+        this.showFormError('Hubo un problema al validar tus datos.');
       }
     });
   }
@@ -94,35 +140,74 @@ export class Login {
     const { email, password, repassword, name, phone } = this.authForm.value;
 
     if (password !== repassword) {
-      alert('Las contraseñas no coinciden.');
+      this.authForm.controls['repassword'].setErrors({ mismatch: true });
       return;
     }
 
-    // Leemos los registros previos del localStorage
-    const localUsers: User[] = JSON.parse(localStorage.getItem('adoptme_new_users') || '[]');
-
-    // Verificamos que el email no esté ya registrado en localStorage
-    if (localUsers.some(u => u.email === email)) {
-      alert('Este correo ya está registrado.');
-      return;
-    }
-
-    // Creamos el nuevo usuario respetando ESTRICTAMENTE tu interfaz User de user.ts
     const newUser: User = {
       name: name,
       email: email,
-      type: 'user', // Tu interfaz User dice: type: 'admin' | 'user'
-      phone: phone, // phone es opcional según tu interfaz
+      type: 'user',
+      phone: phone,
       password: password
     };
 
-    localUsers.push(newUser);
-    localStorage.setItem('adoptme_new_users', JSON.stringify(localUsers));
+    this.dataService.getUsers().pipe(take(1)).subscribe({
+      next: (dbUsers = []) => {
+        if (dbUsers.some(u => u.email === email)) {
+          this.authForm.controls['email'].setErrors({ duplicate: true });
+          return;
+        }
 
-    alert('¡Te has registrado correctamente! Ahora puedes iniciar sesión.');
+        this.dataService.addUser(newUser)
+          .then(() => {
+            this.formMessageType.set('success');
+            this.formMessage.set('Te has registrado correctamente. Ahora puedes iniciar sesion.');
+            this.isLoginMode.set(true);
+            this.authForm.reset();
+            this.submitAttempted.set(false);
+            this.updateValidatorsForMode();
+          })
+          .catch((err) => {
+            console.error('Error al registrar usuario en Firestore:', err);
+            this.showFormError('Hubo un problema al registrar tus datos.');
+          });
+      },
+      error: (err) => {
+        console.error('Error al comprobar usuarios en Firestore:', err);
+        this.showFormError('Hubo un problema al comprobar tus datos.');
+      }
+    });
+  }
 
-    // Devolvemos el formulario a la vista de login y lo limpiamos
-    this.isLoginMode.set(true);
-    this.authForm.reset();
+  private updateValidatorsForMode(): void {
+    const name = this.authForm.controls['name'];
+    const phone = this.authForm.controls['phone'];
+    const password = this.authForm.controls['password'];
+    const repassword = this.authForm.controls['repassword'];
+
+    if (this.isLoginMode()) {
+      name.clearValidators();
+      password.setValidators([Validators.required]);
+      repassword.clearValidators();
+    } else {
+      name.setValidators([Validators.required]);
+      password.setValidators([Validators.required, Validators.pattern(this.passwordPattern)]);
+      repassword.setValidators([Validators.required]);
+    }
+
+    phone.setValidators([Validators.pattern(/^[6789]\d{8}$/)]);
+    [name, phone, password, repassword].forEach((control: AbstractControl) => {
+      control.updateValueAndValidity({ emitEvent: false });
+    });
+  }
+
+  private showFormError(message: string): void {
+    this.formMessageType.set('error');
+    this.formMessage.set(message);
+  }
+
+  private clearFormMessage(): void {
+    this.formMessage.set('');
   }
 }

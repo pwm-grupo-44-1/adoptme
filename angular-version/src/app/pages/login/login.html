@@ -1,40 +1,97 @@
 <div class="login-box">
-  <form class="login-inputs" [formGroup]="authForm" (ngSubmit)="onSubmit()">
+  <form class="login-inputs" [formGroup]="authForm" (ngSubmit)="onSubmit()" novalidate>
 
     @if (!isLoginMode()) {
-      <input type="text" formControlName="name" placeholder="Usuario">
+      <div class="form-field">
+        <input
+          type="text"
+          formControlName="name"
+          placeholder="Usuario"
+          [class.input-error]="shouldShowError('name')"
+          autocomplete="name">
+        @if (shouldShowError('name')) {
+          <small class="field-error">{{ getFieldError('name') }}</small>
+        }
+      </div>
     }
 
-    <input type="email" formControlName="email" placeholder="Correo electrónico" required>
-
-    @if (!isLoginMode()) {
-      <input type="tel" formControlName="phone" placeholder="Teléfono" pattern="[6789][0-9]{8}">
-    }
-
-    <div class="password-wrapper">
-      <input [type]="showPassword() ? 'text' : 'password'"
-             formControlName="password"
-             placeholder="Contraseña"
-             title="Mínimo 8 caracteres, debe incluir mayúscula, número y símbolo."
-             required>
-      <span class="toggle-password"
-            (click)="showPassword.set(!showPassword())"
-            [style.color]="showPassword() ? '#111211' : '#4a7477'">
-                &#128065;
-            </span>
+    <div class="form-field">
+      <input
+        type="email"
+        formControlName="email"
+        placeholder="Correo electrónico"
+        [class.input-error]="shouldShowError('email')"
+        autocomplete="email">
+      @if (shouldShowError('email')) {
+        <small class="field-error">{{ getFieldError('email') }}</small>
+      }
     </div>
 
     @if (!isLoginMode()) {
-      <div class="password-wrapper">
-        <input [type]="showRePassword() ? 'text' : 'password'"
-               formControlName="repassword"
-               placeholder="Repetir contraseña">
-        <span class="toggle-password"
-              (click)="showRePassword.set(!showRePassword())"
-              [style.color]="showRePassword() ? '#111211' : '#4a7477'">
-                    &#128065;
-                </span>
+      <div class="form-field">
+        <input
+          type="tel"
+          formControlName="phone"
+          placeholder="Teléfono"
+          [class.input-error]="shouldShowError('phone')"
+          autocomplete="tel">
+        @if (shouldShowError('phone')) {
+          <small class="field-error">{{ getFieldError('phone') }}</small>
+        }
       </div>
+    }
+
+    <div class="form-field">
+      <div class="password-wrapper">
+        <input
+          [type]="showPassword() ? 'text' : 'password'"
+          formControlName="password"
+          placeholder="Contraseña"
+          [class.input-error]="shouldShowError('password')"
+          [attr.title]="isLoginMode() ? null : 'Mínimo 8 caracteres, debe incluir mayúscula, número y símbolo.'"
+          autocomplete="current-password">
+        <button
+          type="button"
+          class="toggle-password"
+          (click)="showPassword.set(!showPassword())"
+          [style.color]="showPassword() ? '#111211' : '#4a7477'"
+          [attr.aria-label]="showPassword() ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+          &#128065;
+        </button>
+      </div>
+      @if (shouldShowError('password')) {
+        <small class="field-error">{{ getFieldError('password') }}</small>
+      }
+    </div>
+
+    @if (!isLoginMode()) {
+      <div class="form-field">
+        <div class="password-wrapper">
+          <input
+            [type]="showRePassword() ? 'text' : 'password'"
+            formControlName="repassword"
+            placeholder="Repetir contraseña"
+            [class.input-error]="shouldShowError('repassword')"
+            autocomplete="new-password">
+          <button
+            type="button"
+            class="toggle-password"
+            (click)="showRePassword.set(!showRePassword())"
+            [style.color]="showRePassword() ? '#111211' : '#4a7477'"
+            [attr.aria-label]="showRePassword() ? 'Ocultar contraseña repetida' : 'Mostrar contraseña repetida'">
+            &#128065;
+          </button>
+        </div>
+        @if (shouldShowError('repassword')) {
+          <small class="field-error">{{ getFieldError('repassword') }}</small>
+        }
+      </div>
+    }
+
+    @if (formMessage()) {
+      <p class="form-message" [class.form-message--success]="formMessageType() === 'success'">
+        {{ formMessage() }}
+      </p>
     }
 
     <div class="login-actions">

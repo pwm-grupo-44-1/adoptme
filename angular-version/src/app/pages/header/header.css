@@ -83,6 +83,8 @@
 }
 
 .nav-link {
+  border: 0;
+  background: transparent;
   text-decoration: none;
   color: #4a7477;
   font-family: "Rum Raisin", Arial, Helvetica, sans-serif;
@@ -92,10 +94,29 @@
   border-radius: 0.4rem;
   transition: background-color 0.2s ease, box-shadow 0.2s ease;
   white-space: nowrap;
+  cursor: pointer;
 }
 
 .nav-link:hover {
   background-color: rgba(255, 255, 255, 0.18);
+}
+
+.logout-link {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.logout-title {
+  line-height: 1;
+}
+
+.logout-subtitle {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1;
 }
 
 .drawer-only-link {
@@ -192,6 +213,10 @@
     padding: 0.4rem 0.3rem;
     white-space: nowrap;
   }
+
+  .logout-subtitle {
+    font-size: 0.62rem;
+  }
 }
 
 @media (max-width: 700px) {
@@ -253,6 +278,14 @@
     font-size: 1.5rem;
     padding: 0.9rem 1rem;
     border-radius: 0.75rem;
+  }
+
+  .logout-link {
+    align-items: flex-start;
+  }
+
+  .logout-subtitle {
+    font-size: 0.75rem;
   }
 
   .drawer-only-link {
