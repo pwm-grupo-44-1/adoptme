@@ -1,3 +1,13 @@
+# En el Readme del proyecto o en el PPTX se debe incluir:
+
+      - Estructura del código del proyecto web: explicación de los componentes creados y su funcionalidad.
+
+      - Estructura de los datos que se almacenan en firebase: mostrar los datos en firebase y explicar la estructura de los datos.
+
+      - Tour por la página web, mostrando los puntos más importantes de la misma. Se debe mostrar un ejemplo de introducción de datos así como su posterior visualización en el catálogo que corresponda.
+
+      - Mostrar evolución o enlace a Trello.
+
 # README Angular
 
 ## Resumen
