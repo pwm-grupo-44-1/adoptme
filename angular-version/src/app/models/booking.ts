@@ -8,4 +8,6 @@ export interface AppointmentBooking {
   phone: string;
   notes: string;
   createdAt: string;
+  status?: 'pending' | 'confirmed';
+  confirmedAt?: string;
 }

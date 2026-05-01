@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { addDoc, collection, collectionData, Firestore } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, deleteDoc, doc, Firestore, setDoc, updateDoc } from '@angular/fire/firestore';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { LocalJsonService } from './local-json';
 import { Animal } from '../models/animal';
+import { AppointmentBooking } from '../models/booking';
 import { User } from '../models/user';
 import {
   HeaderData, FooterData, HomeData, TeamMember,
@@ -109,5 +110,21 @@ export class DataService {
 
   addUser(user: User): Promise<void> {
     return addDoc(collection(this.firestore, 'users'), user).then(() => undefined);
+  }
+
+  getBookings(): Observable<AppointmentBooking[]> {
+    return collectionData(collection(this.firestore, 'bookings')) as Observable<AppointmentBooking[]>;
+  }
+
+  addBooking(booking: AppointmentBooking): Promise<void> {
+    return setDoc(doc(this.firestore, 'bookings', booking.id), booking);
+  }
+
+  updateBooking(bookingId: string, data: Partial<AppointmentBooking>): Promise<void> {
+    return updateDoc(doc(this.firestore, 'bookings', bookingId), data);
+  }
+
+  deleteBooking(bookingId: string): Promise<void> {
+    return deleteDoc(doc(this.firestore, 'bookings', bookingId));
   }
 }

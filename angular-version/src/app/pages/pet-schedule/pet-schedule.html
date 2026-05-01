@@ -37,51 +37,6 @@
         </div>
 
         <form #appointmentForm="ngForm" class="booking-form" (ngSubmit)="confirmBooking(appointmentForm)">
-          <app-schedule-form-field
-            label="Nombre completo"
-            name="contactNameVisible"
-            [value]="bookingForm.contactName"
-            placeholder="Quien asistira a la visita"
-            [required]="true"
-            [pattern]="contactNamePattern"
-            [showError]="fieldTouched.contactName && isContactNameInvalid"
-            errorText="Introduce nombre y apellidos validos."
-            (valueChange)="bookingForm.contactName = $event; markFieldAsTouched('contactName')"
-          />
-          <input type="hidden" name="contactName" [(ngModel)]="bookingForm.contactName" required [pattern]="contactNamePattern">
-
-          <app-schedule-form-field
-            label="Correo electronico"
-            name="emailVisible"
-            type="email"
-            [value]="bookingForm.email"
-            placeholder="tu@correo.com"
-            [required]="true"
-            [pattern]="emailPattern"
-            inputmode="email"
-            autocomplete="email"
-            [showError]="fieldTouched.email && isEmailInvalid"
-            [errorText]="!bookingForm.email.trim() ? 'Introduce un correo electronico.' : 'Introduce un correo electronico valido.'"
-            (valueChange)="bookingForm.email = $event; markFieldAsTouched('email')"
-          />
-          <input type="hidden" name="email" [(ngModel)]="bookingForm.email" required email [pattern]="emailPattern">
-
-          <app-schedule-form-field
-            label="Telefono"
-            name="phoneVisible"
-            type="tel"
-            [value]="bookingForm.phone"
-            placeholder="+34 600 000 000"
-            [required]="true"
-            [pattern]="phonePattern"
-            inputmode="tel"
-            autocomplete="tel"
-            [showError]="fieldTouched.phone && isPhoneInvalid"
-            [errorText]="!bookingForm.phone.trim() ? 'Introduce un telefono.' : 'Introduce un telefono valido.'"
-            (valueChange)="bookingForm.phone = $event; markFieldAsTouched('phone')"
-          />
-          <input type="hidden" name="phone" [(ngModel)]="bookingForm.phone" required [pattern]="phonePattern">
-
           <label>
             Mascota de interes
             <select name="animalId" [(ngModel)]="bookingForm.animalId">

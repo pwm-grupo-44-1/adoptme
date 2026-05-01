@@ -15,9 +15,6 @@ export interface SlotState {
 }
 
 export interface BookingFormModel {
-  contactName: string;
-  email: string;
-  phone: string;
   animalId: number | null;
   notes: string;
 }

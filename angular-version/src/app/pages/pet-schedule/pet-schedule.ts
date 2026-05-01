@@ -15,17 +15,16 @@ import {ActivatedRoute} from '@angular/router';
 import {Animal} from '../../models/animal';
 import {AppointmentBooking} from '../../models/booking';
 import {DataService} from '../../services/data'; // Ajustado al nombre real de tu servicio
-import {LocalJsonService} from '../../services/local-json';
+import {AuthService} from '../../services/auth';
 import {AvailableSlots} from '../../shared/available-slots/available-slots';
 import {MonthCalendar} from '../../shared/month-calendar/month-calendar';
-import {ScheduleFormField} from '../../shared/schedule-form-field/schedule-form-field';
 import {UpcomingBookings} from '../../shared/upcoming-bookings/upcoming-bookings';
 import {BookingFormModel, CalendarDay, SlotState, UpcomingBookingView,} from './pet-schedule.models';
 
 @Component({
   selector: 'app-pet-schedule',
   standalone: true,
-  imports: [CommonModule, FormsModule, MonthCalendar, AvailableSlots, ScheduleFormField, UpcomingBookings],
+  imports: [CommonModule, FormsModule, MonthCalendar, AvailableSlots, UpcomingBookings],
   templateUrl: './pet-schedule.html',
   styleUrl: './pet-schedule.css',
   encapsulation: ViewEncapsulation.None,
@@ -33,9 +32,6 @@ import {BookingFormModel, CalendarDay, SlotState, UpcomingBookingView,} from './
 export class PetSchedule implements OnInit {
   readonly weekDays = ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom'];
   readonly bookingSuccessMessage = 'Su cita sera confirmada por correo electronico.';
-  readonly contactNamePattern = "^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+(?:[\\s'-][A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+)+$";
-  readonly emailPattern = '^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$';
-  readonly phonePattern = '^(?:[6789]\\d{8}|\\+34[6789]\\d{8}|\\+(?!34)[1-9]\\d{5,16})$';
   readonly slotValidationMessage = 'Debes elegir una hora disponible';
   readonly weekdayScheduleSlots = this.buildHourlySlots(10, 18);
   readonly saturdayScheduleSlots = this.buildHourlySlots(9, 13);
@@ -50,21 +46,12 @@ export class PetSchedule implements OnInit {
   isLoading = true;
   isBookingJustConfirmed = false;
   showSlotValidationError = false;
-  fieldTouched = {
-    contactName: false,
-    email: false,
-    phone: false,
-  };
-
   statusTone: 'success' | 'error' | 'info' = 'info';
   statusMessage = '';
 
   private bookingConfirmationTimeoutId: ReturnType<typeof setTimeout> | null = null;
 
   bookingForm: BookingFormModel = {
-    contactName: '',
-    email: '',
-    phone: '',
     animalId: null,
     notes: '',
   };
@@ -72,12 +59,15 @@ export class PetSchedule implements OnInit {
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private dataService: DataService,
-    private localJsonService: LocalJsonService,
+    private authService: AuthService,
     private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.bookings = this.sortBookings(this.localJsonService.getBookings());
+    this.dataService.getBookings().subscribe((bookings) => {
+      this.bookings = this.sortBookings(bookings);
+      this.changeDetectorRef.detectChanges();
+    });
 
     this.dataService.mascotas$.subscribe((animals) => {
       this.animals = [...animals].sort((left, right) => left.name.localeCompare(right.name));
@@ -206,23 +196,20 @@ export class PetSchedule implements OnInit {
       id: booking.id,
       dateLabel: this.formatDate(booking.date),
       metaLabel: `${booking.slot}h · ${this.animalName(booking.animalId)}`,
-      contactLabel: `${booking.contactName} \n ${booking.email}`,
+      contactLabel: `${booking.contactName} \n ${booking.email} \n ${booking.status === 'confirmed' ? 'Confirmada' : 'Pendiente de confirmar'}`,
     }));
   }
 
   get isContactNameInvalid(): boolean {
-    const value = this.bookingForm.contactName.trim();
-    return !value || !new RegExp(this.contactNamePattern).test(value);
+    return false;
   }
 
   get isEmailInvalid(): boolean {
-    const value = this.bookingForm.email.trim();
-    return !value || !new RegExp(this.emailPattern).test(value);
+    return false;
   }
 
   get isPhoneInvalid(): boolean {
-    const value = this.bookingForm.phone.trim();
-    return !value || !new RegExp(this.phonePattern).test(value);
+    return false;
   }
 
   changeMonth(step: number): void {
@@ -270,11 +257,15 @@ export class PetSchedule implements OnInit {
     this.clearStatus();
   }
 
-  markFieldAsTouched(field: 'contactName' | 'email' | 'phone'): void {
-    this.fieldTouched[field] = true;
-  }
-
   confirmBooking(form: NgForm): void {
+    const currentUser = this.authService.currentUser();
+
+    if (!currentUser) {
+      this.setStatus('error', 'Debes iniciar sesion para reservar una cita.');
+      this.scrollToPageStart();
+      return;
+    }
+
     if (!this.selectedDate) {
       this.setStatus('error', 'Selecciona primero un dia disponible.');
       this.scrollToPageStart();
@@ -302,15 +293,20 @@ export class PetSchedule implements OnInit {
       date: this.selectedDate,
       slot: this.selectedSlot,
       animalId: this.bookingForm.animalId,
-      contactName: this.bookingForm.contactName.trim(),
-      email: this.bookingForm.email.trim(),
-      phone: this.bookingForm.phone.trim(),
+      contactName: currentUser.name.trim(),
+      email: currentUser.email.trim(),
+      phone: currentUser.phone?.trim() ?? '',
       notes: this.bookingForm.notes.trim(),
       createdAt: new Date().toISOString(),
+      status: 'pending',
     };
 
     this.bookings = this.sortBookings([...this.bookings, booking]);
-    this.persistBookings();
+    this.dataService.addBooking(booking).catch((err) => {
+      console.error('Error al guardar la cita en Firestore:', err);
+      this.setStatus('error', 'No se pudo guardar la cita. Intentalo de nuevo.');
+      this.changeDetectorRef.detectChanges();
+    });
 
     this.triggerBookingSuccessFeedback();
     this.setStatus('success', this.bookingSuccessMessage);
@@ -320,24 +316,13 @@ export class PetSchedule implements OnInit {
     this.ensureSelectedDate();
 
     form.resetForm({
-      contactName: '',
-      email: '',
-      phone: '',
       animalId: this.bookingForm.animalId,
       notes: '',
     });
 
     this.bookingForm = {
       ...this.bookingForm,
-      contactName: '',
-      email: '',
-      phone: '',
       notes: '',
-    };
-    this.fieldTouched = {
-      contactName: false,
-      email: false,
-      phone: false,
     };
   }
 
@@ -348,7 +333,11 @@ export class PetSchedule implements OnInit {
     }
 
     this.bookings = this.bookings.filter((item) => item.id !== bookingId);
-    this.persistBookings();
+    this.dataService.deleteBooking(bookingId).catch((err) => {
+      console.error('Error al cancelar la cita en Firestore:', err);
+      this.setStatus('error', 'No se pudo cancelar la cita.');
+      this.changeDetectorRef.detectChanges();
+    });
 
     if (!this.selectedDate) {
       this.selectedDate = booking.date;
@@ -462,9 +451,7 @@ export class PetSchedule implements OnInit {
     return new Date(year, month - 1, day, hours, minutes);
   }
 
-  private persistBookings(): void {
-    this.localJsonService.saveBookings(this.bookings);
-  }
+  private persistBookings(): void {}
 
   private showSlotValidation(message: string): void {
     this.showSlotValidationError = true;
@@ -542,33 +529,6 @@ export class PetSchedule implements OnInit {
   }
 
   private getBookingFormError(form: NgForm): string {
-    const contactNameErrors = form.controls['contactName']?.errors;
-    if (contactNameErrors?.['required']) {
-      return 'Introduce el nombre completo para reservar la cita.';
-    }
-
-    if (contactNameErrors?.['pattern']) {
-      return 'Introduce un nombre y apellidos validos.';
-    }
-
-    const emailErrors = form.controls['email']?.errors;
-    if (emailErrors?.['required']) {
-      return 'Introduce un correo electronico de contacto.';
-    }
-
-    if (emailErrors?.['email'] || emailErrors?.['pattern']) {
-      return 'Introduce un correo electronico valido.';
-    }
-
-    const phoneErrors = form.controls['phone']?.errors;
-    if (phoneErrors?.['required']) {
-      return 'Introduce un telefono de contacto.';
-    }
-
-    if (phoneErrors?.['pattern']) {
-      return 'Introduce un telefono valido.';
-    }
-
     return 'Completa los datos obligatorios para reservar.';
   }
 

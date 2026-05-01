@@ -27,7 +27,7 @@
     <button
       class="hamburger-btn"
       type="button"
-      aria-label="Abrir menú"
+      aria-label="Abrir menu"
       [attr.aria-expanded]="menuOpen"
       (click)="toggleMenu()"
     >
@@ -39,15 +39,37 @@
     <nav class="main-nav" [class.open]="menuOpen">
       @for (link of navLinks; track link.name) {
         @if (link.url === '/login' && isLoggedIn()) {
-          <button
-            class="nav-link logout-link"
-            type="button"
-            [class.drawer-only-link]="link.mobileOnly"
-            (click)="logout()"
-          >
-            <span class="logout-title">Logout</span>
-            <span class="logout-subtitle">Cerrar sesión</span>
-          </button>
+          @if (isAdmin()) {
+            <div class="admin-account" [class.drawer-only-link]="link.mobileOnly">
+              <button
+                class="admin-account-btn"
+                type="button"
+                aria-label="Menu de administrador"
+                [attr.aria-expanded]="adminMenuOpen"
+                (click)="toggleAdminMenu()"
+              >
+                <i class="bi bi-person-circle"></i>
+              </button>
+
+              @if (adminMenuOpen) {
+                <div class="admin-menu">
+                  <button type="button" (click)="openBookingsModal()">Confirmar citas</button>
+                  <button type="button" (click)="goToPetManagement()">Gestion de mascotas</button>
+                  <button type="button" class="admin-menu-logout" (click)="logout()">Cerrar sesion</button>
+                </div>
+              }
+            </div>
+          } @else {
+            <button
+              class="nav-link logout-link"
+              type="button"
+              [class.drawer-only-link]="link.mobileOnly"
+              (click)="logout()"
+            >
+              <span class="logout-title">Logout</span>
+              <span class="logout-subtitle">Cerrar sesion</span>
+            </button>
+          }
         } @else {
           <a
             class="nav-link"
@@ -64,3 +86,42 @@
 
   <div class="nav-overlay" [class.show]="menuOpen" (click)="closeMenu()"></div>
 </header>
+
+@if (showBookingsModal) {
+  <div class="admin-modal-backdrop" (click)="closeBookingsModal()">
+    <section class="admin-bookings-modal" role="dialog" aria-modal="true" aria-labelledby="admin-bookings-title" (click)="$event.stopPropagation()">
+      <div class="admin-modal-header">
+        <div>
+          <p>Administracion</p>
+          <h2 id="admin-bookings-title">Confirmar citas</h2>
+        </div>
+        <button type="button" class="admin-modal-close" aria-label="Cerrar panel" (click)="closeBookingsModal()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      @if (pendingBookings.length === 0) {
+        <p class="admin-modal-empty">No hay citas pendientes de confirmar.</p>
+      } @else {
+        <div class="admin-bookings-list">
+          @for (booking of pendingBookings; track booking.id) {
+            <article class="admin-booking-item">
+              <div>
+                <h3>{{ booking.contactName }}</h3>
+                <p>{{ booking.email }}</p>
+                <p>{{ formatBookingDate(booking.date) }} - {{ booking.slot }}h</p>
+                <p>Mascota/s: {{ animalName(booking.animalId) }}</p>
+                @if (booking.notes) {
+                  <p class="admin-booking-notes">{{ booking.notes }}</p>
+                }
+              </div>
+              <button type="button" class="admin-confirm-btn" (click)="confirmBooking(booking)">
+                Confirmar cita
+              </button>
+            </article>
+          }
+        </div>
+      }
+    </section>
+  </div>
+}
