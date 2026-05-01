@@ -100,7 +100,9 @@
         </button>
       </div>
 
-      @if (pendingBookings.length === 0) {
+      @if (isAdminBookingsLoading) {
+        <p class="admin-modal-empty">Cargando citas pendientes...</p>
+      } @else if (pendingBookings.length === 0) {
         <p class="admin-modal-empty">No hay citas pendientes de confirmar.</p>
       } @else {
         <div class="admin-bookings-list">

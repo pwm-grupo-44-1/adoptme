@@ -32,6 +32,7 @@ export class HeaderComponent implements OnInit {
   isAdmin = computed(() => this.authService.currentUser()?.type === 'admin');
   adminMenuOpen = false;
   showBookingsModal = false;
+  isAdminBookingsLoading = false;
   bookings: AppointmentBooking[] = [];
   animals: Animal[] = [];
 
@@ -84,10 +85,10 @@ export class HeaderComponent implements OnInit {
   }
 
   openBookingsModal(): void {
-    this.loadBookings();
     this.adminMenuOpen = false;
     this.closeMenu();
     this.showBookingsModal = true;
+    this.loadBookings();
   }
 
   closeBookingsModal(): void {
@@ -160,8 +161,20 @@ export class HeaderComponent implements OnInit {
   }
 
   private loadBookings(): void {
-    this.dataService.getBookings().pipe(take(1)).subscribe((bookings) => {
-      this.bookings = bookings;
+    this.isAdminBookingsLoading = true;
+    this.cdr.detectChanges();
+
+    this.dataService.getBookings().pipe(take(1)).subscribe({
+      next: (bookings) => {
+        this.bookings = bookings;
+        this.isAdminBookingsLoading = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error cargando las citas pendientes:', err);
+        this.isAdminBookingsLoading = false;
+        this.cdr.detectChanges();
+      },
     });
   }
 
