@@ -11,7 +11,7 @@
 import {CommonModule} from '@angular/common';
 import {ChangeDetectorRef, Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {FormsModule, NgForm} from '@angular/forms';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, RouterLink} from '@angular/router';
 import {Animal} from '../../models/animal';
 import {AppointmentBooking} from '../../models/booking';
 import {DataService} from '../../services/data'; // Ajustado al nombre real de tu servicio
@@ -24,7 +24,7 @@ import {BookingFormModel, CalendarDay, SlotState, UpcomingBookingView,} from './
 @Component({
   selector: 'app-pet-schedule',
   standalone: true,
-  imports: [CommonModule, FormsModule, MonthCalendar, AvailableSlots, UpcomingBookings],
+  imports: [CommonModule, FormsModule, RouterLink, MonthCalendar, AvailableSlots, UpcomingBookings],
   templateUrl: './pet-schedule.html',
   styleUrl: './pet-schedule.css',
   encapsulation: ViewEncapsulation.None,
@@ -36,7 +36,6 @@ export class PetSchedule implements OnInit {
   readonly weekdayScheduleSlots = this.buildHourlySlots(10, 18);
   readonly saturdayScheduleSlots = this.buildHourlySlots(9, 13);
 
-  scheduleSlots: string[] = [];
   animals: Animal[] = [];
   bookings: AppointmentBooking[] = [];
 
@@ -63,9 +62,22 @@ export class PetSchedule implements OnInit {
     private route: ActivatedRoute
   ) {}
 
+  get canAccessSchedule(): boolean {
+    const user = this.authService.currentUser();
+    return user?.type === 'admin' || user?.type === 'user';
+  }
+
   ngOnInit(): void {
     this.dataService.getBookings().subscribe((bookings) => {
       this.bookings = this.sortBookings(bookings);
+      this.isLoading = false;
+      this.ensureSelectedDate();
+      this.changeDetectorRef.detectChanges();
+    }, (err) => {
+      console.error('Error cargando las citas:', err);
+      this.isLoading = false;
+      this.setStatus('error', `No se pudieron cargar las citas: ${err?.code ?? err?.message ?? 'error desconocido'}.`);
+      this.ensureSelectedDate();
       this.changeDetectorRef.detectChanges();
     });
 
@@ -81,30 +93,11 @@ export class PetSchedule implements OnInit {
       this.changeDetectorRef.detectChanges();
     });
 
-    this.dataService.getSchedule().subscribe({
-      next: (scheduleData) => {
-        const fallbackSlots = this.buildHourlySlots(9, 18);
-
+    /*
         // 🚀 CORRECCIÓN DEL BUG: Quitamos la 'h' del db.json ("10:00h" -> "10:00")
-        const dbSlots = (scheduleData?.slots ?? []).map(s => s.replace('h', '').trim());
 
-        this.scheduleSlots = this.sortSlots([
-          ...fallbackSlots,
-          ...dbSlots,
-        ]);
-        this.isLoading = false;
-        this.ensureSelectedDate();
         // 🚀 MAGIA: Repintamos para que desaparezca el "Cargando agenda..."
-        this.changeDetectorRef.detectChanges();
-      },
-      error: () => {
-        this.scheduleSlots = this.buildHourlySlots(9, 18);
-        this.isLoading = false;
-        this.setStatus('error', 'No se pudo cargar la agenda. Se muestran los horarios por defecto.');
-        this.ensureSelectedDate();
-        this.changeDetectorRef.detectChanges();
-      },
-    });
+    */
   }
 
   get monthTitle(): string {
@@ -230,6 +223,8 @@ export class PetSchedule implements OnInit {
       this.selectedSlot = '';
       this.ensureSelectedDate();
     }
+
+    this.changeDetectorRef.detectChanges();
   }
 
   selectDate(isoDate: string): void {
@@ -245,6 +240,7 @@ export class PetSchedule implements OnInit {
 
     this.showSlotValidationError = false;
     this.clearStatus();
+    this.changeDetectorRef.detectChanges();
   }
 
   selectSlot(slot: SlotState): void {
@@ -255,6 +251,7 @@ export class PetSchedule implements OnInit {
     this.selectedSlot = slot.time;
     this.showSlotValidationError = false;
     this.clearStatus();
+    this.changeDetectorRef.detectChanges();
   }
 
   confirmBooking(form: NgForm): void {
@@ -304,6 +301,7 @@ export class PetSchedule implements OnInit {
     this.bookings = this.sortBookings([...this.bookings, booking]);
     this.dataService.addBooking(booking).catch((err) => {
       console.error('Error al guardar la cita en Firestore:', err);
+      this.bookings = this.bookings.filter((item) => item.id !== booking.id);
       this.setStatus('error', 'No se pudo guardar la cita. Intentalo de nuevo.');
       this.changeDetectorRef.detectChanges();
     });
@@ -423,18 +421,17 @@ export class PetSchedule implements OnInit {
     return (
       Boolean(isoDate) &&
       this.getAllowedSlotsForDate(isoDate).includes(slot) &&
-      !this.hasReachedDailyBookingLimit(isoDate) &&
       !this.isSlotBooked(isoDate, slot) &&
       !this.isSlotExpired(isoDate, slot)
     );
   }
 
-  private hasReachedDailyBookingLimit(isoDate: string): boolean {
-    return this.bookings.filter((booking) => booking.date === isoDate).length >= 2;
-  }
-
   private isSlotBooked(isoDate: string, slot: string): boolean {
-    return this.bookings.some((booking) => booking.date === isoDate && booking.slot === slot);
+    return this.bookings.some((booking) =>
+      booking.date === isoDate &&
+      booking.slot === slot &&
+      booking.status === 'confirmed'
+    );
   }
 
   private isSlotExpired(isoDate: string, slot: string): boolean {
@@ -450,8 +447,6 @@ export class PetSchedule implements OnInit {
     const [hours, minutes] = slot.split(':').map(Number);
     return new Date(year, month - 1, day, hours, minutes);
   }
-
-  private persistBookings(): void {}
 
   private showSlotValidation(message: string): void {
     this.showSlotValidationError = true;
@@ -503,29 +498,35 @@ export class PetSchedule implements OnInit {
     return `${Date.now()}-${Math.random().toString(16).slice(2, 8)}`;
   }
 
-  private getAllowedSlotsForDate(isoDate: string): string[] {
-    if (!isoDate) {
-      return [];
-    }
-
-    const dayOfWeek = this.parseIsoDate(isoDate).getDay();
+  private getDefaultSlotsForDate(date: Date): string[] {
+    const dayOfWeek = date.getDay();
 
     if (dayOfWeek === 0) {
       return [];
     }
 
-    const allowedSlots = dayOfWeek === 6 ? this.saturdayScheduleSlots : this.weekdayScheduleSlots;
-    return allowedSlots.filter((slot) => this.scheduleSlots.includes(slot));
+    return dayOfWeek === 6 ? this.saturdayScheduleSlots : this.weekdayScheduleSlots;
+  }
+
+  private getAllowedSlotsForDate(isoDate: string): string[] {
+    if (!isoDate) {
+      return [];
+    }
+
+    const date = this.parseIsoDate(isoDate);
+    const dayOfWeek = date.getDay();
+
+    if (dayOfWeek === 0) {
+      return [];
+    }
+
+    return this.getDefaultSlotsForDate(date);
   }
 
   private buildHourlySlots(startHour: number, endHour: number): string[] {
     return Array.from({ length: endHour - startHour + 1 }, (_, index) =>
       `${String(startHour + index).padStart(2, '0')}:00`
     );
-  }
-
-  private sortSlots(slots: string[]): string[] {
-    return [...new Set(slots)].sort((left, right) => left.localeCompare(right));
   }
 
   private getBookingFormError(form: NgForm): string {

@@ -101,14 +101,28 @@ export class HeaderComponent implements OnInit {
   }
 
   confirmBooking(booking: AppointmentBooking): void {
+    const slotAlreadyConfirmed = this.bookings.some((item) =>
+      item.id !== booking.id &&
+      item.date === booking.date &&
+      item.slot === booking.slot &&
+      item.status === 'confirmed'
+    );
+
+    if (slotAlreadyConfirmed) {
+      alert('Ya hay una cita confirmada para ese dia y hora.');
+      return;
+    }
+
+    const confirmedAt = new Date().toISOString();
+
     this.bookings = this.bookings.map((item) =>
       item.id === booking.id
-        ? { ...item, status: 'confirmed', confirmedAt: new Date().toISOString() }
+        ? { ...item, status: 'confirmed', confirmedAt }
         : item
     );
     this.dataService.updateBooking(booking.id, {
       status: 'confirmed',
-      confirmedAt: new Date().toISOString(),
+      confirmedAt,
     }).catch((err) => console.error('Error al confirmar la cita en Firestore:', err));
     this.openConfirmationEmail(booking);
   }
