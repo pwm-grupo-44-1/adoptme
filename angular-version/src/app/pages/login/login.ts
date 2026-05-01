@@ -129,10 +129,7 @@ export class Login {
           }
 
           this.authService.login(usuarioEncontrado);
-
-          this.router.navigate(['/']).then(() => {
-            window.location.reload();
-          });
+          this.router.navigate(['/pet-schedule']);
         } else {
           this.showFormError('Correo o contrasena incorrectos.');
           this.authForm.controls['email'].setErrors({ invalidCredentials: true });
