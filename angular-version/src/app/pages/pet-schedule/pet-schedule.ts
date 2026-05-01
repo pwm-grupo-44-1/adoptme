@@ -177,10 +177,15 @@ export class PetSchedule implements OnInit {
 
   get upcomingBookings(): AppointmentBooking[] {
     const now = new Date();
+    const currentUser = this.authService.currentUser();
 
     return this.bookings.filter((booking) => {
       const bookingDate = this.combineDateAndSlot(booking.date, booking.slot);
-      return bookingDate >= now;
+      const belongsToCurrentUser =
+        currentUser?.type === 'admin' ||
+        booking.email.trim().toLowerCase() === currentUser?.email.trim().toLowerCase();
+
+      return bookingDate >= now && belongsToCurrentUser;
     });
   }
 

@@ -115,9 +115,14 @@
                   <p class="admin-booking-notes">{{ booking.notes }}</p>
                 }
               </div>
-              <button type="button" class="admin-confirm-btn" (click)="confirmBooking(booking)">
-                Confirmar cita
-              </button>
+              <div class="admin-booking-actions">
+                <button type="button" class="admin-confirm-btn" (click)="confirmBooking(booking)">
+                  Confirmar cita
+                </button>
+                <button type="button" class="admin-reject-btn" (click)="rejectBooking(booking)">
+                  Rechazar cita
+                </button>
+              </div>
             </article>
           }
         </div>

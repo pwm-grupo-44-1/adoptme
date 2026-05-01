@@ -127,6 +127,13 @@ export class HeaderComponent implements OnInit {
     this.openConfirmationEmail(booking);
   }
 
+  rejectBooking(booking: AppointmentBooking): void {
+    this.bookings = this.bookings.filter((item) => item.id !== booking.id);
+    this.dataService.deleteBooking(booking.id)
+      .catch((err) => console.error('Error al rechazar la cita en Firestore:', err));
+    this.openRejectionEmail(booking);
+  }
+
   logout(): void {
     this.authService.logout();
     this.adminMenuOpen = false;
@@ -170,7 +177,36 @@ export class HeaderComponent implements OnInit {
       'Gracias por confiar en AdoptMe.',
     ].join('\n');
 
-    window.location.href = `mailto:${booking.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    this.openGmailCompose(booking.email, subject, body);
+  }
+
+  private openRejectionEmail(booking: AppointmentBooking): void {
+    const animalName = this.animalName(booking.animalId);
+    const subject = `Cita AdoptMe no disponible - ${this.formatBookingDate(booking.date)}`;
+    const body = [
+      `Hola ${booking.contactName},`,
+      '',
+      `No podemos confirmar tu cita para el ${this.formatBookingDate(booking.date)} a las ${booking.slot}h.`,
+      `Mascota/s solicitadas: ${animalName}.`,
+      '',
+      'Puedes solicitar otra cita desde la web de AdoptMe.',
+      '',
+      'Gracias por confiar en AdoptMe.',
+    ].join('\n');
+
+    this.openGmailCompose(booking.email, subject, body);
+  }
+
+  private openGmailCompose(to: string, subject: string, body: string): void {
+    const params = new URLSearchParams({
+      view: 'cm',
+      fs: '1',
+      to,
+      su: subject,
+      body,
+    });
+
+    window.open(`https://mail.google.com/mail/?${params.toString()}`, '_blank', 'noopener,noreferrer');
   }
 
   @HostListener('window:resize')

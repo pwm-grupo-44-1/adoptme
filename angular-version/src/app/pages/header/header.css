@@ -282,15 +282,29 @@
   font-style: italic !important;
 }
 
-.admin-confirm-btn {
+.admin-booking-actions {
+  display: grid;
+  gap: 0.5rem;
+  flex: 0 0 auto;
+}
+
+.admin-confirm-btn,
+.admin-reject-btn {
   border: 0;
   border-radius: 0.5rem;
   padding: 0.75rem 1rem;
-  background: #10946d;
   color: #fff;
   cursor: pointer;
   font-weight: 700;
   white-space: nowrap;
+}
+
+.admin-confirm-btn {
+  background: #10946d;
+}
+
+.admin-reject-btn {
+  background: #c0392b;
 }
 
 .admin-modal-empty {
