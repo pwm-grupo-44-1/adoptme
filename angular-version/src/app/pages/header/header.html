@@ -54,7 +54,7 @@
               @if (adminMenuOpen) {
                 <div class="admin-menu">
                   <button type="button" (click)="openBookingsModal()">Gestión de citas</button>
-                  <button type="button" (click)="openClientsModal()">Gestion de clientes</button>
+                  <button type="button" (click)="openClientsModal()">Gestion de usuarios</button>
                   <button type="button" (click)="goToPetManagement()">Gestion de mascotas</button>
                   <button type="button" class="admin-menu-logout" (click)="logout()">Cerrar sesion</button>
                 </div>
@@ -142,7 +142,7 @@
       <div class="admin-modal-header">
         <div>
           <p>Administracion</p>
-          <h2 id="admin-clients-title">Gestion de clientes</h2>
+          <h2 id="admin-clients-title">Gestion de usuarios</h2>
         </div>
         <button type="button" class="admin-modal-close" aria-label="Cerrar panel" (click)="closeClientsModal()">
           <i class="bi bi-x-lg"></i>

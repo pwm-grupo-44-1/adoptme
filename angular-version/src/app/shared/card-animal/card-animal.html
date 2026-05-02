@@ -9,7 +9,9 @@
     </a>
 
     <div class="admin-card-actions">
-      <span class="visit-badge"><i class="bi bi-eye"></i> {{mascota.clicks || 0}} visitas</span>
+      @if (esAdmin) {
+        <span class="visit-badge"><i class="bi bi-eye"></i> {{mascota.clicks || 0}} visitas</span>
+      }
 
       @if (esAdmin) {
         <button class="btn-delete-animal" title="Eliminar animal" (click)="abrirConfirmacion()">
