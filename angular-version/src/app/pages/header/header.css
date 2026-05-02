@@ -577,6 +577,10 @@
     transform: translateX(0);
   }
 
+  .login-nav-item {
+    order: -1;
+  }
+
   .nav-link {
     width: 100%;
     font-size: 1.5rem;

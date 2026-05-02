@@ -40,7 +40,7 @@
       @for (link of navLinks; track link.name) {
         @if (link.url === '/login' && isLoggedIn()) {
           @if (isAdmin()) {
-            <div class="admin-account" [class.drawer-only-link]="link.mobileOnly">
+            <div class="admin-account" [class.drawer-only-link]="link.mobileOnly" [class.login-nav-item]="link.url === '/login'">
               <button
                 class="admin-account-btn"
                 type="button"
@@ -65,6 +65,7 @@
               class="nav-link logout-link"
               type="button"
               [class.drawer-only-link]="link.mobileOnly"
+              [class.login-nav-item]="link.url === '/login'"
               (click)="logout()"
             >
               <span class="logout-title">Logout</span>
@@ -75,6 +76,7 @@
           <a
             class="nav-link"
             [class.drawer-only-link]="link.mobileOnly"
+            [class.login-nav-item]="link.url === '/login'"
             [routerLink]="link.url"
             (click)="closeMenu()"
           >
