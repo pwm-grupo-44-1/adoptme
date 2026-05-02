@@ -62,14 +62,16 @@
             </div>
           } @else {
             <button
-              class="nav-link logout-link"
+              class="nav-link account-nav-link logout-link"
               type="button"
+              aria-label="Cerrar sesion"
+              title="Cerrar sesion"
               [class.drawer-only-link]="link.mobileOnly"
               [class.login-nav-item]="link.url === '/login'"
               (click)="logout()"
             >
-              <span class="logout-title">Logout</span>
-              <span class="logout-subtitle">Cerrar sesion</span>
+              <span>Cerrar</span>
+              <span>sesión</span>
             </button>
           }
         } @else {
@@ -77,10 +79,17 @@
             class="nav-link"
             [class.drawer-only-link]="link.mobileOnly"
             [class.login-nav-item]="link.url === '/login'"
+            [class.account-nav-link]="link.url === '/login'"
             [routerLink]="link.url"
+            [attr.aria-label]="link.url === '/login' ? 'Mi cuenta' : null"
+            [attr.title]="link.url === '/login' ? 'Mi cuenta' : null"
             (click)="closeMenu()"
           >
-            {{ link.name }}
+            @if (link.url === '/login') {
+              <span>Mi cuenta</span>
+            } @else {
+              {{ link.name }}
+            }
           </a>
         }
       }

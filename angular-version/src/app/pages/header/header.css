@@ -110,21 +110,19 @@
   transform: translateY(0.08rem);
 }
 
-.logout-link {
+.account-nav-link {
   display: inline-flex;
-  flex-direction: column;
   align-items: center;
-  gap: 0.15rem;
+  justify-content: center;
 }
 
-.logout-title {
-  line-height: 1;
+.logout-link {
+  flex-direction: column;
+  gap: 0.05rem;
+  font-size: clamp(1.2rem, 1.15vw, 1.55rem);
 }
 
-.logout-subtitle {
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 0.72rem;
-  font-weight: 600;
+.logout-link span {
   line-height: 1;
 }
 
@@ -172,14 +170,15 @@
 }
 
 .admin-menu button {
-  border: 0;
-  background: transparent;
-  color: #4a7477;
-  font: 600 0.95rem Arial, Helvetica, sans-serif;
-  text-align: left;
-  padding: 0.8rem 0.85rem;
-  border-radius: 0.45rem;
-  cursor: pointer;
+    border: 0;
+    background: transparent;
+    color: #4a7477;
+    text-align: left;
+    padding: 0.8rem 0.85rem;
+    border-radius: 0.45rem;
+    cursor: pointer;
+    font-size: medium;
+    font-family: 'Montserrat';
 }
 
 .admin-menu button:hover {
@@ -301,15 +300,14 @@
   flex: 0 0 auto;
 }
 
-.admin-confirm-btn,
-.admin-reject-btn {
-  border: 0;
-  border-radius: 0.5rem;
-  padding: 0.75rem 1rem;
-  color: #fff;
-  cursor: pointer;
-  font-weight: 700;
-  white-space: nowrap;
+.admin-confirm-btn, .admin-reject-btn {
+    border: 0;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    color: #fff;
+    cursor: pointer;
+    white-space: nowrap;
+    font-size: larger;
 }
 
 .admin-confirm-btn {
@@ -411,7 +409,7 @@
   padding: 0.7rem 0.9rem;
   color: #fff;
   cursor: pointer;
-  font-weight: 700;
+  font-size: larger;
 }
 
 .admin-save-user-btn {
@@ -521,10 +519,6 @@
     white-space: nowrap;
   }
 
-  .logout-subtitle {
-    font-size: 0.62rem;
-  }
-
   .admin-account-btn {
     width: 2.7rem;
     height: 2.7rem;
@@ -611,14 +605,6 @@
   .nav-link:active {
     box-shadow: none;
     transform: none;
-  }
-
-  .logout-link {
-    align-items: flex-start;
-  }
-
-  .logout-subtitle {
-    font-size: 0.75rem;
   }
 
   .admin-account {
