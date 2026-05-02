@@ -67,10 +67,13 @@ export class HeaderComponent implements OnInit {
       const mainLinks: NavLinkExtended[] = data.navLinks.map(link => ({ ...link }));
 
       this.dataService.getFooterData().subscribe(footerData => {
-        const mobileLinks: NavLinkExtended[] = footerData.navLinks.map(link => ({
-          ...link,
-          mobileOnly: true
-        }));
+        const mainUrls = new Set(mainLinks.map(link => link.url));
+        const mobileLinks: NavLinkExtended[] = footerData.navLinks
+          .filter(link => !mainUrls.has(link.url))
+          .map(link => ({
+            ...link,
+            mobileOnly: true
+          }));
 
         this.navLinks = [...mainLinks, ...mobileLinks];
 
