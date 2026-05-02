@@ -428,6 +428,10 @@
   display: none;
 }
 
+.mobile-nav-copy {
+  display: none;
+}
+
 .hamburger-btn {
   display: none;
   border: none;
@@ -642,6 +646,16 @@
 
   .drawer-only-link {
     display: inline-flex;
+  }
+
+  .mobile-nav-copy {
+    display: grid;
+    gap: 0.15rem;
+    margin: auto 0 0;
+    padding: 1rem 0.5rem 0;
+    color: rgba(74, 116, 119, 0.72);
+    font: 600 0.72rem/1.15 Arial, Helvetica, sans-serif;
+    text-align: center;
   }
 
   .nav-overlay {
