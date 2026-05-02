@@ -83,22 +83,31 @@
 }
 
 .nav-link {
-  border: 0;
-  background: transparent;
+  border: 2px solid rgba(74, 116, 119, 0.28);
+  background: rgba(255, 251, 231, 0.34);
   text-decoration: none;
   color: #4a7477;
   font-family: "Rum Raisin", Arial, Helvetica, sans-serif;
   font-size: clamp(1.8rem, 1.8vw, 2.4rem);
   line-height: 1;
-  padding: 0.8rem 1rem;
-  border-radius: 0.4rem;
-  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  padding: 0.75rem 1rem;
+  border-radius: 0.45rem;
+  box-shadow: 0 0.28rem 0 rgba(74, 116, 119, 0.16);
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
   white-space: nowrap;
   cursor: pointer;
 }
 
 .nav-link:hover {
-  background-color: rgba(255, 255, 255, 0.18);
+  background-color: #fffbe7;
+  border-color: rgba(74, 116, 119, 0.5);
+  box-shadow: 0 0.42rem 0 rgba(74, 116, 119, 0.22);
+  transform: translateY(-0.12rem);
+}
+
+.nav-link:active {
+  box-shadow: 0 0.12rem 0 rgba(74, 116, 119, 0.18);
+  transform: translateY(0.08rem);
 }
 
 .logout-link {
@@ -586,6 +595,22 @@
     font-size: 1.5rem;
     padding: 0.9rem 1rem;
     border-radius: 0.75rem;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    transform: none;
+  }
+
+  .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.18);
+    border-color: transparent;
+    box-shadow: none;
+    transform: none;
+  }
+
+  .nav-link:active {
+    box-shadow: none;
+    transform: none;
   }
 
   .logout-link {
