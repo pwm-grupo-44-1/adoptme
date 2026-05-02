@@ -104,9 +104,9 @@
       </div>
 
       @if (isAdminBookingsLoading) {
-        <p class="admin-modal-empty">Cargando citas pendientes...</p>
+        <p class="admin-modal-empty">Cargando citas...</p>
       } @else if (pendingBookings.length === 0) {
-        <p class="admin-modal-empty">No hay citas pendientes de confirmar.</p>
+        <p class="admin-modal-empty">No hay citas pendientes de confirmar o rechazar.</p>
       } @else {
         <div class="admin-bookings-list">
           @for (booking of pendingBookings; track booking.id) {
@@ -116,6 +116,7 @@
                 <p>{{ booking.email }}</p>
                 <p>{{ formatBookingDate(booking.date) }} - {{ booking.slot }}h</p>
                 <p>Mascota/s: {{ animalName(booking.animalId) }}</p>
+                <p>Estado: pendiente de confirmar</p>
                 @if (booking.notes) {
                   <p class="admin-booking-notes">{{ booking.notes }}</p>
                 }
