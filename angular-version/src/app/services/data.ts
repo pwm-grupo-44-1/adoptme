@@ -3,6 +3,7 @@ import { addDoc, collection, collectionData, deleteDoc, doc, Firestore, setDoc, 
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { LocalJsonService } from './local-json';
+import { AnimalsService } from './animals';
 import { Animal } from '../models/animal';
 import { AppointmentBooking } from '../models/booking';
 import { User } from '../models/user';
@@ -20,58 +21,71 @@ export class DataService {
   private mascotasSubject = new BehaviorSubject<Animal[]>([]);
   public mascotas$ = this.mascotasSubject.asObservable();
 
-  // 🚀 LA MAGIA DEFINITIVA: ReplaySubject para evitar el bug del F5
   private dbCache = new ReplaySubject<any>(1);
   private db$: Observable<any> = this.dbCache.asObservable();
 
-  constructor(private dataSource: LocalJsonService, private firestore: Firestore) {
-    // take(1) asegura que la petición HTTP se haga estrictamente 1 vez al arrancar
+  constructor(
+    private dataSource: LocalJsonService,
+    private firestore: Firestore,
+    private animalsService: AnimalsService // Inyectamos el servicio de Firebase
+  ) {
+    // 1. Cargamos datos estáticos (Home, FAQ, etc.) desde el JSON local
     this.dataSource.getFullDatabase().pipe(take(1)).subscribe({
       next: (db) => {
-        this.procesarMascotas(db.animals || []);
-        // Guardamos todo el JSON en el caché blindado
         this.dbCache.next(db);
       },
-      error: (err) => console.error('Error cargando BD:', err)
+      error: (err) => console.error('Error cargando BD local:', err)
     });
+
+    // 2. Cargamos las mascotas de forma asíncrona desde Firebase
+    this.cargarMascotasFirebase();
   }
 
   // ==========================================
-  // LÓGICA DE MASCOTAS
+  // LÓGICA DE MASCOTAS (CONECTADA A FIREBASE)
   // ==========================================
-  private procesarMascotas(animalesBase: Animal[]) {
+  private async cargarMascotasFirebase() {
     try {
-      const extras = this.dataSource.getExtraAnimals();
-      const eliminados = this.dataSource.getDeletedAnimalIds();
-      const clicks = this.dataSource.getClicksData();
-
-      let listaFinal = [...animalesBase, ...extras].filter(a => !eliminados.includes(a.id));
-
-      listaFinal = listaFinal.map(animal => ({
-        ...animal,
-        clicks: clicks[animal.id] !== undefined ? clicks[animal.id] : (animal.clicks || 0)
-      }));
-
-      this.mascotasSubject.next(listaFinal);
+      const animales = await this.animalsService.getAnimals();
+      this.mascotasSubject.next(animales);
     } catch (error) {
-      console.error('Error procesando mascotas:', error);
-      this.mascotasSubject.next(animalesBase);
+      console.error('Error obteniendo animales de Firebase:', error);
     }
   }
 
-  agregarMascota(nueva: Animal) {
-    this.dataSource.saveExtraAnimal(nueva);
-    const actuales = this.mascotasSubject.getValue();
-    this.mascotasSubject.next([...actuales, nueva]);
+  async agregarMascota(nueva: Animal) {
+    try {
+      // Quitamos el ID si viene (para que Firebase genere uno único)
+      const { id, ...datosMascota } = nueva as any;
+
+      // Guardamos en Firebase
+      const nuevoId = await this.animalsService.addAnimal(datosMascota);
+
+      // Actualizamos el estado local instantáneamente
+      const animalCompleto = { ...nueva, id: nuevoId };
+      const actuales = this.mascotasSubject.getValue();
+      this.mascotasSubject.next([...actuales, animalCompleto]);
+
+    } catch (error) {
+      console.error('Error al agregar mascota en Firebase:', error);
+    }
   }
 
-  eliminarMascota(id: number) {
-    this.dataSource.saveDeletedAnimalId(id);
-    const filtradas = this.mascotasSubject.getValue().filter(a => a.id !== id);
-    this.mascotasSubject.next(filtradas);
+  async eliminarMascota(id: string | number) {
+    try {
+      // Eliminamos de Firebase
+      await this.animalsService.deleteAnimal(id.toString());
+
+      // Actualizamos el estado local
+      const filtradas = this.mascotasSubject.getValue().filter(a => a.id !== id);
+      this.mascotasSubject.next(filtradas);
+
+    } catch (error) {
+      console.error('Error al eliminar mascota en Firebase:', error);
+    }
   }
 
-  incrementarVisitas(id: number) {
+  async incrementarVisitas(id: string | number) {
     const listaActual = this.mascotasSubject.getValue();
     let nuevosClicks = 0;
 
@@ -83,8 +97,15 @@ export class DataService {
       return mascota;
     });
 
-    this.dataSource.saveClickData(id, nuevosClicks);
+    // Actualizamos el estado local (para reflejo inmediato en UI)
     this.mascotasSubject.next(listaActualizada);
+
+    // Actualizamos en Firebase en segundo plano
+    try {
+      await this.animalsService.updateClicks(id.toString(), nuevosClicks);
+    } catch(error) {
+      console.error('Error actualizando clicks en Firebase:', error);
+    }
   }
 
   // ==========================================
@@ -103,7 +124,6 @@ export class DataService {
   getLegal(): Observable<LegalItem[]> { return this.fetchSection<LegalItem[]>('legal'); }
   getContactUs(): Observable<ContactUsData> { return this.fetchSection<ContactUsData>('contact_us'); }
   getSchedule(): Observable<ScheduleData> { return this.fetchSection<ScheduleData>('schedule'); }
-
   getUsers(): Observable<User[]> {
     return collectionData(collection(this.firestore, 'users'), { idField: 'id' }) as Observable<User[]>;
   }

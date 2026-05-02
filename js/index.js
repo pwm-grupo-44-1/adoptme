@@ -1,6 +1,9 @@
 document.addEventListener('DOMContentLoaded', init);
 
-// Usuario logueado unificado (usamos localStorage como en la V2)
+import { collection, getDocs, addDoc }
+    from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+import { dbFirebase } from "../angular-version/src/app/firebase.ts";
+
 let currentUser = JSON.parse(localStorage.getItem('userActive') || 'null');
 
 const DB_PATH = '../data/db.json';
@@ -78,6 +81,24 @@ async function fetchDB() {
     }
 }
 
+// ─── FIREBASE: USUARIOS ───────────────────────────────────────────────────────
+// Solo cargamos la colección "users" desde Firebase.
+// El resto de datos del proyecto sigue saliendo de ../data/db.json.
+async function fetchFirebaseUsers() {
+    try {
+        const querySnapshot = await getDocs(collection(dbFirebase, "users"));
+
+        return querySnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+        }));
+    } catch (err) {
+        console.error("Error cargando usuarios desde Firebase:", err);
+        alert("No se pudieron cargar los usuarios desde Firebase.");
+        return [];
+    }
+}
+
 // ─── ROUTER ───────────────────────────────────────────────────────────────────
 async function router(db) {
     const hash = window.location.hash.slice(1).split('?')[0] || 'home';
@@ -134,6 +155,9 @@ async function router(db) {
 async function init() {
     const db = await fetchDB();
     if (!db) return;
+
+    // Sobrescribimos SOLO los usuarios del db.json con los usuarios de Firebase.
+    db.users = await fetchFirebaseUsers();
 
     await loadTemplate(TMPL + 'template_header.html', 'header');
     await loadTemplate(TMPL + 'template_footer.html', 'footer');
@@ -568,7 +592,7 @@ function renderAdoptionList(dbAnimals) {
                     : `${count} imágenes seleccionadas (principal: ${fileInput.files[0].name})`;
         });
 
-        form.addEventListener('submit', e => {
+        form.addEventListener('submit', async e => {
             e.preventDefault();
 
             const name = document.getElementById('admin-name').value.trim();
@@ -904,6 +928,7 @@ function renderPetProfile(dbAnimals) {
 
 // ─── LOGIN (Versión Directa) ──────────────────────────────────────────────
 function initLogin(users) {
+    console.log("Usuarios cargados desde Firebase:", users);
     const form = document.getElementById('auth-form');
     if (!form) return;
 
@@ -978,11 +1003,11 @@ function initLogin(users) {
     });
 
     // ── MANEJO DEL ENVÍO DEL FORMULARIO ──
-    form.addEventListener('submit', e => {
+    form.addEventListener('submit', async e => {
         e.preventDefault();
 
-        const email = document.getElementById('register-email').value;
-        const pass = document.getElementById('register-password').value;
+        const email = document.getElementById('register-email').value.trim();
+        const pass = document.getElementById('register-password').value.trim();
         const isLoginMode = regFields[0].classList.contains('hidden');
 
         // Validaciones comunes
@@ -990,7 +1015,16 @@ function initLogin(users) {
 
         if (isLoginMode) {
             // LÓGICA DE INICIO DE SESIÓN
-            const encontrado = users.find(u => u.email === email && u.password === pass);
+            console.log("Email escrito:", email);
+            console.log("Password escrito:", pass);
+            console.log("Usuarios disponibles:", users);
+
+            const encontrado = users.find(u =>
+                String(u.email).trim().toLowerCase() === email.toLowerCase() &&
+                String(u.password).trim() === pass
+            );
+
+            console.log("Usuario encontrado:", encontrado);
             if (encontrado) {
                 localStorage.setItem('userActive', JSON.stringify(encontrado));
                 currentUser = encontrado;
@@ -1008,11 +1042,36 @@ function initLogin(users) {
             if (!esTelefonoValido(tel)) return alert("El teléfono debe tener 9 números y empezar por 6,7,8,9.");
             if (pass !== repass) return alert("¡Las contraseñas no coinciden!");
 
-            // (Aquí podrías guardar el nuevo usuario en un array o LocalStorage si quisieras)
-            alert('¡Te has registrado correctamente! Ahora puedes iniciar sesión.');
-            setLoginMode(); // Le devolvemos a la pantalla de login
-            document.getElementById('register-password').value = '';
-            document.getElementById('register-repassword').value = '';
+            const exists = users.some(u => u.email === email);
+
+            if (exists) {
+                return alert("Ya existe un usuario con ese correo.");
+            }
+
+            const newUser = {
+                name: email.split('@')[0],
+                email,
+                password: pass,
+                phone: tel,
+                type: "regged"
+            };
+
+            try {
+                const docRef = await addDoc(collection(dbFirebase, "users"), newUser);
+
+                users.push({
+                    id: docRef.id,
+                    ...newUser
+                });
+
+                alert('¡Te has registrado correctamente! Ahora puedes iniciar sesión.');
+                setLoginMode(); // Le devolvemos a la pantalla de login
+                document.getElementById('register-password').value = '';
+                document.getElementById('register-repassword').value = '';
+            } catch (err) {
+                console.error("Error registrando usuario en Firebase:", err);
+                alert("No se pudo registrar el usuario en Firebase.");
+            }
         }
     });
 }

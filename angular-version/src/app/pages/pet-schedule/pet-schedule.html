@@ -5,6 +5,27 @@
       <p>El calendario de citas solo esta disponible para usuarios registrados y administradores.</p>
       <a [routerLink]="['/login']">Acceder</a>
     </div>
+  } @else if (isAdmin) {
+    @if (statusMessage) {
+      <p #statusBanner class="status-banner" [class.success]="statusTone === 'success'"
+        [class.error]="statusTone === 'error'">
+        {{ statusMessage }}
+      </p>
+    }
+
+    @if (isLoading) {
+      <div class="loading-card">Cargando agenda...</div>
+    } @else {
+      <div class="bookings-card">
+        <div class="section-head">
+          <h2>Listado de citas proximas</h2>
+        </div>
+        <app-upcoming-bookings
+          [bookings]="upcomingBookingViews"
+          (cancelBooking)="cancelBooking($event)"
+        ></app-upcoming-bookings>
+      </div>
+    }
   } @else {
   @if (statusMessage) {
     <p #statusBanner class="status-banner" [class.success]="statusTone === 'success'"

@@ -67,6 +67,10 @@ export class PetSchedule implements OnInit {
     return user?.type === 'admin' || user?.type === 'user';
   }
 
+  get isAdmin(): boolean {
+    return this.authService.currentUser()?.type === 'admin';
+  }
+
   ngOnInit(): void {
     this.dataService.getBookings().subscribe((bookings) => {
       this.bookings = this.sortBookings(bookings);
