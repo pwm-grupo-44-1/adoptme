@@ -44,6 +44,7 @@ export class HeaderComponent implements OnInit {
   isAdminBookingsLoading = false;
   showClientsModal = false;
   isAdminUsersLoading = false;
+  showSlotConflictModal = false;
   bookings: AppointmentBooking[] = [];
   animals: Animal[] = [];
   users: User[] = [];
@@ -142,6 +143,10 @@ export class HeaderComponent implements OnInit {
     this.showClientsModal = false;
   }
 
+  closeSlotConflictModal(): void {
+    this.showSlotConflictModal = false;
+  }
+
   goToPetManagement(): void {
     this.adminMenuOpen = false;
     this.closeMenu();
@@ -157,7 +162,7 @@ export class HeaderComponent implements OnInit {
     );
 
     if (slotAlreadyConfirmed) {
-      alert('Ya hay una cita confirmada para ese dia y hora.');
+      this.showSlotConflictModal = true;
       return;
     }
 
@@ -360,5 +365,12 @@ export class HeaderComponent implements OnInit {
   onResize(): void { if (window.innerWidth > 700) this.closeMenu(); }
 
   @HostListener('document:keydown.escape')
-  onEscape(): void { this.closeMenu(); }
+  onEscape(): void {
+    if (this.showSlotConflictModal) {
+      this.closeSlotConflictModal();
+      return;
+    }
+
+    this.closeMenu();
+  }
 }

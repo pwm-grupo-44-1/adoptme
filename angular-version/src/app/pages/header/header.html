@@ -217,3 +217,29 @@
     </section>
   </div>
 }
+
+@if (showSlotConflictModal) {
+  <div class="admin-modal-backdrop" (click)="closeSlotConflictModal()">
+    <section class="admin-bookings-modal admin-alert-modal" role="alertdialog" aria-modal="true" aria-labelledby="slot-conflict-title" aria-describedby="slot-conflict-message" (click)="$event.stopPropagation()">
+      <div class="admin-modal-header">
+        <div>
+          <p>Cita no disponible</p>
+          <h2 id="slot-conflict-title">Horario ya confirmado</h2>
+        </div>
+        <button type="button" class="admin-modal-close" aria-label="Cerrar aviso" (click)="closeSlotConflictModal()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <p id="slot-conflict-message" class="admin-alert-message">
+        Ya hay una cita confirmada para ese dia y hora. Rechaza esta solicitud o acuerda otro horario con la persona solicitante.
+      </p>
+
+      <div class="admin-alert-actions">
+        <button type="button" class="admin-confirm-btn" (click)="closeSlotConflictModal()">
+          Aceptar
+        </button>
+      </div>
+    </section>
+  </div>
+}

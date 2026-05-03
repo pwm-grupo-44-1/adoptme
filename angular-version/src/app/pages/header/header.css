@@ -225,6 +225,10 @@
   width: min(980px, 100%);
 }
 
+.admin-alert-modal {
+  width: min(460px, 100%);
+}
+
 .admin-modal-header {
   display: flex;
   justify-content: space-between;
@@ -324,6 +328,18 @@
   border-radius: 0.7rem;
   background: rgba(255, 255, 255, 0.68);
   color: #4a7477;
+}
+
+.admin-alert-message {
+  margin: 0;
+  color: rgba(74, 116, 119, 0.92);
+  font: 500 1rem/1.45 Arial, Helvetica, sans-serif;
+}
+
+.admin-alert-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.2rem;
 }
 
 .admin-users-list {

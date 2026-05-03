@@ -9,14 +9,6 @@ angular-version/
 |-- node_modules/                     # Dependencias instaladas por npm
 |-- public/
 |   |-- db.json                       # Datos base locales usados por la aplicacion
-|   |-- favicon.ico
-|   |-- favicon.png
-|   |-- footer-background.png
-|   |-- header-background.png
-|   |-- logout-icon.jpg
-|   |-- logo-adoptme.png
-|   |-- main-background.png
-|   |-- main-background-iphone.png
 |   `-- img/
 |       |-- about_us/
 |       |   |-- Alejandro.jpg
@@ -27,21 +19,17 @@ angular-version/
 |           |-- Brody/
 |           |-- Bubbles/
 |           ...
-
-|-- scripts/
-|   `-- test-firestore-admin.mjs      # Script auxiliar para probar Firestore
 |-- src/
 |   |-- index.html                    # HTML raiz servido por Angular
 |   |-- main.ts                       # Punto de entrada de la app
 |   |-- styles.css                    # Estilos globales
 |   |-- environments/
-|   |   `-- environment.ts            # Configuracion de entorno
+|   |   `-- environment.ts            # Configuracion de la API de Firebase
 |   `-- app/
 |       |-- app.config.ts             # Configuracion global de Angular
 |       |-- app.css                   # Estilos del componente raiz
 |       |-- app.html                  # Plantilla del componente raiz
 |       |-- app.routes.ts             # Rutas principales de la aplicacion
-|       |-- app.spec.ts               # Test del componente raiz
 |       |-- app.ts                    # Componente raiz
 |       |-- firebase.ts               # Configuracion Firebase
 |       |-- models/
