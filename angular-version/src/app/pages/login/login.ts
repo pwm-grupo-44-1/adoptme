@@ -168,6 +168,34 @@ export class Login {
 
         this.dataService.addUser(newUser)
           .then(() => {
+            // Enviar correo de bienvenida con EmailJS usando fetch
+            const emailJsPayload = {
+              service_id: 'service_7yw9ewg', // Reemplazar con tu Service ID de EmailJS
+              template_id: 'template_221xq9q', // Reemplazar con tu Template ID de EmailJS
+              user_id: 'bJT5CXKuQhyFWRDBJ', // Reemplazar con tu Public Key de EmailJS
+              template_params: {
+                to_email: email,
+                to_name: name,
+                reply_to: 'noreply@adoptme.com'
+              }
+            };
+
+            fetch('https://api.emailjs.com/api/v1.0/email/send', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(emailJsPayload)
+            })
+            .then(response => {
+              if (response.ok) {
+                console.log('Correo de registro enviado correctamente.');
+              } else {
+                console.error('Error enviando el correo:', response.statusText);
+              }
+            })
+            .catch(error => console.error('Error de red al enviar el correo:', error));
+
             this.formMessageType.set('success');
             this.formMessage.set('Te has registrado correctamente. Ahora puedes iniciar sesion.');
             this.isLoginMode.set(true);
