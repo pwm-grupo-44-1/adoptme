@@ -360,9 +360,9 @@ app-pet-schedule {
 }
 
 .booking-feedback {
-  margin: 0;
-  font-family: 'Fira Sans Condensed', sans-serif;
-  color: var(--color-accent);
+    margin: 0;
+    color: var(--color-accent);
+    font-size: x-large;
 }
 
 .cancel-btn {

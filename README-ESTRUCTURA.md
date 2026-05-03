@@ -148,19 +148,9 @@ angular-version/
 |           |   `-- schedule-form-field.ts
 |           `-- upcoming-bookings/
 |               `-- upcoming-bookings.ts
-|-- .editorconfig
-|-- .gitignore
-|-- .prettierrc
-|-- angular.json                      # Configuracion Angular CLI
 |-- firebase.json                     # Configuracion Firebase Hosting
-|-- firestore.rules                   # Reglas de seguridad Firestore
-|-- package-lock.json
 |-- package.json                      # Dependencias y scripts npm
-|-- README-COMPONENTES.md             # Documentacion de componentes
-|-- README.md                         # Documentacion general del proyecto
-|-- tsconfig.app.json
-|-- tsconfig.json
-`-- tsconfig.spec.json
+'-- README.md                         # Documentacion general del proyecto
 ```
 
 ## Resumen por carpetas
