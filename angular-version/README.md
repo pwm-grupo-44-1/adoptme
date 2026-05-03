@@ -1,107 +1,107 @@
-# AngularVersion
+# 🐾 AdoptMe! — Plataforma Dinámica de Adopción de Mascotas (Versión Angular)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.6.
+## 👥 Integrantes del Grupo 44.1
+* **Alejandro Celis Hernández Delgado**
+* **Esther Viera Rivero**
+* **Néstor Jesús Henríquez Medina**
 
-## Development server
+---
 
-To start a local development server, run:
+## 📝 Descripción del Proyecto
+AdoptMe! es una solución tecnológica diseñada para transformar y profesionalizar el proceso de adopción de perros y gatos. Nuestra plataforma nace de la necesidad de conectar de forma eficiente a protectoras con familias responsables, eliminando barreras burocráticas y centralizando la gestión en una experiencia digital transparente y segura.
 
-```bash
-ng serve
+---
+
+## 🏗️ Estructura del Código (Angular)
+
+El proyecto adopta una arquitectura basada en Componentes Standalone (introducidos en Angular 14+), organizando el código en dominios de responsabilidad claros:
+
+```text
+angular-version/
+  public/                 # Recursos estáticos e imágenes
+  src/
+    app/
+      models/             # Interfaces de dominio (Animal, User, Booking, etc.)
+      pages/              # Vistas principales enrutables (Home, AdoptionList, etc.)
+      services/           # Lógica de negocio y conexión a Firestore (Auth, Data, Animals)
+      shared/             # Componentes UI reutilizables (Filtros, Tarjetas, Calendarios)
+      app.config.ts       # Configuración global y provisión de Firebase
+      app.routes.ts       # Definición de la navegación (Router)
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+### Componentes Clave y su Funcionalidad:
+* **`AdoptionList` & `CardAnimal`:** Consumen los datos reactivos del catálogo y permiten explorar a las mascotas aplicando filtros multidimensionales (raza, pelo, carácter, peso).
+* **`PetSchedule` (Agenda):** Interfaz compleja de calendario mensual y diario. Gestiona la lógica de reservas asegurando límites por día, horarios hábiles (ej: L-V de 10h a 18h) y persistencia en la base de datos.
+* **`PetProfile` (Ficha técnica):** Muestra el detalle exhaustivo del animal e incrementa dinámicamente un contador de visitas usando Firebase.
+* **`Login`:** Gestiona el acceso y registro mediante Formularios Reactivos (`ReactiveForms`), incluyendo la validación del formato de emails y la robustez de las contraseñas.
 
-## Code scaffolding
+---
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## 🗄️ Estructura de Datos en Firebase (Firestore)
+
+El proyecto utiliza Cloud Firestore (una base de datos NoSQL) para garantizar persistencia y sincronización en tiempo real. 
+
+### Colecciones Principales:
+
+1. **`animals` (Mascotas):**
+   * *Estructura:* `id` (generado por Firestore), `name`, `breed`, `age`, `weight`, `gender`, `hair`, `character`, `clicks` (contador de visitas), `description`, `images` (array de rutas).
+   * *Uso:* Alimenta dinámicamente el catálogo de adopción.
+
+2. **`users` (Usuarios):**
+   * *Estructura:* `id` (generado), `name`, `email`, `password`, `phone`, `type` (ej. "user" o "admin"), `banned` (booleano para control de acceso).
+   * *Uso:* Autenticación y gestión de roles.
+
+3. **`bookings` (Citas):**
+   * *Estructura:* `id`, `animalId`, `animalName`, `date` (formato YYYY-MM-DD), `time` (HH:MM), `userId`, `userName`, `status`.
+   * *Uso:* Centraliza el calendario de adopciones, impidiendo solapamientos.
+
+4. **`mail` (Sistema de Correos):**
+   * *Estructura:* `to` (array de correos), `message` (objeto con `subject` y `html`).
+   * *Uso:* Activado automáticamente al registrar usuarios para enviar un correo de bienvenida usando EmailJS (o la extensión Trigger Email en Firebase).
+
+---
+
+## 🧭 Tour por la Página Web
+
+La aplicación ofrece un flujo de usuario intuitivo:
+
+1. **Exploración (Visitante):** El usuario entra a la `Home`, explora el carrusel y navega a la sección de "Mascotas". Aquí puede usar el panel de filtros izquierdo para buscar, por ejemplo, "Perros, Pelo Corto, Carácter Activo".
+2. **Visualización de Ficha:** Al hacer clic en un animal (ej. "Brody"), accede a su perfil (`PetProfile`), viendo la galería de imágenes y detalles técnicos. El contador de visitas se incrementa automáticamente.
+3. **Registro/Login:** Si el usuario decide agendar una cita, el sistema le solicitará acceso. En la página de `Login`, puede registrarse (validación reactiva). Al hacerlo, se guarda en Firestore y (según configuración) se le envía un correo de bienvenida.
+4. **Reserva de Cita (Flujo Principal):**
+   * **Entrada de Datos:** El usuario navega a la agenda, selecciona el mes, luego el día y finalmente una hora disponible.
+   * **Visualización:** Una vez confirmada, la cita aparece bloqueada en el calendario para otros usuarios y visible en el panel del administrador.
+5. **Gestión (Admin):** Entrando con credenciales de administrador, el usuario ve el panel de "Alta de Mascota" en el catálogo, pudiendo insertar nuevos animales directamente a Firestore para que aparezcan en tiempo real.
+
+---
+
+## 🚀 Evolución y Gestión Ágil
+
+El proyecto ha sido gestionado siguiendo metodologías ágiles en Trello.
+La evolución tecnológica abarca tres fases:
+1. **Prototipo Estático:** HTML/CSS (Sprint 1).
+2. **SPA Vanilla:** Integración de JS, Fetch y persistencia JSON local (Sprint 2).
+3. **Arquitectura Angular & Firebase:** Refactorización total a componentes reactivos con persistencia real en la nube (Sprint 3).
+
+*(Puedes consultar las capturas del progreso en la carpeta `/trello/` del repositorio).*
+
+---
+
+## 🛠️ Entorno de Desarrollo (Angular CLI)
+
+### Levantar el proyecto
+Para probar la aplicación localmente:
 
 ```bash
-ng generate component component-name
-```
+# 1. Acceder a la carpeta
+cd angular-version
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Import `db.json` to Firestore
-
-The project includes a Node script that reads `public/db.json` and imports each top-level key into Firestore as a separate collection.
-
-Mapping rules:
-
-1. Root arrays become collections with one document per entry.
-2. If an array item has `id`, that value is used as Firestore document id.
-3. If an array item has no `id`, the script falls back to `slug`, then `name`, and finally a generated id.
-4. Root objects become collections with a single document called `default`.
-5. Root primitive values become collections with a single `default` document containing `{ value: ... }`.
-6. Local asset paths are normalized to web paths like `/img/...` before uploading.
-
-1. Install dependencies:
-
-```bash
+# 2. Instalar dependencias
 npm install
+
+# 3. Levantar servidor local (http://localhost:4200)
+npm start
 ```
 
-2. Save your Firebase service account JSON inside `angular-version/` or anywhere you prefer. The repository ignores files like `firebase-service-account*.json`.
-
-3. Run a validation without writing data:
-
-```bash
-npm run import:db -- --credentials ./firebase-service-account.json --dry-run
-```
-
-4. Import the full database into Firestore:
-
-```bash
-npm run import:db -- --credentials ./firebase-service-account.json
-```
-
-5. If you only want the `animals` collection:
-
-```bash
-npm run import:animals -- --credentials ./firebase-service-account.json
-```
-
-Optional flags:
-
-```bash
---db <ruta>            # default: public/db.json
---only <clave>         # imports only one root key, e.g. animals
---project <projectId>  # overrides project_id from the service account
---singleton-doc-id     # default: default
-```
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+---
+*© 2026 AdoptMe!!. Todos los derechos reservados.*

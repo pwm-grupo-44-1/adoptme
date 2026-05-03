@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', init);
 
 import { collection, getDocs, addDoc }
     from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
-import { dbFirebase } from "../angular-version/src/app/firebase.ts";
+import { dbFirebase } from "../../angular-version/src/app/firebase.ts";
 
 let currentUser = JSON.parse(localStorage.getItem('userActive') || 'null');
 

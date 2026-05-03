@@ -47,7 +47,7 @@ body.page {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background-image: url("../angular-version/public/header-background.png");
+    background-image: url("../../angular-version/public/header-background.png");
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
