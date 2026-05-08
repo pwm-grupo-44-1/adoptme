@@ -1,0 +1,7 @@
+{
+  "name": "adoptme",
+  "type": "angular-standalone",
+  "integrations": {
+    "capacitor": {}
+  }
+}

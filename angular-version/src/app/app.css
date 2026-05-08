@@ -1,14 +1,22 @@
 :host {
   display: block;
+  min-height: 100vh;
+  min-height: 100dvh;
 }
 
-.app-shell {
+ion-app {
   display: flex;
   flex-direction: column;
+  background: transparent;
+  min-height: 100vh;
+  min-height: 100dvh;
 }
 
-.app-main {
+main {
   flex: 1 0 auto;
   width: 100%;
   display: block;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }

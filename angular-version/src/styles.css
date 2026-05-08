@@ -1,9 +1,19 @@
+@import "@ionic/angular/css/core.css";
+@import "@ionic/angular/css/normalize.css";
+@import "@ionic/angular/css/structure.css";
+@import "@ionic/angular/css/typography.css";
+@import "@ionic/angular/css/display.css";
+
 /* ==========================================================================
    1. IMPORTACIÓN DE FUENTES Y VARIABLES (ROOT)
    ========================================================================== */
 @import url('https://fonts.googleapis.com/css2?family=Rum+Raisin&family=Montserrat:wght@400;700&family=Fira+Sans+Condensed:wght@300;400;700&display=swap');
 
 :root {
+  --safe-area-top: env(safe-area-inset-top, 0px);
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --ion-background-color: transparent;
+  --ion-text-color: #4a7477;
   --color-text: #4a7477;
   --color-primary: #fddb72;
   --color-secondary: #ece59c;
@@ -60,9 +70,12 @@ body {
   color: var(--color-text);
   background-color: var(--bg-fallback);
   position: relative;
+  padding-bottom: calc(var(--footer-space-desktop) + var(--safe-area-bottom));
+}
 
-  padding-top: var(--header-space-desktop);
-  padding-bottom: var(--footer-space-desktop);
+ion-app,
+ion-router-outlet {
+  background: transparent;
 }
 
 body::before {
@@ -83,10 +96,11 @@ body::before {
 main {
   flex: 1 1 auto;
   width: 100%;
-  min-height: calc(100vh - var(--header-space-desktop) - var(--footer-space-desktop));
+  min-height: calc(100vh - var(--header-space-desktop) - var(--footer-space-desktop) - var(--safe-area-bottom));
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-top: var(--header-space-desktop);
 }
 
 app-root {
@@ -176,12 +190,12 @@ button:active {
 @media (max-width: 700px) {
   body {
     background-attachment: scroll;
-    padding-top: var(--header-space-mobile);
     padding-bottom: 0;
   }
 
   main {
     min-height: calc(100vh - var(--header-space-mobile));
+    padding-top: var(--header-space-mobile);
   }
 
   .scroll-down-indicator {

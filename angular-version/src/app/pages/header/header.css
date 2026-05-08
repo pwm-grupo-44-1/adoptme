@@ -10,6 +10,7 @@
   z-index: 1400;
   background-color: #dfe5b1;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  padding-top: var(--safe-area-top);
 }
 
 .header-inner {

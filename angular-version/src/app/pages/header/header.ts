@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, OnInit, ChangeDetectorRef, computed, inject } from '@angular/core';
+import { Component, HostListener, OnInit, AfterViewInit, OnDestroy, ChangeDetectorRef, ElementRef, computed, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { take } from 'rxjs/operators';
@@ -30,9 +30,11 @@ interface UserDraft {
   templateUrl: './header.html',
   styleUrl: './header.css'
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, AfterViewInit, OnDestroy {
   private authService = inject(AuthService);
   private router = inject(Router);
+  private hostElement = inject(ElementRef<HTMLElement>);
+  private resizeObserver?: ResizeObserver;
 
   menuOpen = false;
   brandTitle = '';
@@ -141,6 +143,14 @@ export class HeaderComponent implements OnInit {
 
   closeClientsModal(): void {
     this.showClientsModal = false;
+  }
+
+  ngAfterViewInit(): void {
+    this.bindHeaderHeight();
+  }
+
+  ngOnDestroy(): void {
+    this.resizeObserver?.disconnect();
   }
 
   closeSlotConflictModal(): void {
@@ -361,8 +371,33 @@ export class HeaderComponent implements OnInit {
     window.open(`https://mail.google.com/mail/?${params.toString()}`, '_blank', 'noopener,noreferrer');
   }
 
+  private bindHeaderHeight(): void {
+    const headerElement = this.hostElement.nativeElement.querySelector('.header') as HTMLElement | null;
+    if (!headerElement) {
+      return;
+    }
+
+    const syncHeaderHeight = () => {
+      const headerHeight = Math.ceil(headerElement.getBoundingClientRect().height);
+      document.documentElement.style.setProperty('--header-space-desktop', `${headerHeight}px`);
+      document.documentElement.style.setProperty('--header-space-mobile', `${headerHeight}px`);
+    };
+
+    syncHeaderHeight();
+    this.resizeObserver = new ResizeObserver(syncHeaderHeight);
+    this.resizeObserver.observe(headerElement);
+
+    if ('fonts' in document) {
+      void (document as Document & { fonts?: FontFaceSet }).fonts?.ready.then(syncHeaderHeight);
+    }
+  }
+
   @HostListener('window:resize')
-  onResize(): void { if (window.innerWidth > 700) this.closeMenu(); }
+  onResize(): void {
+    if (window.innerWidth > 700) {
+      this.closeMenu();
+    }
+  }
 
   @HostListener('document:keydown.escape')
   onEscape(): void {
