@@ -5,3 +5,5 @@
 angular-version/firebase-service-account*.json
 angular-version/.env
 angular-version/.ng-*.log
+angular-version/hs_err_pid5684.log
+*.log

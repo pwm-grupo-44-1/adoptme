@@ -465,7 +465,14 @@ cd angular-version
 # 2. Instalar dependencias
 npm install
 
-# 3. Levantar servidor local (http://localhost:4200)
+# 3. Sincronizar ionic con Android.
+npx cap sync
+ 
+ #4. Abrir el proyecto en Android Studio:
+ npx cap open android
+ (Si falla gradle, en /android ejecutar " gradle clear")
+
+# 5. Levantar servidor local (http://localhost:4200)
 npm start
 ```
 
