@@ -1,12 +1,8 @@
-import { Component, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AbstractControl, ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
-import { take } from 'rxjs/operators';
-
+import { Component, effect, inject, signal } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth';
-import { DataService } from '../../services/data';
-import { User } from '../../models/user';
 
 @Component({
   selector: 'app-login',
@@ -16,10 +12,10 @@ import { User } from '../../models/user';
   styleUrls: ['./login.css']
 })
 export class Login {
-  private fb = inject(FormBuilder);
-  private authService = inject(AuthService);
-  private dataService = inject(DataService);
-  private router = inject(Router);
+  private readonly fb = inject(FormBuilder);
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
 
   isLoginMode = signal(true);
   showPassword = signal(false);
@@ -27,6 +23,9 @@ export class Login {
   submitAttempted = signal(false);
   formMessage = signal('');
   formMessageType = signal<'error' | 'success'>('error');
+  isSubmitting = signal(false);
+  isGoogleSubmitting = signal(false);
+  isResetSubmitting = signal(false);
 
   private readonly passwordPattern = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/;
 
@@ -38,28 +37,93 @@ export class Login {
     repassword: ['']
   });
 
+  constructor() {
+    effect(() => {
+      if (this.authService.authReady() && this.authService.currentUser()) {
+        void this.navigateAfterSuccess();
+      }
+    });
+  }
+
   toggleMode() {
-    this.isLoginMode.update(mode => !mode);
-    this.authForm.reset();
+    this.isLoginMode.update((mode) => !mode);
+    this.authForm.reset({
+      email: this.authForm.get('email')?.value ?? '',
+      password: '',
+      name: '',
+      phone: '',
+      repassword: '',
+    });
     this.submitAttempted.set(false);
     this.clearFormMessage();
     this.updateValidatorsForMode();
   }
 
-  onSubmit() {
+  async onSubmit() {
     this.submitAttempted.set(true);
     this.clearFormMessage();
     this.authForm.markAllAsTouched();
     this.authForm.updateValueAndValidity();
 
-    if (this.authForm.invalid) {
+    if (this.authForm.invalid || this.isSubmitting() || this.isGoogleSubmitting()) {
       return;
     }
 
-    if (this.isLoginMode()) {
-      this.iniciarSesion();
-    } else {
-      this.registrarse();
+    this.isSubmitting.set(true);
+
+    try {
+      if (this.isLoginMode()) {
+        await this.iniciarSesion();
+      } else {
+        await this.registrarse();
+      }
+    } catch (error) {
+      this.handleAuthError(error, this.isLoginMode() ? 'login' : 'register');
+    } finally {
+      this.isSubmitting.set(false);
+    }
+  }
+
+  async loginWithGoogle() {
+    if (this.isSubmitting() || this.isGoogleSubmitting()) {
+      return;
+    }
+
+    this.submitAttempted.set(false);
+    this.clearFormMessage();
+    this.isGoogleSubmitting.set(true);
+
+    try {
+      await this.authService.loginWithGoogle();
+    } catch (error) {
+      this.handleAuthError(error, 'google');
+    } finally {
+      this.isGoogleSubmitting.set(false);
+    }
+  }
+
+  async sendResetPassword() {
+    const emailControl = this.authForm.controls['email'];
+    emailControl.markAsTouched();
+    emailControl.updateValueAndValidity();
+    this.submitAttempted.set(true);
+    this.clearFormMessage();
+
+    if (emailControl.invalid || this.isResetSubmitting()) {
+      return;
+    }
+
+    this.isResetSubmitting.set(true);
+
+    try {
+      const email = (emailControl.value ?? '').trim();
+      await this.authService.sendPasswordReset(email);
+      this.formMessageType.set('success');
+      this.formMessage.set('Te hemos enviado un correo para restablecer la contrasena.');
+    } catch (error) {
+      this.handleAuthError(error, 'reset');
+    } finally {
+      this.isResetSubmitting.set(false);
     }
   }
 
@@ -111,108 +175,45 @@ export class Login {
       return 'Este usuario esta baneado.';
     }
 
+    if (control.errors['unverified']) {
+      return 'Debes verificar tu correo antes de iniciar sesion.';
+    }
+
     return 'Revisa este campo.';
   }
 
-  private iniciarSesion() {
-    const { email, password } = this.authForm.value;
-
-    this.dataService.getUsers().pipe(take(1)).subscribe({
-      next: (dbUsers = []) => {
-        const usuarioEncontrado = dbUsers.find(u => u.email === email && u.password === password);
-
-        if (usuarioEncontrado) {
-          if (usuarioEncontrado.banned) {
-            this.showFormError('Tu usuario ha sido baneado y no puede acceder a la app.');
-            this.authForm.controls['email'].setErrors({ banned: true });
-            return;
-          }
-
-          this.authService.login(usuarioEncontrado);
-          this.router.navigate(['/pet-schedule']);
-        } else {
-          this.showFormError('Correo o contrasena incorrectos.');
-          this.authForm.controls['email'].setErrors({ invalidCredentials: true });
-          this.authForm.controls['password'].setErrors({ invalidCredentials: true });
-        }
-      },
-      error: (err) => {
-        console.error('Error al conectar con la coleccion users de Firestore:', err);
-        this.showFormError('Hubo un problema al validar tus datos.');
-      }
-    });
+  private async iniciarSesion() {
+    const { email, password } = this.authForm.getRawValue();
+    await this.authService.loginWithEmailPassword((email ?? '').trim(), password ?? '');
   }
 
-  private registrarse() {
-    const { email, password, repassword, name, phone } = this.authForm.value;
+  private async registrarse() {
+    const { email, password, repassword, name, phone } = this.authForm.getRawValue();
 
     if (password !== repassword) {
       this.authForm.controls['repassword'].setErrors({ mismatch: true });
       return;
     }
 
-    const newUser: User = {
-      name: name,
-      email: email,
-      type: 'user',
-      phone: phone,
-      password: password
-    };
+    await this.authService.registerWithEmailPassword(
+      (name ?? '').trim(),
+      (email ?? '').trim(),
+      (phone ?? '').trim(),
+      password ?? '',
+    );
 
-    this.dataService.getUsers().pipe(take(1)).subscribe({
-      next: (dbUsers = []) => {
-        if (dbUsers.some(u => u.email === email)) {
-          this.authForm.controls['email'].setErrors({ duplicate: true });
-          return;
-        }
-
-        this.dataService.addUser(newUser)
-          .then(() => {
-            // Enviar correo de bienvenida con EmailJS usando fetch
-            const emailJsPayload = {
-              service_id: 'service_7yw9ewg', // Reemplazar con tu Service ID de EmailJS
-              template_id: 'template_221xq9q', // Reemplazar con tu Template ID de EmailJS
-              user_id: 'bJT5CXKuQhyFWRDBJ', // Reemplazar con tu Public Key de EmailJS
-              template_params: {
-                to_email: email,
-                to_name: name,
-                reply_to: 'noreply@adoptme.com'
-              }
-            };
-
-            fetch('https://api.emailjs.com/api/v1.0/email/send', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(emailJsPayload)
-            })
-            .then(response => {
-              if (response.ok) {
-                console.log('Correo de registro enviado correctamente.');
-              } else {
-                console.error('Error enviando el correo:', response.statusText);
-              }
-            })
-            .catch(error => console.error('Error de red al enviar el correo:', error));
-
-            this.formMessageType.set('success');
-            this.formMessage.set('Te has registrado correctamente. Ahora puedes iniciar sesion.');
-            this.isLoginMode.set(true);
-            this.authForm.reset();
-            this.submitAttempted.set(false);
-            this.updateValidatorsForMode();
-          })
-          .catch((err) => {
-            console.error('Error al registrar usuario en Firestore:', err);
-            this.showFormError('Hubo un problema al registrar tus datos.');
-          });
-      },
-      error: (err) => {
-        console.error('Error al comprobar usuarios en Firestore:', err);
-        this.showFormError('Hubo un problema al comprobar tus datos.');
-      }
+    this.formMessageType.set('success');
+    this.formMessage.set('Registro completado. Revisa tu correo, verifica la cuenta y despues inicia sesion.');
+    this.isLoginMode.set(true);
+    this.authForm.reset({
+      email: (email ?? '').trim(),
+      password: '',
+      name: '',
+      phone: '',
+      repassword: '',
     });
+    this.submitAttempted.set(false);
+    this.updateValidatorsForMode();
   }
 
   private updateValidatorsForMode(): void {
@@ -232,9 +233,83 @@ export class Login {
     }
 
     phone.setValidators([Validators.pattern(/^[6789]\d{8}$/)]);
+
     [name, phone, password, repassword].forEach((control: AbstractControl) => {
       control.updateValueAndValidity({ emitEvent: false });
     });
+  }
+
+  private async navigateAfterSuccess(): Promise<void> {
+    const redirectTo = this.route.snapshot.queryParamMap.get('redirectTo') || '/pet-schedule';
+    await this.router.navigateByUrl(redirectTo);
+  }
+
+  private handleAuthError(error: unknown, context: 'login' | 'register' | 'google' | 'reset'): void {
+    const code = this.extractErrorCode(error);
+
+    if (code === 'auth/email-already-in-use') {
+      this.authForm.controls['email'].setErrors({ duplicate: true });
+      this.showFormError('Este correo ya esta registrado.');
+      return;
+    }
+
+    if (code === 'auth/invalid-credential' || code === 'auth/wrong-password' || code === 'auth/user-not-found') {
+      this.authForm.controls['email'].setErrors({ invalidCredentials: true });
+      this.authForm.controls['password'].setErrors({ invalidCredentials: true });
+      this.showFormError('Correo o contrasena incorrectos.');
+      return;
+    }
+
+    if (code === 'auth/user-banned') {
+      this.authForm.controls['email'].setErrors({ banned: true });
+      this.showFormError('Tu usuario ha sido baneado y no puede acceder a la app.');
+      return;
+    }
+
+    if (code === 'auth/email-not-verified') {
+      this.authForm.controls['email'].setErrors({ unverified: true });
+      this.showFormError('Debes verificar tu correo antes de iniciar sesion.');
+      return;
+    }
+
+    if (code === 'auth/popup-closed-by-user') {
+      this.showFormError('Has cerrado la ventana de Google antes de completar el acceso.');
+      return;
+    }
+
+    if (code === 'auth/too-many-requests') {
+      this.showFormError('Hay demasiados intentos. Espera unos minutos y vuelve a probar.');
+      return;
+    }
+
+    if (context === 'reset') {
+      this.showFormError('No se pudo enviar el correo de recuperacion.');
+      return;
+    }
+
+    if (context === 'google') {
+      this.showFormError('No se pudo iniciar sesion con Google.');
+      return;
+    }
+
+    if (context === 'register') {
+      this.showFormError('Hubo un problema al registrar tus datos.');
+      return;
+    }
+
+    this.showFormError('Hubo un problema al iniciar sesion.');
+  }
+
+  private extractErrorCode(error: unknown): string {
+    if (error && typeof error === 'object' && 'code' in error && typeof error.code === 'string') {
+      return error.code;
+    }
+
+    if (error instanceof Error) {
+      return error.message;
+    }
+
+    return 'unknown';
   }
 
   private showFormError(message: string): void {

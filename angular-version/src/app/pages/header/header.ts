@@ -86,26 +86,6 @@ export class HeaderComponent implements OnInit {
     this.dataService.mascotas$.subscribe((animals) => {
       this.animals = animals;
     });
-
-    this.dataService.getUsers().subscribe((users) => {
-      const currentUser = this.authService.currentUser();
-      if (!currentUser) {
-        return;
-      }
-
-      const refreshedUser = users.find((user) =>
-        user.email.trim().toLowerCase() === currentUser.email.trim().toLowerCase()
-      );
-
-      if (refreshedUser?.banned) {
-        this.logout();
-        return;
-      }
-
-      if (refreshedUser) {
-        this.authService.login(refreshedUser);
-      }
-    });
   }
 
   toggleMenu(): void { this.menuOpen = !this.menuOpen; }
@@ -208,7 +188,6 @@ export class HeaderComponent implements OnInit {
 
     const updates: Partial<User> = {
       name: draft.name.trim(),
-      email: draft.email.trim(),
       phone: draft.phone.trim(),
       type: draft.type,
     };
@@ -243,11 +222,11 @@ export class HeaderComponent implements OnInit {
       .catch((err) => console.error('Error actualizando el baneo del usuario en Firestore:', err));
   }
 
-  logout(): void {
-    this.authService.logout();
+  async logout(): Promise<void> {
+    await this.authService.logout();
     this.adminMenuOpen = false;
     this.closeMenu();
-    this.router.navigate(['/']);
+    await this.router.navigate(['/']);
   }
 
   animalName(animalId: number | null): string {

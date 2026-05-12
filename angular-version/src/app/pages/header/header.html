@@ -186,7 +186,12 @@
                   </label>
                   <label>
                     Correo
-                    <input type="email" [(ngModel)]="userDrafts[user.id].email" [name]="'client-email-' + user.id">
+                    <input
+                      type="email"
+                      [(ngModel)]="userDrafts[user.id].email"
+                      [name]="'client-email-' + user.id"
+                      disabled
+                      title="El correo se gestiona desde Firebase Auth y no se puede editar desde este panel.">
                   </label>
                   <label>
                     Telefono

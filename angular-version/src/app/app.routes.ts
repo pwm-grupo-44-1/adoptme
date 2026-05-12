@@ -9,12 +9,13 @@ import { PetSchedule } from './pages/pet-schedule/pet-schedule';
 import { Login } from './pages/login/login';
 import {Faq} from './pages/faq/faq';
 import {Legal} from './pages/legal/legal';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   { path: '', component: Home },
   { path: 'adoption-list', component: AdoptionList },
   { path: 'pet-profile', component: PetProfile },
-  { path: 'pet-schedule', component: PetSchedule },
+  { path: 'pet-schedule', component: PetSchedule, canActivate: [authGuard] },
   { path: 'stories', component: Stories },
   { path: 'contact-us', component: ContactUs },
   { path: 'about-us', component: AboutUs },

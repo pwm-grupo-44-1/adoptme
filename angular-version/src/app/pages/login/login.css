@@ -1,4 +1,3 @@
-/* Centrado absoluto en la pantalla */
 :host {
   display: flex;
   justify-content: center;
@@ -8,21 +7,18 @@
   box-sizing: border-box;
 }
 
-/* Caja principal redimensionada */
 .login-box {
   background: #f4f5c9;
   border: 1px solid #c8d87a;
   border-radius: 1rem;
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
-
   width: min(95%, 38rem);
-  min-height: 28rem; /* 🔴 CLAVE: Mantiene el tamaño en el login, pero no suma exceso al registro */
-
+  min-height: 28rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 1.5rem;
-  padding: clamp(2rem, 4vw, 3rem); /* 🔴 CLAVE: Menos relleno arriba y abajo */
+  padding: clamp(2rem, 4vw, 3rem);
   margin: 2rem;
 }
 
@@ -30,7 +26,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: 0.9rem; /* 🔴 CLAVE: Menos espacio entre inputs para que en registro no se estire tanto */
+  gap: 0.9rem;
 }
 
 .form-field {
@@ -42,7 +38,7 @@
 
 .login-inputs input {
   width: 100%;
-  padding: 0.85rem 1.2rem; /* 🔴 CLAVE: Inputs un poco menos altos */
+  padding: 0.85rem 1.2rem;
   font-size: 1.05rem;
   background-color: #fffdf0;
   border: 1px solid #a8c084;
@@ -119,17 +115,16 @@
 }
 
 .login-actions {
-  margin-top: 1rem; /* Acercamos un poco los botones a los inputs */
+  margin-top: 1rem;
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
   width: 100%;
 }
 
-/* ── ESTILOS DE LOS BOTONES ── */
 .btn-small {
   width: 100%;
-  padding: 0.9rem 1.5rem; /* Botones un poco más compactos */
+  padding: 0.9rem 1.5rem;
   border-radius: 8px;
   font-family: inherit;
   font-weight: 700;
@@ -139,13 +134,20 @@
   text-align: center;
 }
 
-.btn-small:not(.secondary) {
+.btn-small:disabled,
+.text-action:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-small:not(.secondary):not(.google-btn) {
   background-color: #fddb72;
   color: #4a7477;
   border: none;
 }
 
-.btn-small:not(.secondary):hover {
+.btn-small:not(.secondary):not(.google-btn):hover:not(:disabled) {
   background-color: #f5ca40;
   transform: translateY(-1px);
 }
@@ -156,12 +158,41 @@
   border: 1px solid #a8c084;
 }
 
-.btn-small.secondary:hover {
+.btn-small.secondary:hover:not(:disabled) {
   background-color: #e8edaa;
   border-color: #4a7477;
 }
 
-/* ── Responsive Móvil ── */
+.google-btn {
+  background: #fffdf0;
+  color: #325f63;
+  border: 1px solid #a8c084;
+}
+
+.google-btn:hover:not(:disabled) {
+  background: #ffffff;
+  border-color: #4a7477;
+  transform: translateY(-1px);
+}
+
+.text-action {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: #10946d;
+  font: inherit;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.auth-hint {
+  margin: 0;
+  color: #4a7477;
+  font-size: 0.95rem;
+  line-height: 1.35;
+}
+
 @media (max-width: 700px) {
   :host {
     min-height: calc(100vh - var(--header-space-mobile));

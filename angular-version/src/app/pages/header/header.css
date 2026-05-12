@@ -411,6 +411,12 @@
   font: 500 0.9rem Arial, Helvetica, sans-serif;
 }
 
+.admin-user-form input:disabled {
+  background: #f3f0d8;
+  color: rgba(74, 116, 119, 0.7);
+  cursor: not-allowed;
+}
+
 .admin-user-actions {
   display: flex;
   flex-wrap: wrap;

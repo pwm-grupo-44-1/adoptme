@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { addDoc, collection, collectionData, deleteDoc, doc, Firestore, setDoc, updateDoc } from '@angular/fire/firestore';
+import { collection, collectionData, deleteDoc, doc, Firestore, setDoc, updateDoc } from '@angular/fire/firestore';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { LocalJsonService } from './local-json';
@@ -128,8 +128,8 @@ export class DataService {
     return collectionData(collection(this.firestore, 'users'), { idField: 'id' }) as Observable<User[]>;
   }
 
-  addUser(user: User): Promise<void> {
-    return addDoc(collection(this.firestore, 'users'), user).then(() => undefined);
+  setUser(userId: string, user: User): Promise<void> {
+    return setDoc(doc(this.firestore, 'users', userId), user);
   }
 
   updateUser(userId: string, data: Partial<User>): Promise<void> {
