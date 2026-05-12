@@ -25,12 +25,50 @@
   flex-shrink: 0;
 }
 
+.photo-wrapper {
+  position: relative;
+  width: 100%;
+}
+
 .photo-card-list {
   width: 100%;
   aspect-ratio: 1 / 1;
   height: auto;
   object-fit: cover;
   border-radius: 0.5rem;
+}
+
+.favorite-btn {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 0;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 253, 240, 0.92);
+  color: #4a7477;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+  cursor: pointer;
+  z-index: 2;
+  transition: transform 0.15s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.favorite-btn i {
+  font-size: 1.15rem;
+}
+
+.favorite-btn:hover {
+  transform: translateY(-1px) scale(1.03);
+  background: #fff;
+}
+
+.favorite-btn.is-favorite {
+  background: rgba(240, 75, 99, 0.95);
+  color: #fff;
 }
 
 .btn-pet-detail {

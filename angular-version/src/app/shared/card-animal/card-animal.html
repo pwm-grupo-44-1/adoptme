@@ -1,8 +1,20 @@
 <article class="item-list">
   <div class="photo-btn-column">
-    <a [routerLink]="['/pet-profile']" [queryParams]="{id: mascota.id}">
-      <img class="photo-card-list" [src]="mascota.images.length ? mascota.images[0] : ''" alt="Foto de {{mascota.name}}">
-    </a>
+    <div class="photo-wrapper">
+      <button
+        type="button"
+        class="favorite-btn"
+        [class.is-favorite]="isFavorite"
+        [attr.aria-label]="isFavorite ? 'Quitar de favoritos' : 'Anadir a favoritos'"
+        [attr.title]="isAuthenticated ? (isFavorite ? 'Quitar de favoritos' : 'Anadir a favoritos') : 'Inicia sesion para guardar favoritos'"
+        (click)="toggleFavorite($event)">
+        <i class="bi" [class.bi-heart]="!isFavorite" [class.bi-heart-fill]="isFavorite"></i>
+      </button>
+
+      <a [routerLink]="['/pet-profile']" [queryParams]="{id: mascota.id}">
+        <img class="photo-card-list" [src]="mascota.images.length ? mascota.images[0] : ''" alt="Foto de {{mascota.name}}">
+      </a>
+    </div>
 
     <a class="btn-pet-detail" [routerLink]="['/pet-profile']" [queryParams]="{id: mascota.id}">
       Ver perfil
