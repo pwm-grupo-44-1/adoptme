@@ -1,10 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<inset xmlns:android="http://schemas.android.com/apk/res/android"
-    android:insetLeft="34dp"
-    android:insetTop="34dp"
-    android:insetRight="34dp"
-    android:insetBottom="34dp">
-    <bitmap
-        android:gravity="center"
-        android:src="@drawable/logo_adoptme" />
-</inset>
+<bitmap xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center"
+    android:src="@drawable/logo_adoptme_icon" />
