@@ -47,6 +47,10 @@ export class CardAnimal {
       return;
     }
 
+    if (this.esAdmin) {
+      return;
+    }
+
     this.favoritesService.toggle(this.mascota);
   }
 

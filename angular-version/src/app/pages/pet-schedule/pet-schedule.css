@@ -25,6 +25,44 @@ app-pet-schedule {
   box-shadow: 0 18px 50px rgba(74, 116, 119, 0.12);
 }
 
+.bookings-card {
+  display: flex;
+  flex-direction: column;
+  max-height: 600px;
+}
+
+.booking-list {
+  display: grid;
+  gap: 0.85rem;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.booking-list {
+  scrollbar-width: thin; /* Hace la barra más fina */
+  scrollbar-color: rgba(74, 116, 119, 0.4) transparent; /* Color de la barra y fondo transparente */
+}
+
+/* Para navegadores basados en WebKit (Chrome, Safari, Edge) */
+.booking-list::-webkit-scrollbar {
+  width: 8px; /* Ancho de la barra vertical */
+}
+
+.booking-list::-webkit-scrollbar-track {
+  background: transparent; /* Pista invisible para no ensuciar el diseño */
+  margin-top: 5px; /* Da un poco de aire arriba */
+  margin-bottom: 5px; /* Da un poco de aire abajo */
+  border-radius: 10px;
+}
+
+.booking-list::-webkit-scrollbar-thumb {
+  background-color: rgba(74, 116, 119, 0.4); /* Color a juego con tus textos/bordes */
+  border-radius: 10px; /* Bordes redondeados */
+}
+
+.booking-list::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(16, 148, 109, 0.8); /* Tu verde principal al pasar el ratón */
+}
 .access-card {
   padding: 2rem;
   text-align: center;
@@ -177,7 +215,6 @@ app-pet-schedule {
 .week-days,
 .days-grid,
 .slots-grid,
-.booking-list,
 .booking-form {
   display: grid;
 }
@@ -291,7 +328,7 @@ app-pet-schedule {
 }
 
 .booking-form {
-  gap: 0.95rem;
+  gap: 2rem;
 }
 
 .booking-form label {
@@ -368,10 +405,6 @@ app-pet-schedule {
 .cancel-btn {
   background: rgba(192, 57, 43, 0.1);
   color: var(--color-danger);
-}
-
-.booking-list {
-  gap: 0.85rem;
 }
 
 .booking-item {

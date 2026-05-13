@@ -6,7 +6,6 @@ import {
   browserLocalPersistence,
   createUserWithEmailAndPassword,
   onAuthStateChanged,
-  sendEmailVerification,
   sendPasswordResetEmail,
   setPersistence,
   signInWithEmailAndPassword,
@@ -93,9 +92,6 @@ export class AuthService {
       type: 'user',
       banned: false,
     });
-
-    await sendEmailVerification(authUser);
-    await signOut(this.firebaseAuth);
   }
 
   async loginWithGoogle(): Promise<User> {
@@ -121,10 +117,6 @@ export class AuthService {
   }
 
   private async bootstrapSession(firebaseUser: import('firebase/auth').User, allowProfileCreate: boolean): Promise<User> {
-    if (this.requiresEmailVerification(firebaseUser) && !firebaseUser.emailVerified) {
-      throw new AuthFlowError('auth/email-not-verified');
-    }
-
     const profile = await this.loadOrCreateProfile(firebaseUser, allowProfileCreate);
     if (profile.banned) {
       throw new AuthFlowError('auth/user-banned');

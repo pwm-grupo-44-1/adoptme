@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, OnInit, ChangeDetectorRef, computed, inject } from '@angular/core';
+import { Component, HostListener, OnInit, ChangeDetectorRef, computed, inject, ElementRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { take } from 'rxjs/operators';
@@ -33,6 +33,7 @@ interface UserDraft {
 export class HeaderComponent implements OnInit {
   private authService = inject(AuthService);
   private router = inject(Router);
+  private elementRef = inject(ElementRef);
 
   menuOpen = false;
   brandTitle = '';
@@ -351,5 +352,14 @@ export class HeaderComponent implements OnInit {
     }
 
     this.closeMenu();
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumententClick(event: MouseEvent): void{
+    const adminAccountElement = this.elementRef.nativeElement.querySelector('.admin-account');
+
+    if (this.adminMenuOpen && adminAccountElement && !adminAccountElement.contains(event.target as Node)) {
+      this.adminMenuOpen = false;
+    }
   }
 }

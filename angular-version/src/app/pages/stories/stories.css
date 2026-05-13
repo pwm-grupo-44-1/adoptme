@@ -1,24 +1,22 @@
 :host {
   display: block;
   width: 100%;
+  overflow: hidden; /* Esto corta de raíz cualquier desbordamiento a nivel de componente */
 }
 
 #review {
   display: grid;
-
-  /* columnas */
   grid-template-columns: repeat(auto-fit, minmax(22rem, 22rem));
-
-  /* 🔥 CENTRADO TOTAL */
   justify-content: center;
   align-content: center;
 
-  /* 🔥 altura pantalla */
-  min-height: calc(100vh - 200px);
+  box-sizing: border-box;
+  /* 🔥 AUMENTAMOS LOS PÍXELES QUE RESTAMOS */
+  height: calc(100vh - 280px);
+  overflow: hidden;
 
   gap: clamp(1rem, 2vw, 2rem);
   padding: 2rem;
-
   width: 100%;
 }
 

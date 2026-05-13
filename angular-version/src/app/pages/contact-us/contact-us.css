@@ -1,78 +1,87 @@
 :host {
-  display: block;
+  display: flex;
   width: 100%;
+  height: calc(100vh - var(--header-space-desktop) - var(--footer-space-desktop));
+  overflow: hidden;
+  align-items: center;
+  justify-content: center;
 }
 
 .contact {
-  width: min(100%, 72rem);
+  width: min(100%, 75rem);
+  height: 100%;
   display: flex;
-  gap: clamp(1.5rem, 4vw, 4rem);
-  margin: 2rem auto;
-  align-items: flex-start;
-  padding: 0 1rem;
+  gap: clamp(1rem, 3vw, 4rem);
+  align-items: center;
+  padding: 1rem 2rem;
+  margin: 0 auto;
 }
 
 .contact-left {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: clamp(1rem, 2vh, 2rem);
   color: #f0f0f0;
 }
 
 .contact-title {
-  font-size: clamp(1.5rem, 2vw + 0.8rem, 2rem);
+  font-size: clamp(1.4rem, 2.5vh + 0.5rem, 2.2rem);
   font-weight: 800;
   color: #4a7477;
-  line-height: 1.3;
+  line-height: 1.2;
 }
 
 .contact-reasons {
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: clamp(0.5rem, 1.2vh, 1.2rem);
 }
 
 .contact-reason {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 1rem;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.15);
   border-radius: 0.8rem;
-  padding: 1rem 1.2rem;
+  padding: clamp(0.6rem, 1vh, 1rem) 1.2rem;
+  border: 1px solid rgba(74, 116, 119, 0.1);
 }
 
 .contact-reason-icon {
-  font-size: clamp(1.4rem, 1vw + 0.8rem, 1.8rem);
+  font-size: clamp(1.3rem, 2vh + 0.5rem, 1.8rem);
   flex-shrink: 0;
 }
 
 .contact-reason-text h3 {
-  font-size: clamp(1.15rem, 1vw + 0.7rem, 1.6rem);
+  font-size: clamp(1rem, 1.8vh + 0.3rem, 1.4rem);
   font-weight: 800;
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.1rem;
   color: #10946d;
 }
 
 .contact-reason-text p {
-  font-size: clamp(1rem, 1vw + 0.7rem, 1.5rem);
-  line-height: 1.5;
+  font-size: clamp(0.9rem, 1.4vh + 0.2rem, 1.1rem);
+  line-height: 1.4;
   color: #4a7477;
 }
 
 .contact-right {
   flex: 1.2;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  justify-content: center;
+  gap: clamp(1rem, 2vh, 2rem);
 }
 
 .contact-map {
   width: 100%;
-  height: clamp(14rem, 30vw, 18rem);
-  border-radius: 0.8rem;
+  height: clamp(12rem, 45vh, 22rem);
+  border-radius: 1rem;
   overflow: hidden;
-  border: 3px solid #fddb72;
+  border: 4px solid #fddb72;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
 .contact-text {
@@ -80,69 +89,44 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
-  font-size: clamp(1rem, 1.4vw + 0.6rem, 2rem);
+  gap: 0.4rem;
+  font-size: clamp(0.9rem, 1.6vh + 0.4rem, 1.4rem);
   color: #515151;
-  line-height: 1.6;
+  line-height: 1.4;
+  font-weight: 500;
 }
 
-/* Tablet */
-@media (min-width: 600px) and (max-width: 900px) {
-  .contact {
-    flex-direction: row;
-    gap: 2rem;
-    margin: 2rem auto;
-  }
-
-  .contact-left {
-    gap: 0.5rem;
-  }
-
-  .contact-reasons {
-    gap: 0.5rem;
-  }
-
-  .contact-title {
-    font-size: 1.2rem;
-  }
-
-  .contact-reason-text h3 {
-    font-size: 1rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .contact-reason-text p {
-    font-size: 0.8rem;
-  }
-
-  .contact-map {
-    height: 14rem;
-  }
-
-  .contact-text {
-    font-size: 1.2rem;
-  }
-
-  .contact-right li {
-    font-size: 1.1rem;
-  }
+/* Tablet / Laptop small */
+@media (max-height: 700px) {
+  .contact-title { font-size: 1.4rem; }
+  .contact-map { height: 12rem; }
+  .contact-reason { padding: 0.5rem 1rem; }
+  .contact-text { font-size: 1rem; }
 }
 
-/* Móvil */
-@media (max-width: 576px) {
+/* Móvil Vertical */
+@media (max-width: 768px) {
+  :host {
+    height: auto;
+    min-height: calc(100vh - var(--header-space-mobile));
+    overflow: visible;
+    padding: 2rem 0;
+  }
+
   .contact {
     flex-direction: column;
-    margin: 1rem auto;
-    gap: 1rem;
-    padding: 0 1rem;
+    height: auto;
+    padding: 0 1.5rem;
+    gap: 2rem;
   }
 
-  .contact-left,
-  .contact-right {
-    padding: 0;
+  .contact-left, .contact-right {
+    flex: none;
+    width: 100%;
   }
 
   .contact-map {
-    height: 13rem;
+    height: 15rem;
   }
 }
+

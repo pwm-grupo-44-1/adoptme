@@ -175,10 +175,6 @@ export class Login {
       return 'Este usuario esta baneado.';
     }
 
-    if (control.errors['unverified']) {
-      return 'Debes verificar tu correo antes de iniciar sesion.';
-    }
-
     return 'Revisa este campo.';
   }
 
@@ -203,7 +199,7 @@ export class Login {
     );
 
     this.formMessageType.set('success');
-    this.formMessage.set('Registro completado. Revisa tu correo, verifica la cuenta y despues inicia sesion.');
+    this.formMessage.set('Registro completado correctamente.');
     this.isLoginMode.set(true);
     this.authForm.reset({
       email: (email ?? '').trim(),
@@ -263,12 +259,6 @@ export class Login {
     if (code === 'auth/user-banned') {
       this.authForm.controls['email'].setErrors({ banned: true });
       this.showFormError('Tu usuario ha sido baneado y no puede acceder a la app.');
-      return;
-    }
-
-    if (code === 'auth/email-not-verified') {
-      this.authForm.controls['email'].setErrors({ unverified: true });
-      this.showFormError('Debes verificar tu correo antes de iniciar sesion.');
       return;
     }
 

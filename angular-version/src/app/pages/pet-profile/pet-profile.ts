@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { DataService } from '../../services/data';
 import { Animal } from '../../models/animal';
+import { AuthService } from '../../services/auth';
 
 @Component({
   selector: 'app-pet-profile',
@@ -19,14 +20,16 @@ export class PetProfile implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private dataService: DataService
+    private dataService: DataService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       const id = +params['id'];
+      const currentUser = this.authService.currentUser();
 
-      if (id) {
+      if (id && currentUser?.type !== 'admin') {
         this.dataService.incrementarVisitas(id);
       }
 
