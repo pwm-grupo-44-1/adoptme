@@ -1,0 +1,148 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.favorites-page-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1850px;
+  margin: 0 auto;
+  padding: 0 var(--site-padding);
+  box-sizing: border-box;
+  gap: 1.5rem;
+}
+
+.favorites-header {
+  padding-top: clamp(1rem, 3vh, 2rem);
+}
+
+.favorites-header h1 {
+  margin: 0 0 0.5rem;
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: var(--color-text);
+}
+
+.favorites-header p {
+  margin: 0;
+  max-width: 42rem;
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
+  color: var(--color-text);
+  opacity: 0.8;
+}
+
+.favorites-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+
+.summary-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(74, 116, 119, 0.16);
+  color: var(--color-text);
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.summary-chip--favorite {
+  background: rgba(255, 240, 244, 0.95);
+  border-color: rgba(192, 77, 104, 0.28);
+  color: #a33953;
+}
+
+.summary-chip--favorite i {
+  font-size: 0.95rem;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: clamp(14rem, 22vw, 18rem) 1fr;
+  align-items: start;
+  width: 100%;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  padding-bottom: 4rem;
+}
+
+.results-count {
+  padding: 0.5rem 0;
+  font-size: clamp(1.2rem, 2vw, 1.5rem);
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 1rem;
+}
+
+.pets-list {
+  width: 100%;
+}
+
+#pets-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(1rem, 2vw, 2.5rem);
+  justify-items: stretch;
+  align-items: start;
+}
+
+.no-results {
+  display: grid;
+  place-items: center;
+  min-height: 16rem;
+  padding: 2rem;
+  border-radius: 1.5rem;
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--color-text);
+  text-align: center;
+}
+
+.no-results p {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+@media (max-width: 1200px) {
+  .layout {
+    grid-template-columns: clamp(13rem, 25vw, 16rem) 1fr;
+  }
+
+  #pets-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 950px) {
+  #pets-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .favorites-header {
+    text-align: center;
+  }
+
+  .favorites-summary {
+    justify-content: center;
+  }
+
+  .results-count {
+    text-align: center;
+  }
+
+  #pets-list {
+    grid-template-columns: 1fr;
+    gap: 4rem;
+  }
+}

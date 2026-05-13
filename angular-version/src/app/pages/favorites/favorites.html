@@ -1,0 +1,33 @@
+<div class="favorites-page-wrapper">
+  <div class="favorites-header">
+    <h1>Favoritos</h1>
+    <p>Esta pantalla muestra todas las mascotas cargadas desde Firebase y destaca con el corazon las que guardas como favoritas en SQLite local.</p>
+    <div class="favorites-summary">
+      <span class="summary-chip">Coleccion visible: {{ listaFiltrada().length }} elementos</span>
+      <span class="summary-chip summary-chip--favorite">
+        <i class="bi bi-heart-fill"></i>
+        Favoritos locales: {{ totalFavoritos() }}
+      </span>
+    </div>
+  </div>
+
+  <div class="layout">
+    <app-filter (filtrosCambiados)="aplicarFiltros($event)"></app-filter>
+
+    <section class="pets-list">
+      <div class="results-count">
+        Mostrando {{ listaFiltrada().length }} mascotas
+      </div>
+
+      <div id="pets-list">
+        @for (mascota of listaFiltrada(); track mascota.id) {
+          <app-card-animal [mascota]="mascota"></app-card-animal>
+        } @empty {
+          <div class="no-results">
+            <p>No se encontraron mascotas para los filtros seleccionados.</p>
+          </div>
+        }
+      </div>
+    </section>
+  </div>
+</div>

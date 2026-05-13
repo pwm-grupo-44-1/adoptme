@@ -7,6 +7,16 @@
       </button>
 
       <div class="profile-carousel-track-wrapper">
+        <button
+          type="button"
+          class="favorite-btn"
+          [class.is-favorite]="isFavorite"
+          [attr.aria-label]="isFavorite ? 'Quitar de favoritos' : 'Anadir a favoritos'"
+          [attr.title]="isAuthenticated ? (isFavorite ? 'Quitar de favoritos' : 'Anadir a favoritos') : 'Inicia sesion para guardar favoritos'"
+          (click)="toggleFavorite($event)">
+          <i class="bi" [class.bi-heart]="!isFavorite" [class.bi-heart-fill]="isFavorite"></i>
+        </button>
+
         <div class="profile-carousel-track"
              [style.transform]="'translateX(-' + (currentImageIndex() * 100) + '%)'"
              [style.transition]="isAnimating() ? 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)' : 'none'">
@@ -26,13 +36,15 @@
     </div>
 
     <div class="column-data">
-      <button class="btn-back" (click)="volver()">
-        <i class="bi bi-arrow-left"></i> Volver
-      </button>
+      <div class="profile-actions">
+        <button class="btn-back" (click)="volver()">
+          <i class="bi bi-arrow-left"></i> Volver
+        </button>
 
-      <button class="btn-book" (click)="reservarCita()">
-        <i class="bi bi-calendar-check"></i> Reservar cita
-      </button>
+        <button class="btn-book" (click)="reservarCita()">
+          <i class="bi bi-calendar-check"></i> Reservar cita
+        </button>
+      </div>
 
       <div class="box-text"><strong>Nombre:</strong> {{pet.name}}</div>
       <div class="box-text"><strong>Raza:</strong> {{pet.breed}}</div>

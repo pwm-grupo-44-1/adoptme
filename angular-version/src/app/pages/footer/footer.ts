@@ -1,43 +1,50 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DataService } from '../../services/data';
+import { AuthService } from '../../services/auth';
 
-interface FooterLink { name: string; url: string; }
+interface FooterLink {
+  name: string;
+  url: string;
+}
 
 @Component({
   selector: 'app-footer',
   standalone: true,
   imports: [CommonModule, RouterLink],
   templateUrl: './footer.html',
-  styleUrl: './footer.css'
+  styleUrl: './footer.css',
 })
 export class FooterComponent implements OnInit {
   leftLinks: FooterLink[] = [];
-  centerLink: FooterLink | null = null;
   rightLinks: FooterLink[] = [];
   legalText = '';
 
-  // Inyectamos el ChangeDetectorRef
-  constructor(private dataService: DataService, private cdr: ChangeDetectorRef) {}
+  private readonly authService = inject(AuthService);
+  private readonly scheduleLink = signal<FooterLink | null>(null);
+  private readonly favoritesLink: FooterLink = { name: 'Favoritos', url: '/favorites' };
+
+  readonly centerLink = computed(() =>
+    this.authService.currentUser() ? this.favoritesLink : this.scheduleLink(),
+  );
+
+  constructor(private dataService: DataService) {}
 
   ngOnInit(): void {
-    this.dataService.getFooterData().subscribe(data => {
+    this.dataService.getFooterData().subscribe((data) => {
       this.legalText = data.copyright;
 
       if (data.navLinks && data.navLinks.length > 0) {
-        const scheduleLink = data.navLinks.find(l => l.url.includes('schedule'));
-        if (scheduleLink) this.centerLink = scheduleLink;
+        const scheduleLink = data.navLinks.find((link) => link.url.includes('schedule'));
+        this.scheduleLink.set(scheduleLink ?? null);
 
-        const otherLinks = data.navLinks.filter(l => !l.url.includes('schedule'));
-
+        const otherLinks = data.navLinks.filter((link) => !link.url.includes('schedule'));
         const half = Math.ceil(otherLinks.length / 2);
+
         this.leftLinks = otherLinks.slice(0, half);
         this.rightLinks = otherLinks.slice(half);
       }
-
-      // 🚀 Despertamos a Angular para que pinte el footer
-      this.cdr.detectChanges();
     });
   }
 }

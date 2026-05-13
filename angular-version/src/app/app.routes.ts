@@ -10,12 +10,14 @@ import { Login } from './pages/login/login';
 import {Faq} from './pages/faq/faq';
 import {Legal} from './pages/legal/legal';
 import { authGuard } from './guards/auth.guard';
+import { Favorites } from './pages/favorites/favorites';
 
 export const routes: Routes = [
   { path: '', component: Home },
   { path: 'adoption-list', component: AdoptionList },
   { path: 'pet-profile', component: PetProfile },
   { path: 'pet-schedule', component: PetSchedule, canActivate: [authGuard] },
+  { path: 'favorites', component: Favorites, canActivate: [authGuard] },
   { path: 'stories', component: Stories },
   { path: 'contact-us', component: ContactUs },
   { path: 'about-us', component: AboutUs },
