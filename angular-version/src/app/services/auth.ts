@@ -90,6 +90,7 @@ export class AuthService {
       name: name.trim(),
       email: email.trim(),
       phone: phone.trim(),
+      favorites: [],
       type: 'user',
       banned: false,
     });
@@ -151,6 +152,7 @@ export class AuthService {
         name: firebaseUser.displayName?.trim() || firebaseUser.email?.split('@')[0] || 'Usuario',
         email: firebaseUser.email?.trim() || '',
         phone: '',
+        favorites: [],
         type: 'user',
         banned: false,
       };

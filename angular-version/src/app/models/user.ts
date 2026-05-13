@@ -4,6 +4,7 @@ export interface User {
   email: string;
   type: 'admin' | 'user';
   phone?: string;
+  favorites?: string[];
   banned?: boolean;
   bannedAt?: string;
 }
