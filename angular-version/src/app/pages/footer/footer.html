@@ -9,9 +9,9 @@
     </div>
 
     <div class="footer-center">
-      @if (centerLink) {
-        <a [routerLink]="centerLink.url" class="btn primary">
-          {{ centerLink.name }}
+      @if (centerLink(); as link) {
+        <a [routerLink]="link.url" class="btn primary">
+          {{ link.name }}
         </a>
       }
     </div>

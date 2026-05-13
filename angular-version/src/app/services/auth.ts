@@ -1,10 +1,12 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
 import { Firestore } from '@angular/fire/firestore';
+import { Capacitor } from '@capacitor/core';
 import {
   GoogleAuthProvider,
   browserLocalPersistence,
   createUserWithEmailAndPassword,
+  signInWithRedirect,
   onAuthStateChanged,
   sendEmailVerification,
   sendPasswordResetEmail,
@@ -99,9 +101,14 @@ export class AuthService {
     await signOut(this.firebaseAuth);
   }
 
-  async loginWithGoogle(): Promise<User> {
+  async loginWithGoogle(): Promise<User | null> {
     const provider = new GoogleAuthProvider();
     provider.setCustomParameters({ prompt: 'select_account' });
+
+    if (Capacitor.isNativePlatform()) {
+      await signInWithRedirect(this.firebaseAuth, provider);
+      return null;
+    }
 
     const credential = await signInWithPopup(this.firebaseAuth, provider);
 

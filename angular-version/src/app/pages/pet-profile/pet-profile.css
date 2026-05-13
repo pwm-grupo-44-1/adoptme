@@ -32,6 +32,13 @@
   max-width: 30rem;
 }
 
+.profile-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  align-items: center;
+}
+
 /* ==========================================================================
    TU CÓDIGO ORIGINAL (A partir de aquí, nada cambia)
    ========================================================================== */
@@ -145,6 +152,44 @@
   transform: translateY(-2px);
 }
 
+.favorite-btn {
+  position: absolute;
+  top: 0.9rem;
+  right: 0.9rem;
+  z-index: 2;
+  background: #fff;
+  border: 2px solid #f3a6b4;
+  border-radius: 999px;
+  width: 3rem;
+  height: 3rem;
+  padding: 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+  font-family: inherit;
+  color: #c04d68;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
+}
+
+.favorite-btn i {
+  font-size: 1.2rem;
+}
+
+.favorite-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(192, 77, 104, 0.18);
+}
+
+.favorite-btn.is-favorite {
+  background: #fff0f4;
+  border-color: #c04d68;
+  color: #a33953;
+}
+
 /* ==========================================================================
    2. ADAPTACIÓN POR DIMENSIONES (Media Queries)
    ========================================================================== */
@@ -219,6 +264,17 @@
   .column-data {
     max-width: 100%;
     width: 100%;
+  }
+
+  .profile-actions {
+    justify-content: center;
+  }
+
+  .favorite-btn {
+    top: 0.7rem;
+    right: 0.7rem;
+    width: 2.7rem;
+    height: 2.7rem;
   }
 }
 

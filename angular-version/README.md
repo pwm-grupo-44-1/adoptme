@@ -466,7 +466,7 @@ cd angular-version
 npm install
 
 # 3. Sincronizar ionic con Android.
-npx run build
+npm run build
 npx cap sync
  
  #4. Abrir el proyecto en Android Studio:

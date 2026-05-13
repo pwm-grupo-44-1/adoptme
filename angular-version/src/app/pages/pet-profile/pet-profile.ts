@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { DataService } from '../../services/data';
 import { Animal } from '../../models/animal';
+import { FavoritesService } from '../../services/favorites';
+import { AuthService } from '../../services/auth';
 
 @Component({
   selector: 'app-pet-profile',
@@ -19,7 +21,9 @@ export class PetProfile implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private dataService: DataService
+    private dataService: DataService,
+    private favoritesService: FavoritesService,
+    private authService: AuthService,
   ) {}
 
   ngOnInit(): void {
@@ -83,6 +87,31 @@ export class PetProfile implements OnInit {
 
   volver() {
     this.router.navigate(['/adoption-list']);
+  }
+
+  get isAuthenticated(): boolean {
+    return !!this.authService.currentUser();
+  }
+
+  get isFavorite(): boolean {
+    return this.favoritesService.isFavorite(this.mascota()?.id);
+  }
+
+  toggleFavorite(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const animal = this.mascota();
+    if (!animal) {
+      return;
+    }
+
+    if (!this.isAuthenticated) {
+      this.router.navigate(['/login'], { queryParams: { redirectTo: this.router.url } });
+      return;
+    }
+
+    this.favoritesService.toggle(animal);
   }
 
   reservarCita() {
