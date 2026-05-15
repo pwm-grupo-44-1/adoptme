@@ -17,6 +17,7 @@ import {
 } from 'firebase/auth';
 import { Unsubscribe, doc, getDoc, onSnapshot, setDoc, updateDoc } from 'firebase/firestore';
 import { User } from '../models/user';
+import { EmailService } from './email';
 
 class AuthFlowError extends Error {
   constructor(public readonly code: string) {
@@ -28,6 +29,7 @@ class AuthFlowError extends Error {
 export class AuthService {
   private readonly firebaseAuth = inject(Auth);
   private readonly firestore = inject(Firestore);
+  private readonly emailService = inject(EmailService);
 
   readonly currentUser = signal<User | null>(null);
   readonly authReady = signal(false);
@@ -95,6 +97,12 @@ export class AuthService {
       type: 'user',
       banned: false,
     });
+
+    // Envío de email de verificación vía EmailJS
+    void this.emailService.sendVerificationEmail(name.trim(), email.trim());
+
+    // Envío de email de bienvenida (EmailJS)
+    void this.emailService.sendWelcomeEmail(name.trim(), email.trim());
   }
 
   async loginWithGoogle(): Promise<User | null> {
@@ -157,6 +165,10 @@ export class AuthService {
       };
 
       await setDoc(userRef, newProfile);
+
+      // Envío de email de bienvenida para registros vía Google
+      void this.emailService.sendWelcomeEmail(newProfile.name, newProfile.email);
+
       return { id: firebaseUser.uid, ...newProfile };
     }
 

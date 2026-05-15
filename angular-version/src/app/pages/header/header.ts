@@ -10,6 +10,8 @@ import { AppointmentBooking } from '../../models/booking';
 import { Animal } from '../../models/animal';
 import { User } from '../../models/user';
 
+import { EmailService } from '../../services/email';
+
 interface NavLinkExtended {
   name: string;
   url: string;
@@ -32,8 +34,11 @@ interface UserDraft {
 })
 export class HeaderComponent implements OnInit {
   private authService = inject(AuthService);
+  private dataService = inject(DataService);
+  private emailService = inject(EmailService);
   private router = inject(Router);
   private elementRef = inject(ElementRef);
+  private cdr = inject(ChangeDetectorRef);
 
   menuOpen = false;
   brandTitle = '';
@@ -53,12 +58,6 @@ export class HeaderComponent implements OnInit {
 
   navLinks: NavLinkExtended[] = [];
   socialLinks: SocialLink[] = [];
-
-  // Inyectamos el ChangeDetectorRef
-  constructor(
-    private dataService: DataService,
-    private cdr: ChangeDetectorRef
-  ) {}
 
   ngOnInit(): void {
     this.dataService.getHeaderData().subscribe(data => {
@@ -270,7 +269,7 @@ export class HeaderComponent implements OnInit {
     this.isAdminUsersLoading = true;
     this.cdr.detectChanges();
 
-    this.dataService.getUsers().pipe(take(1)).subscribe({
+    this.dataService.getUsers().subscribe({
       next: (users) => {
         this.users = [...users].sort((left, right) => left.email.localeCompare(right.email));
         this.userDrafts = this.users.reduce<Record<string, UserDraft>>((drafts, user) => {
@@ -299,46 +298,12 @@ export class HeaderComponent implements OnInit {
 
   private openConfirmationEmail(booking: AppointmentBooking): void {
     const animalName = this.animalName(booking.animalId);
-    const subject = `Confirmacion de cita AdoptMe - ${this.formatBookingDate(booking.date)}`;
-    const body = [
-      `Hola ${booking.contactName},`,
-      '',
-      `Te confirmamos tu cita para el ${this.formatBookingDate(booking.date)} a las ${booking.slot}h.`,
-      `Mascota/s solicitadas: ${animalName}.`,
-      '',
-      'Gracias por confiar en AdoptMe.',
-    ].join('\n');
-
-    this.openGmailCompose(booking.email, subject, body);
+    void this.emailService.sendAppointmentConfirmation(booking, animalName);
   }
 
   private openRejectionEmail(booking: AppointmentBooking): void {
     const animalName = this.animalName(booking.animalId);
-    const subject = `Cita AdoptMe no disponible - ${this.formatBookingDate(booking.date)}`;
-    const body = [
-      `Hola ${booking.contactName},`,
-      '',
-      `No podemos confirmar tu cita para el ${this.formatBookingDate(booking.date)} a las ${booking.slot}h.`,
-      `Mascota/s solicitadas: ${animalName}.`,
-      '',
-      'Puedes solicitar otra cita desde la web de AdoptMe.',
-      '',
-      'Gracias por confiar en AdoptMe.',
-    ].join('\n');
-
-    this.openGmailCompose(booking.email, subject, body);
-  }
-
-  private openGmailCompose(to: string, subject: string, body: string): void {
-    const params = new URLSearchParams({
-      view: 'cm',
-      fs: '1',
-      to,
-      su: subject,
-      body,
-    });
-
-    window.open(`https://mail.google.com/mail/?${params.toString()}`, '_blank', 'noopener,noreferrer');
+    void this.emailService.sendAppointmentRejection(booking, animalName);
   }
 
   @HostListener('window:resize')

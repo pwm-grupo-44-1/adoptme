@@ -18,7 +18,7 @@ export class FavoritesService {
     effect(() => {
       const currentUser = this.authService.currentUser();
 
-      if (!currentUser?.id) {
+      if (!currentUser?.id || currentUser.type === 'admin') {
         this.favoriteIds.set(new Set());
         return;
       }

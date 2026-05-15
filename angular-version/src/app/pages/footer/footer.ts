@@ -25,9 +25,13 @@ export class FooterComponent implements OnInit {
   private readonly scheduleLink = signal<FooterLink | null>(null);
   private readonly favoritesLink: FooterLink = { name: 'Favoritos', url: '/favorites' };
 
-  readonly centerLink = computed(() =>
-    this.authService.currentUser() ? this.favoritesLink : this.scheduleLink(),
-  );
+  readonly centerLink = computed(() => {
+    const user = this.authService.currentUser();
+    if (user && user.type !== 'admin') {
+      return this.favoritesLink;
+    }
+    return false;
+  });
 
   constructor(private dataService: DataService) {}
 
