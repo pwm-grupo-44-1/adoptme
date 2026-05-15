@@ -2,7 +2,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'com.adoptme.app',
-  appName: 'AdoptMe',
+  appName: 'AdoptMe!',
   webDir: 'dist/angular-version/browser'
 };
 

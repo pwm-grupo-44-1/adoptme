@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">AdoptMe</string>
-    <string name="title_activity_main">AdoptMe</string>
+    <string name="app_name">AdoptMe!</string>
+    <string name="title_activity_main">AdoptMe!</string>
     <string name="package_name">com.adoptme.app</string>
     <string name="custom_url_scheme">com.adoptme.app</string>
 </resources>
