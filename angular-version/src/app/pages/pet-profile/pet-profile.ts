@@ -94,6 +94,10 @@ export class PetProfile implements OnInit {
     return !!this.authService.currentUser();
   }
 
+  get isAdmin(): boolean {
+    return this.authService.currentUser()?.type === 'admin';
+  }
+
   get isFavorite(): boolean {
     return this.favoritesService.isFavorite(this.mascota()?.id);
   }
@@ -103,7 +107,7 @@ export class PetProfile implements OnInit {
     event.stopPropagation();
 
     const animal = this.mascota();
-    if (!animal) {
+    if (!animal || this.isAdmin) {
       return;
     }
 

@@ -7,15 +7,17 @@
       </button>
 
       <div class="profile-carousel-track-wrapper">
-        <button
-          type="button"
-          class="favorite-btn"
-          [class.is-favorite]="isFavorite"
-          [attr.aria-label]="isFavorite ? 'Quitar de favoritos' : 'Anadir a favoritos'"
-          [attr.title]="isAuthenticated ? (isFavorite ? 'Quitar de favoritos' : 'Anadir a favoritos') : 'Inicia sesion para guardar favoritos'"
-          (click)="toggleFavorite($event)">
-          <i class="bi" [class.bi-heart]="!isFavorite" [class.bi-heart-fill]="isFavorite"></i>
-        </button>
+        @if (!isAdmin) {
+          <button
+            type="button"
+            class="favorite-btn"
+            [class.is-favorite]="isFavorite"
+            [attr.aria-label]="isFavorite ? 'Quitar de favoritos' : 'Anadir a favoritos'"
+            [attr.title]="isAuthenticated ? (isFavorite ? 'Quitar de favoritos' : 'Anadir a favoritos') : 'Inicia sesion para guardar favoritos'"
+            (click)="toggleFavorite($event)">
+            <i class="bi" [class.bi-heart]="!isFavorite" [class.bi-heart-fill]="isFavorite"></i>
+          </button>
+        }
 
         <div class="profile-carousel-track"
              [style.transform]="'translateX(-' + (currentImageIndex() * 100) + '%)'"

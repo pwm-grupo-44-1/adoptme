@@ -1,8 +1,9 @@
-import { Component, computed, effect, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { Filter } from '../../shared/filter/filter';
 import { CardAnimal } from '../../shared/card-animal/card-animal';
 import { DataService } from '../../services/data';
 import { FavoritesService } from '../../services/favorites';
+import { AuthService } from '../../services/auth';
 import { Animal } from '../../models/animal';
 
 interface FavoriteFilters {
@@ -23,6 +24,9 @@ interface FavoriteFilters {
   styleUrl: './favorites.css',
 })
 export class Favorites {
+  private readonly authService = inject(AuthService);
+  esAdmin = computed(() => this.authService.currentUser()?.type === 'admin');
+
   listaCompleta = signal<Animal[]>([]);
   listaFiltrada = signal<Animal[]>([]);
   totalFavoritos = computed(() => this.favoritesService.favoriteIds().size);
@@ -57,7 +61,10 @@ export class Favorites {
   }
 
   private filtrarYOrdenar(lista: Animal[], criterios: FavoriteFilters): Animal[] {
+    const favoriteIds = this.favoritesService.favoriteIds();
+
     let filtrados = lista.filter((animal) => {
+      if (!favoriteIds.has(String(animal.id))) return false;
       if (criterios.generos.length > 0 && !criterios.generos.includes(animal.gender)) return false;
       if (criterios.razas.length > 0 && !criterios.razas.includes(animal.breed)) return false;
       if (criterios.edades.length > 0 && !criterios.edades.includes(this.ageRange(animal.age))) return false;
@@ -72,9 +79,9 @@ export class Favorites {
   }
 
   private ageRange(age: number): string {
-    if (age <= 2) return 'Cachorro (0-2 aÃ±os)';
-    if (age <= 6) return 'Adulto (3-6 aÃ±os)';
-    return 'Senior (7+ aÃ±os)';
+    if (age <= 2) return 'Cachorro (0-2 años)';
+    if (age <= 6) return 'Adulto (3-6 años)';
+    return 'Senior (7+ años)';
   }
 
   private parseWeight(weight: string): number {
@@ -83,7 +90,7 @@ export class Favorites {
 
   private weightRange(weight: string): string {
     const kg = this.parseWeight(weight);
-    if (kg <= 5) return 'PequeÃ±o (â‰¤5kg)';
+    if (kg <= 5) return 'Pequeño (≤5kg)';
     if (kg <= 15) return 'Mediano (6-15kg)';
     return 'Grande (>15kg)';
   }

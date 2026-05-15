@@ -212,17 +212,18 @@
 
 .admin-bookings-modal {
   width: min(720px, 100%);
-  max-height: min(78vh, 760px);
-  overflow: auto;
+  max-height: 85vh;
+  overflow-y: auto;
+  overflow-x: hidden;
   border-radius: 0.8rem;
   background: #fffbe7;
   border: 1px solid rgba(74, 116, 119, 0.18);
   box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
-  padding: 1.25rem;
+  padding: 1.5rem;
 }
 
 .admin-clients-modal {
-  width: min(980px, 100%);
+  width: min(1100px, 95%);
 }
 
 .admin-alert-modal {
