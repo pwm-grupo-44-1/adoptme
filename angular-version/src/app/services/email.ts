@@ -19,8 +19,8 @@ export class EmailService {
   private async sendEmail(to: string, subject: string, htmlBody: string): Promise<void> {
     const templateParams = {
       to_email: to,
-      asunto: subject,
-      mensaje_html: htmlBody,
+      subject: subject,        // Se mapea a {{subject}} en EmailJS
+      message_html: htmlBody,  // Se mapea a {{message_html}} en EmailJS
     };
 
     try {

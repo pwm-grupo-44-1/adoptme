@@ -98,9 +98,6 @@ export class AuthService {
       banned: false,
     });
 
-    // Envío de email de verificación vía EmailJS
-    void this.emailService.sendVerificationEmail(name.trim(), email.trim());
-
     // Envío de email de bienvenida (EmailJS)
     void this.emailService.sendWelcomeEmail(name.trim(), email.trim());
   }
@@ -130,17 +127,31 @@ export class AuthService {
 
   async logout(): Promise<void> {
     await signOut(this.firebaseAuth);
+    this.bootstrappingUid = null;
+    this.bootstrappingPromise = null;
   }
 
+  private bootstrappingUid: string | null = null;
+  private bootstrappingPromise: Promise<User> | null = null;
+
   private async bootstrapSession(firebaseUser: import('firebase/auth').User, allowProfileCreate: boolean): Promise<User> {
-    const profile = await this.loadOrCreateProfile(firebaseUser, allowProfileCreate);
-    if (profile.banned) {
-      throw new AuthFlowError('auth/user-banned');
+    if (this.bootstrappingUid === firebaseUser.uid && this.bootstrappingPromise) {
+      return this.bootstrappingPromise;
     }
 
-    this.currentUser.set(profile);
-    this.ensureProfileWatcher(firebaseUser.uid);
-    return profile;
+    this.bootstrappingUid = firebaseUser.uid;
+    this.bootstrappingPromise = (async () => {
+      const profile = await this.loadOrCreateProfile(firebaseUser, allowProfileCreate);
+      if (profile.banned) {
+        throw new AuthFlowError('auth/user-banned');
+      }
+
+      this.currentUser.set(profile);
+      this.ensureProfileWatcher(firebaseUser.uid);
+      return profile;
+    })();
+
+    return this.bootstrappingPromise;
   }
 
   private async loadOrCreateProfile(
@@ -246,11 +257,6 @@ export class AuthService {
     this.profileWatchStop = null;
     this.watchedUid = null;
   }
-
-  private requiresEmailVerification(firebaseUser: import('firebase/auth').User): boolean {
-    return firebaseUser.providerData.some((provider) => provider.providerId === 'password');
-  }
-
   private isGoogleProvider(firebaseUser: import('firebase/auth').User): boolean {
     return firebaseUser.providerData.some((provider) => provider.providerId === 'google.com');
   }
